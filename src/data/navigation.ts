@@ -72,10 +72,19 @@ export const NAVIGATION_ITEMS: NavItem[] = [
     description: 'Visual operating system & token matrix',
     metadata: 'SEC // 05',
   },
+  {
+    id: 'contact',
+    index: '08',
+    label: 'Transmission // Contact',
+    type: 'section',
+    target: '#contact',
+    description: 'Direct communication channels & availability',
+    metadata: 'SEC // 08',
+  },
 ];
 
 export const NAV_TELEMETRY = {
-  systemVersion: 'PHASE 7 // CREATIVE LAB',
+  systemVersion: 'PHASE 8 // CONTACT & ENDING',
   coordinates: {
     lat: '23.0225° N',
     lon: '72.5714° E',

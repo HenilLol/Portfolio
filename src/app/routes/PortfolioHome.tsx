@@ -9,7 +9,6 @@ import { GridOverlay } from '@/components/ui/layout/GridOverlay';
 import { Container } from '@/components/ui/layout/Container';
 import { Section } from '@/components/ui/layout/Section';
 import { Grid } from '@/components/ui/layout/Grid';
-import { Divider } from '@/components/ui/layout/Divider';
 import { DisplayText } from '@/components/ui/typography/DisplayText';
 import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { MetadataRow } from '@/components/ui/typography/MetadataRow';
@@ -30,11 +29,20 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 
 export const PortfolioHome: React.FC = () => {
+  const [introKey, setIntroKey] = useState<number>(0);
   const [introComplete, setIntroComplete] = useState<boolean>(false);
   const diagnosticRef = useRef<HTMLDivElement>(null);
   const viewport = useViewport();
   const reducedMotion = useReducedMotion();
   const { scrollTo } = useLenisScroll();
+
+  const handleRestartExperience = React.useCallback(() => {
+    sessionStorage.removeItem('hp_intro_completed');
+    setIntroComplete(false);
+    setIntroKey((prev) => prev + 1);
+    window.scrollTo(0, 0);
+    scrollTo(0, { immediate: true });
+  }, [scrollTo]);
 
   // Smooth scroll to URL hash if navigated from another route or directly with anchor
   React.useEffect(() => {
@@ -50,7 +58,7 @@ export const PortfolioHome: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       {/* Cinematic Opening Sequence */}
-      <IntroSequence onComplete={() => setIntroComplete(true)} />
+      <IntroSequence key={introKey} onComplete={() => setIntroComplete(true)} />
 
       {/* Atmospheric & Structural Layers */}
       <GrainLayer />
@@ -232,9 +240,10 @@ export const PortfolioHome: React.FC = () => {
           <CreativeSection />
           <ExperienceSection />
           <ContactSection />
-          <Divider label="FIN" />
-          <EndingSection />
         </Container>
+
+        {/* Final Cinematic Ending Scene & Minimal Footer */}
+        <EndingSection onRestartExperience={handleRestartExperience} />
       </PageTransition>
     </div>
   );
