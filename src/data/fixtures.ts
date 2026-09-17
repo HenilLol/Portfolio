@@ -11,13 +11,13 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   siteTitle: 'Henil Patel',
   siteTagline: 'Engineering & Creative Development',
   bioShort: 'Lead frontend architect & creative technologist building immersive digital products.',
-  contactEmail: 'contact@example.com',
+  contactEmail: 'EMAIL_ADDRESS_PENDING',
   statusMessage: 'Available for selected architectural projects',
   availability: 'available',
   socialLinks: [
-    { id: '1', platform: 'github', label: 'GitHub', url: 'https://github.com', order: 1 },
-    { id: '2', platform: 'linkedin', label: 'LinkedIn', url: 'https://linkedin.com', order: 2 },
-    { id: '3', platform: 'email', label: 'Email', url: 'mailto:contact@example.com', order: 3 },
+    { id: '1', platform: 'github', label: 'GitHub', url: 'https://github.com/HenilLol', order: 1 },
+    { id: '2', platform: 'linkedin', label: 'LinkedIn', url: 'SOCIAL_LINK_PENDING', order: 2 },
+    { id: '3', platform: 'email', label: 'Email', url: 'EMAIL_ADDRESS_PENDING', order: 3 },
   ],
   updatedAt: new Date().toISOString(),
 };

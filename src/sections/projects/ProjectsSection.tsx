@@ -1,22 +1,33 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Section } from '@/components/ui/layout/Section';
 import { Container } from '@/components/ui/layout/Container';
 import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { DisplayText } from '@/components/ui/typography/DisplayText';
 import { ProjectWorld } from '@/components/projects/ProjectWorld';
 import { ProjectNavigator } from '@/components/projects/ProjectNavigator';
-import { CANONICAL_PROJECTS, getFeaturedProject } from '@/data/projects';
+import { CANONICAL_PROJECTS } from '@/data/projects';
+import { getProjects } from '@/services/projects';
 import { useScrollspy } from '@/hooks/useScrollspy';
+import type { Project } from '@/types/models';
 
 type FilterCategory = 'ALL' | 'ai-systems' | 'systems-data' | 'creative-development';
 
 export const ProjectsSection: React.FC = () => {
   const [filter, setFilter] = useState<FilterCategory>('ALL');
+  const [projectsList, setProjectsList] = useState<Project[]>(CANONICAL_PROJECTS);
+
+  useEffect(() => {
+    getProjects({ publishedOnly: true }).then((data) => {
+      if (data && data.length > 0) {
+        setProjectsList(data);
+      }
+    });
+  }, []);
 
   // Compute project world section IDs for scrollspy
   const projectWorldIds = useMemo(
-    () => CANONICAL_PROJECTS.map((p) => `project-world-${p.slug}`),
-    []
+    () => projectsList.map((p) => `project-world-${p.slug}`),
+    [projectsList]
   );
 
   const activeProjectSection = useScrollspy(projectWorldIds, {
@@ -25,13 +36,15 @@ export const ProjectsSection: React.FC = () => {
 
   const activeSlug = activeProjectSection.replace('project-world-', '');
 
-  const featuredProject = useMemo(() => getFeaturedProject(), []);
+  const featuredProject = useMemo(() => {
+    return projectsList.find((p) => p.featured) || projectsList[0] || CANONICAL_PROJECTS[0];
+  }, [projectsList]);
 
   // Filter projects if filter is active
   const filteredProjects = useMemo(() => {
-    if (filter === 'ALL') return CANONICAL_PROJECTS;
-    return CANONICAL_PROJECTS.filter((p) => p.category === filter);
-  }, [filter]);
+    if (filter === 'ALL') return projectsList;
+    return projectsList.filter((p) => p.category === filter);
+  }, [filter, projectsList]);
 
   // Separate featured project from supporting projects
   const supportingProjects = useMemo(
@@ -76,7 +89,7 @@ export const ProjectsSection: React.FC = () => {
                   : 'border-border text-foreground-secondary hover:border-accent/40'
               }`}
             >
-              ALL SYSTEMS ({CANONICAL_PROJECTS.length})
+              ALL SYSTEMS ({projectsList.length})
             </button>
             <button
               type="button"

@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 
-export const AdminHeader: React.FC<{ title: string }> = ({ title }) => {
+export const AdminHeader: React.FC<{
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode;
+}> = ({ title, subtitle, action }) => {
   const { user, signOut, isConfigured } = useAuth();
 
   return (
@@ -18,11 +22,17 @@ export const AdminHeader: React.FC<{ title: string }> = ({ title }) => {
           </span>
         </div>
         <p className="text-xs font-mono text-foreground-muted mt-1">
-          {user?.email ? `Authenticated as ${user.email}` : (isConfigured ? 'Owner Session Active' : 'Offline / Architecture Inspection Mode')}
+          {subtitle ||
+            (user?.email
+              ? `Authenticated as ${user.email}`
+              : isConfigured
+              ? 'Owner Session Active'
+              : 'Offline / Fixture Mode')}
         </p>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        {action}
         <Link to="/">
           <Button variant="ghost" size="sm">
             View Public Site ↗

@@ -2,30 +2,51 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import type { Experience } from '@/types/models';
 import { SAMPLE_EXPERIENCE } from '@/data/fixtures';
 
-export async function getExperiences(): Promise<Experience[]> {
+export interface GetExperienceOptions {
+  publishedOnly?: boolean;
+}
+
+export async function getExperiences(options?: GetExperienceOptions): Promise<Experience[]> {
+  const publishedOnly = options?.publishedOnly ?? false;
+
   if (!isSupabaseConfigured) {
-    return SAMPLE_EXPERIENCE;
+    const list = [...SAMPLE_EXPERIENCE].sort((a, b) => a.order - b.order);
+    return publishedOnly ? list.filter((e) => e.published !== false) : list;
   }
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('experiences')
     .select('*')
     .order('order', { ascending: true });
 
-  if (error) {
-    console.error('Error fetching experiences:', error.message);
-    return SAMPLE_EXPERIENCE;
+  if (publishedOnly) {
+    query = query.eq('published', true);
+  }
+
+  const { data, error } = await query;
+
+  if (error || !data || data.length === 0) {
+    if (error) {
+      console.warn('[CMS] Database experiences query error, falling back to fixtures:', error.message);
+    }
+    const list = [...SAMPLE_EXPERIENCE].sort((a, b) => a.order - b.order);
+    return publishedOnly ? list.filter((e) => e.published !== false) : list;
   }
 
   return data as Experience[];
 }
 
 export async function createExperience(experience: Omit<Experience, 'id' | 'createdAt'>): Promise<Experience> {
-  if (!isSupabaseConfigured) throw new Error('Supabase is not configured.');
+  if (!isSupabaseConfigured) throw new Error('Supabase is not configured. Live mutations require active cloud credentials.');
 
   const { data, error } = await supabase
     .from('experiences')
-    .insert([experience])
+    .insert([
+      {
+        ...experience,
+        created_at: new Date().toISOString(),
+      } as any,
+    ])
     .select()
     .single();
 
@@ -34,11 +55,11 @@ export async function createExperience(experience: Omit<Experience, 'id' | 'crea
 }
 
 export async function updateExperience(id: string, updates: Partial<Experience>): Promise<Experience> {
-  if (!isSupabaseConfigured) throw new Error('Supabase is not configured.');
+  if (!isSupabaseConfigured) throw new Error('Supabase is not configured. Live mutations require active cloud credentials.');
 
   const { data, error } = await supabase
     .from('experiences')
-    .update(updates)
+    .update(updates as any)
     .eq('id', id)
     .select()
     .single();
@@ -47,8 +68,12 @@ export async function updateExperience(id: string, updates: Partial<Experience>)
   return data as Experience;
 }
 
+export async function toggleExperiencePublished(id: string, published: boolean): Promise<Experience> {
+  return updateExperience(id, { published });
+}
+
 export async function deleteExperience(id: string): Promise<boolean> {
-  if (!isSupabaseConfigured) throw new Error('Supabase is not configured.');
+  if (!isSupabaseConfigured) throw new Error('Supabase is not configured. Live mutations require active cloud credentials.');
 
   const { error } = await supabase
     .from('experiences')
@@ -56,5 +81,20 @@ export async function deleteExperience(id: string): Promise<boolean> {
     .eq('id', id);
 
   if (error) throw error;
+  return true;
+}
+
+export async function reorderExperiences(orderedItems: { id: string; order: number }[]): Promise<boolean> {
+  if (!isSupabaseConfigured) return true;
+
+  for (const item of orderedItems) {
+    const { error } = await supabase
+      .from('experiences')
+      .update({ order: item.order } as any)
+      .eq('id', item.id);
+
+    if (error) throw error;
+  }
+
   return true;
 }

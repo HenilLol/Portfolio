@@ -21,17 +21,39 @@ export const AdminLogin: React.FC = () => {
     setSubmitting(true);
     setError(null);
 
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    setSubmitting(false);
+      if (authError) {
+        setError(authError.message);
+        setSubmitting(false);
+        return;
+      }
 
-    if (authError) {
-      setError(authError.message);
-    } else {
+      // Explicitly verify admin authorization via admin_users table
+      if (data.user) {
+        const { data: adminRecord, error: roleError } = await supabase
+          .from('admin_users')
+          .select('user_id')
+          .eq('user_id', data.user.id)
+          .maybeSingle();
+
+        if (roleError || !adminRecord) {
+          await supabase.auth.signOut();
+          setError('Authentication successful, but this account is not authorized as an administrator in public.admin_users.');
+          setSubmitting(false);
+          return;
+        }
+      }
+
       navigate('/admin');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred during authentication.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -51,8 +73,19 @@ export const AdminLogin: React.FC = () => {
         </div>
 
         {!isSupabaseConfigured && (
-          <div className="mb-6 p-3 border border-amber-500/20 bg-amber-500/5 text-amber-300 text-xs font-mono leading-relaxed">
-            [Dev Notice] Supabase environment variables are unconfigured. To enable real authentication, fill in <code className="text-foreground">.env</code> based on <code className="text-foreground">.env.example</code>.
+          <div className="mb-6 p-4 border border-amber-500/20 bg-amber-500/5 text-amber-300 text-xs font-mono leading-relaxed space-y-3">
+            <div>
+              [Dev Notice] Running in offline fixture mode. Cloud Supabase credentials are not present in .env.
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full text-xs"
+              onClick={() => navigate('/admin')}
+            >
+              Enter Offline Admin Preview →
+            </Button>
           </div>
         )}
 

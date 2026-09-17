@@ -63,6 +63,7 @@ export type Skill = {
   proficiency?: number; // 0 to 100 (optional legacy support)
   order: number;
   featured: boolean;
+  published?: boolean;
   iconName?: string;
   createdAt: string;
 };
@@ -79,6 +80,7 @@ export type Experience = {
   highlights: string[];
   technologies: string[];
   order: number;
+  published?: boolean;
   createdAt: string;
 };
 
@@ -120,6 +122,7 @@ export type CreativeWork = {
   };
   featured: boolean;
   order: number;
+  published?: boolean;
   tools?: string[];
   tags?: string[];
   metadata?: { label: string; value: string }[];
@@ -142,6 +145,23 @@ export type Achievement = {
   description: string;
   credentialUrl?: string;
   order: number;
+  published?: boolean;
+  createdAt: string;
+};
+
+export type AdminUser = {
+  userId: string;
+  email: string;
+  createdAt: string;
+};
+
+export type MediaAsset = {
+  id: string;
+  name: string;
+  filePath: string;
+  fileSize: number;
+  mimeType: string;
+  publicUrl: string;
   createdAt: string;
 };
 

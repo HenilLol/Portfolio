@@ -79,6 +79,54 @@ export interface Database {
         Update: Partial<SiteSettings>;
         Relationships: Relationship[];
       };
+      admin_users: {
+        Row: {
+          user_id: string;
+          email: string;
+          created_at: string;
+        };
+        Insert: {
+          user_id: string;
+          email: string;
+          created_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          email?: string;
+          created_at?: string;
+        };
+        Relationships: Relationship[];
+      };
+      media_assets: {
+        Row: {
+          id: string;
+          name: string;
+          file_path: string;
+          file_size: number;
+          mime_type: string;
+          public_url: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          file_path: string;
+          file_size: number;
+          mime_type: string;
+          public_url: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          file_path?: string;
+          file_size?: number;
+          mime_type?: string;
+          public_url?: string;
+          created_at?: string;
+        };
+        Relationships: Relationship[];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

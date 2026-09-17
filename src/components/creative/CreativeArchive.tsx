@@ -1,34 +1,44 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { InteractiveCursorTarget } from '@/components/cursor/InteractiveCursorTarget';
 import { CreativeVisualFrame } from './CreativeVisualFrame';
 import { CreativeViewer } from './CreativeViewer';
 import { CREATIVE_CATEGORIES, CREATIVE_WORKS } from '@/data/creativeContent';
+import { getCreativeWorks } from '@/services/creative';
 import type { CreativeCategory, CreativeWork } from '@/types/models';
 
 export const CreativeArchive: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<CreativeCategory>('ALL');
   const [selectedWork, setSelectedWork] = useState<CreativeWork | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [worksList, setWorksList] = useState<CreativeWork[]>(CREATIVE_WORKS);
   const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    getCreativeWorks({ publishedOnly: true }).then((data) => {
+      if (data && data.length > 0) {
+        setWorksList(data);
+      }
+    });
+  }, []);
 
   // Filter items based on active category
   const filteredWorks = useMemo(() => {
-    if (activeCategory === 'ALL') return CREATIVE_WORKS;
-    return CREATIVE_WORKS.filter((work) => work.category === activeCategory);
-  }, [activeCategory]);
+    if (activeCategory === 'ALL') return worksList;
+    return worksList.filter((work) => work.category === activeCategory);
+  }, [activeCategory, worksList]);
 
   // Compute category count counts
   const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { ALL: CREATIVE_WORKS.length };
-    CREATIVE_WORKS.forEach((w) => {
+    const counts: Record<string, number> = { ALL: worksList.length };
+    worksList.forEach((w) => {
       if (w.category) {
         counts[w.category] = (counts[w.category] || 0) + 1;
       }
     });
     return counts;
-  }, []);
+  }, [worksList]);
 
   return (
     <section id="visual-archive" className="py-16 sm:py-24 border-b border-border/80">
