@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 import { useCursor } from './CursorContext';
 import { useViewport } from '@/hooks/useViewport';
@@ -9,6 +9,7 @@ export const CustomCursor: React.FC = () => {
   const { isDesktop, hasTouch } = useViewport();
   const reducedMotion = useReducedMotion();
   const [isVisible, setIsVisible] = useState(false);
+  const visibleRef = useRef(false);
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
@@ -25,11 +26,21 @@ export const CustomCursor: React.FC = () => {
     const onMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setIsVisible(true);
+      }
     };
 
-    const onMouseLeave = () => setIsVisible(false);
-    const onMouseEnter = () => setIsVisible(true);
+    const onMouseLeave = () => {
+      visibleRef.current = false;
+      setIsVisible(false);
+    };
+
+    const onMouseEnter = () => {
+      visibleRef.current = true;
+      setIsVisible(true);
+    };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mouseleave', onMouseLeave);
@@ -40,7 +51,7 @@ export const CustomCursor: React.FC = () => {
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
     };
-  }, [isDesktop, hasTouch, reducedMotion, isVisible, mouseX, mouseY]);
+  }, [isDesktop, hasTouch, reducedMotion, mouseX, mouseY]);
 
   if (!isDesktop || hasTouch || reducedMotion || !isVisible || cursorType === 'hidden') {
     return null;

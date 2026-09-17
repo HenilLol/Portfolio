@@ -8,6 +8,12 @@ export interface SpatialAtmosphereProps {
   pointerSensitivity?: number;
 }
 
+const AXIS_CROSSHAIR_VERTICES = new Float32Array([
+  -1.2, 0, 0, 1.2, 0, 0,
+  0, -1.2, 0, 0, 1.2, 0,
+  0, 0, -1.2, 0, 0, 1.2,
+]);
+
 export const SpatialAtmosphere: React.FC<SpatialAtmosphereProps> = ({
   pointerSensitivity = 0.4,
 }) => {
@@ -100,14 +106,7 @@ export const SpatialAtmosphere: React.FC<SpatialAtmosphereProps> = ({
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            args={[
-              new Float32Array([
-                -1.2, 0, 0,  1.2, 0, 0,
-                0, -1.2, 0,  0, 1.2, 0,
-                0, 0, -1.2,  0, 0, 1.2,
-              ]),
-              3,
-            ]}
+            args={[AXIS_CROSSHAIR_VERTICES, 3]}
           />
         </bufferGeometry>
         <lineBasicMaterial

@@ -12,6 +12,7 @@ import {
   FolderKanban,
 } from 'lucide-react';
 import { AdminHeader } from '../components/AdminHeader';
+import { AdminModal } from '../components/AdminModal';
 import { AdminConfirmModal } from '../components/AdminConfirmModal';
 import { AdminNotification, type NotificationType } from '../components/AdminNotification';
 import { Button } from '@/components/ui/Button';
@@ -546,32 +547,14 @@ export const AdminProjects: React.FC = () => {
       </div>
 
       {/* Create / Edit Project Modal Dialog */}
-      {isModalOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm overflow-y-auto"
-        >
-          <div className="w-full max-w-2xl border border-border-subtle bg-background-surface p-6 shadow-2xl my-8 space-y-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-border-subtle">
-              <div>
-                <span className="font-mono text-[10px] tracking-widest text-accent uppercase block">
-                  Project Record Editor
-                </span>
-                <h3 className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
-                  {editingProject ? `Edit: ${editingProject.title}` : 'Create New Project'}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="text-foreground-muted hover:text-foreground text-sm font-mono cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleSave} className="space-y-4">
+      <AdminModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={editingProject ? `Edit: ${editingProject.title}` : 'Create New Project'}
+        subtitle="Project Record Editor"
+        maxWidthClass="max-w-2xl"
+      >
+        <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-mono text-xs uppercase tracking-wider text-foreground-secondary mb-1">
@@ -789,9 +772,7 @@ export const AdminProjects: React.FC = () => {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
+      </AdminModal>
 
       {/* Delete Confirmation Modal */}
       <AdminConfirmModal

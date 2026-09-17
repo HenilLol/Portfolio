@@ -16,7 +16,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
 
   if (reducedMotion) {
     return (
-      <main className={`pt-16 min-h-screen ${className}`}>
+      <main id="main-content" tabIndex={-1} className={`pt-16 min-h-screen focus:outline-none ${className}`}>
         {children}
       </main>
     );
@@ -87,11 +87,13 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
 
       {/* Main Page Content */}
       <motion.main
+        id="main-content"
+        tabIndex={-1}
         initial="initial"
         animate="animate"
         exit="exit"
         variants={containerVariants}
-        className={`pt-16 min-h-screen ${className}`}
+        className={`pt-16 min-h-screen focus:outline-none ${className}`}
       >
         {children}
       </motion.main>

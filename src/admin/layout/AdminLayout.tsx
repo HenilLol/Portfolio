@@ -130,7 +130,7 @@ export const AdminLayout: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-10 max-w-6xl overflow-y-auto">
+      <main id="admin-main-content" tabIndex={-1} className="flex-1 p-6 md:p-10 max-w-6xl overflow-y-auto focus:outline-none">
         <Outlet />
       </main>
     </div>

@@ -27,6 +27,17 @@ export const ProjectView: React.FC = () => {
     }
   }, [slug]);
 
+  useEffect(() => {
+    if (project) {
+      document.title = `${project.title} // HENIL PATEL`;
+    } else if (slug) {
+      document.title = `${slug.toUpperCase()} // HENIL PATEL`;
+    }
+    return () => {
+      document.title = 'Henil Patel // Creative Technologist & Machine Learning Engineer';
+    };
+  }, [project, slug]);
+
   // If viewing the flagship HENEOXY project, render the dedicated cinematic experience
   if (slug === 'heneoxy') {
     return (

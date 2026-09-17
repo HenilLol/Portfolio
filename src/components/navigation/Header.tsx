@@ -5,13 +5,25 @@ import { NavigationOverlay } from './NavigationOverlay';
 import { Container } from '@/components/ui/layout/Container';
 import { useScrollspy } from '@/hooks/useScrollspy';
 
+const NAV_SECTION_IDS = [
+  'hero',
+  'visual-engine',
+  'about',
+  'skills',
+  'projects',
+  'creative',
+  'experience',
+  'contact',
+  'ending',
+];
+
 export const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   // Active section tracking via IntersectionObserver
-  const activeSection = useScrollspy(['hero', 'visual-engine', 'about', 'skills', 'projects', 'creative', 'experience', 'contact', 'ending']);
+  const activeSection = useScrollspy(NAV_SECTION_IDS);
 
   return (
     <>

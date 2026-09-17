@@ -11,13 +11,25 @@ export function useScrollspy(
 ): string {
   const [activeId, setActiveId] = useState<string>(sectionIds[0] || '');
 
+  const serializedIds = sectionIds.join(',');
+  const rootMargin = options?.rootMargin || '-20% 0px -50% 0px';
+  const thresholdKey = Array.isArray(options?.threshold)
+    ? options.threshold.join(',')
+    : String(options?.threshold ?? '0,0.25,0.5,0.75,1');
+
   useEffect(() => {
     if (typeof window === 'undefined' || sectionIds.length === 0) return;
 
+    const parsedThreshold = Array.isArray(options?.threshold)
+      ? options.threshold
+      : typeof options?.threshold === 'number'
+      ? options.threshold
+      : [0, 0.25, 0.5, 0.75, 1.0];
+
     const observerOptions: IntersectionObserverInit = {
       root: null,
-      rootMargin: options?.rootMargin || '-20% 0px -50% 0px',
-      threshold: options?.threshold ?? [0, 0.25, 0.5, 0.75, 1.0],
+      rootMargin,
+      threshold: parsedThreshold,
     };
 
     const handleIntersect: IntersectionObserverCallback = (entries) => {
@@ -45,7 +57,8 @@ export function useScrollspy(
     return () => {
       observer.disconnect();
     };
-  }, [sectionIds, options?.rootMargin, options?.threshold]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serializedIds, rootMargin, thresholdKey]);
 
   return activeId;
 }

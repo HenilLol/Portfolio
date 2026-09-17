@@ -37,6 +37,9 @@ export default defineConfig({
           ) {
             return 'vendor-animation';
           }
+          if (id.includes('node_modules/@supabase')) {
+            return 'vendor-supabase';
+          }
         },
       },
     },
