@@ -19,6 +19,7 @@
 @layer base {
   * {
     border-color: var(--border-default);
+    -webkit-tap-highlight-color: transparent;
   }
 
   html {

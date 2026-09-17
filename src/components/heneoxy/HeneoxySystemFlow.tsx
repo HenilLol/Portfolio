@@ -28,35 +28,42 @@ export const HeneoxySystemFlow: React.FC = () => {
       {/* Sequential Execution Steps Grid */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         {steps.map((item, idx) => (
-          <Card
-            key={item.step}
-            className="p-5 border-border/70 bg-background-surface/40 flex flex-col justify-between space-y-4 relative group hover:border-accent/40 transition-colors"
-          >
-            <div className="space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-border/30 font-mono text-[10px] uppercase tracking-widest text-foreground-muted">
-                <span>STEP // {item.step}</span>
-                <span className="text-accent">{item.status}</span>
+          <React.Fragment key={item.step}>
+            <Card
+              className="p-4 sm:p-5 border-border/70 bg-background-surface/40 flex flex-col justify-between space-y-4 relative group hover:border-accent/40 transition-colors"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-border/30 font-mono text-[10px] uppercase tracking-widest text-foreground-muted">
+                  <span>STEP // {item.step}</span>
+                  <span className="text-accent">{item.status}</span>
+                </div>
+
+                <span className="font-mono text-[10px] text-accent uppercase tracking-widest block">
+                  {item.actor}
+                </span>
+
+                <h4 className="font-editorial text-sm font-bold uppercase tracking-wide text-foreground">
+                  {item.action}
+                </h4>
+
+                <p className="font-sans text-xs text-foreground-secondary leading-relaxed">
+                  {item.detail}
+                </p>
               </div>
 
-              <span className="font-mono text-[10px] text-accent uppercase tracking-widest block">
-                {item.actor}
-              </span>
-
-              <h4 className="font-editorial text-sm font-bold uppercase tracking-wide text-foreground">
-                {item.action}
-              </h4>
-
-              <p className="font-sans text-xs text-foreground-secondary leading-relaxed">
-                {item.detail}
-              </p>
-            </div>
+              {idx < steps.length - 1 && (
+                <div className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-accent/60 font-mono text-xs z-10">
+                  →
+                </div>
+              )}
+            </Card>
 
             {idx < steps.length - 1 && (
-              <div className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-accent/60 font-mono text-xs z-10">
-                →
+              <div className="md:hidden flex justify-center py-0.5 text-accent/50 font-mono text-xs select-none">
+                ↓
               </div>
             )}
-          </Card>
+          </React.Fragment>
         ))}
       </div>
     </section>

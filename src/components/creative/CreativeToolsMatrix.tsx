@@ -6,7 +6,7 @@ import { CREATIVE_TOOLS } from '@/data/creativeContent';
 
 export const CreativeToolsMatrix: React.FC = () => {
   return (
-    <section className="py-16 sm:py-24 border-b border-border/80">
+    <section className="py-14 sm:py-24 border-b border-border/80">
       <div className="space-y-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-border/60">
@@ -28,10 +28,10 @@ export const CreativeToolsMatrix: React.FC = () => {
           {CREATIVE_TOOLS.map((tool) => (
             <div
               key={tool.id}
-              className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-background-elevated/40 transition-colors"
+              className="p-4 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 hover:bg-background-elevated/40 transition-colors"
             >
-              <div className="flex items-start md:items-center gap-4">
-                <span className="font-mono text-xs text-accent tracking-widest uppercase w-12">
+              <div className="flex items-start md:items-center gap-3 sm:gap-4">
+                <span className="font-mono text-xs text-accent tracking-widest uppercase w-10 sm:w-12 shrink-0">
                   // {tool.specIndex}
                 </span>
                 <div>
@@ -44,7 +44,7 @@ export const CreativeToolsMatrix: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 ml-16 md:ml-0">
+              <div className="flex flex-col md:flex-row md:items-center gap-2 sm:gap-4 md:gap-8 pt-1 md:pt-0">
                 <p className="text-foreground-secondary text-xs sm:text-sm font-normal max-w-md">
                   {tool.role}
                 </p>

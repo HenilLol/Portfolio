@@ -26,7 +26,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
         id={`project-world-${project.slug}`}
         data-project-slug={project.slug}
         className={cn(
-          'relative p-6 sm:p-10 lg:p-14 border border-border/80 bg-background-surface/40 hover:border-accent/50 transition-colors duration-500 space-y-8 group',
+          'relative p-4 sm:p-10 lg:p-14 border border-border/80 bg-background-surface/40 hover:border-accent/50 transition-colors duration-500 space-y-6 sm:space-y-8 group',
           className
         )}
       >
@@ -90,7 +90,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
             <div className="pt-4">
               <Link
                 to={`/project/${project.slug}`}
-                className="inline-flex items-center gap-3 px-5 py-3 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 group/cta"
+                className="inline-flex items-center justify-center gap-3 px-5 py-3.5 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 group/cta w-full sm:w-auto"
               >
                 <span>ENTER SYSTEM BLUEPRINT</span>
                 <span className="group-hover/cta:translate-x-1 transition-transform">→</span>
@@ -125,7 +125,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
       id={`project-world-${project.slug}`}
       data-project-slug={project.slug}
       className={cn(
-        'relative p-6 sm:p-8 border border-border/70 bg-background-surface/30 hover:border-border-strong hover:bg-background-surface/50 transition-all duration-500 group',
+        'relative p-4 sm:p-8 border border-border/70 bg-background-surface/30 hover:border-border-strong hover:bg-background-surface/50 transition-all duration-500 group',
         className
       )}
     >

@@ -6,7 +6,7 @@ import { ENGINEERING_CREATIVE_CONTENT } from '@/data/creativeContent';
 
 export const EngineeringCreativeBridge: React.FC = () => {
   return (
-    <section className="py-16 sm:py-24 border-b border-border/80">
+    <section className="py-14 sm:py-24 border-b border-border/80">
       <div className="space-y-12">
         {/* Section Index & Lead */}
         <div>
@@ -39,7 +39,7 @@ export const EngineeringCreativeBridge: React.FC = () => {
           {ENGINEERING_CREATIVE_CONTENT.pillars.map((pillar, idx) => (
             <Card
               key={pillar.title}
-              className="p-6 bg-background-surface border-border/80 hover:border-accent/40 transition-colors"
+              className="p-4 sm:p-6 bg-background-surface border-border/80 hover:border-accent/40 transition-colors"
             >
               <div className="font-mono text-[10px] text-accent tracking-widest uppercase mb-2">
                 PRINCIPLE // 0{idx + 1}

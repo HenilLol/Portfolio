@@ -90,7 +90,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-sm overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -100,7 +100,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
       <div
         ref={modalRef}
         tabIndex={-1}
-        className={`w-full ${maxWidthClass} border border-border-subtle bg-background-surface p-6 shadow-2xl my-8 space-y-6 max-h-[90vh] overflow-y-auto focus:outline-none`}
+        className={`w-full ${maxWidthClass} border border-border-subtle bg-background-surface p-4 sm:p-6 shadow-2xl my-4 sm:my-8 space-y-6 max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto focus:outline-none`}
       >
         <div className="flex items-center justify-between pb-4 border-b border-border-subtle">
           <div>
@@ -117,7 +117,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="text-foreground-muted hover:text-foreground text-sm font-mono cursor-pointer p-1 rounded focus:outline-none focus:ring-1 focus:ring-accent"
+            className="text-foreground-muted hover:text-foreground text-sm font-mono cursor-pointer p-2 min-h-[36px] min-w-[36px] flex items-center justify-center rounded focus:outline-none focus:ring-1 focus:ring-accent"
           >
             ✕
           </button>

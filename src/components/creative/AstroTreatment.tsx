@@ -6,7 +6,7 @@ import { ASTRO_FRAMEWORK_DATA } from '@/data/creativeContent';
 
 export const AstroTreatment: React.FC = () => {
   return (
-    <section className="py-16 sm:py-24 border-b border-border/80">
+    <section className="py-14 sm:py-24 border-b border-border/80">
       <div className="space-y-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-border/60">
@@ -36,7 +36,7 @@ export const AstroTreatment: React.FC = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-4 p-6 bg-background-surface border border-border/80 space-y-3 font-mono text-xs">
+          <div className="lg:col-span-4 p-4 sm:p-6 bg-background-surface border border-border/80 space-y-3 font-mono text-xs">
             <div className="text-[10px] text-accent tracking-widest uppercase pb-2 border-b border-border/40">
               Calibration Protocol
             </div>
@@ -64,7 +64,7 @@ export const AstroTreatment: React.FC = () => {
           {ASTRO_FRAMEWORK_DATA.pipelineStages.map((stage) => (
             <Card
               key={stage.step}
-              className="p-6 bg-background-surface border-border/80 space-y-3 relative overflow-hidden group hover:border-accent/50 transition-colors"
+              className="p-4 sm:p-6 bg-background-surface border-border/80 space-y-3 relative overflow-hidden group hover:border-accent/50 transition-colors"
             >
               <div className="font-mono text-[10px] text-accent tracking-widest uppercase">
                 {stage.step}

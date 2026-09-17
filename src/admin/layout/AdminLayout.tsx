@@ -31,6 +31,18 @@ export const AdminLayout: React.FC = () => {
   const { user, isConfigured, signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col md:flex-row">
       {/* Mobile Top Bar */}
@@ -41,10 +53,10 @@ export const AdminLayout: React.FC = () => {
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 text-foreground-secondary hover:text-foreground focus:outline-none"
+          className="p-2 text-foreground-secondary hover:text-foreground focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
           aria-label={mobileMenuOpen ? 'Close Navigation' : 'Open Navigation'}
         >
-          {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -76,7 +88,7 @@ export const AdminLayout: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-3 px-3 py-2.5 text-xs font-mono tracking-wider transition-colors uppercase rounded-none',
+                    'flex items-center gap-3 px-3 py-2.5 text-xs font-mono tracking-wider transition-colors uppercase rounded-none min-h-[44px]',
                     isActive
                       ? 'bg-accent/10 text-accent font-medium border-l-2 border-accent'
                       : 'text-foreground-secondary hover:text-foreground hover:bg-white/[0.02]'
@@ -112,7 +124,7 @@ export const AdminLayout: React.FC = () => {
           <div className="pt-2 flex items-center justify-between border-t border-border-subtle/60 text-xs font-mono">
             <Link
               to="/"
-              className="text-foreground-muted hover:text-foreground flex items-center gap-1.5 uppercase text-[10px] tracking-wider"
+              className="text-foreground-muted hover:text-foreground flex items-center gap-1.5 uppercase text-[10px] tracking-wider min-h-[36px]"
             >
               <ExternalLink size={12} />
               Public Site
@@ -120,7 +132,7 @@ export const AdminLayout: React.FC = () => {
             <button
               type="button"
               onClick={() => signOut()}
-              className="text-foreground-muted hover:text-red-400 flex items-center gap-1 uppercase text-[10px] tracking-wider cursor-pointer"
+              className="text-foreground-muted hover:text-red-400 flex items-center gap-1 uppercase text-[10px] tracking-wider cursor-pointer min-h-[36px]"
             >
               <LogOut size={12} />
               Sign Out
@@ -130,7 +142,7 @@ export const AdminLayout: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main id="admin-main-content" tabIndex={-1} className="flex-1 p-6 md:p-10 max-w-6xl overflow-y-auto focus:outline-none">
+      <main id="admin-main-content" tabIndex={-1} className="flex-1 p-4 sm:p-6 md:p-10 max-w-6xl overflow-y-auto focus:outline-none w-full">
         <Outlet />
       </main>
     </div>

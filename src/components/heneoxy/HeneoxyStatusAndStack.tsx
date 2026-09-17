@@ -8,7 +8,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
   const { implementationStatus, technologyStack } = HENEOXY_CONTENT;
 
   return (
-    <div className="space-y-16 sm:space-y-24 border-t border-border/40 pt-16 sm:pt-24">
+    <div className="space-y-12 sm:space-y-24 border-t border-border/40 pt-12 sm:pt-24">
       {/* 1. Implementation Truth Matrix */}
       <section id="implementation-status" className="space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -30,7 +30,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Implemented */}
-          <Card className="p-6 border-accent/40 bg-background-surface/50 space-y-4">
+          <Card className="p-4 sm:p-6 border-accent/40 bg-background-surface/50 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[10px] uppercase tracking-wider">
               <span className="text-accent font-bold">01 // IMPLEMENTED</span>
               <Badge variant="accent" className="text-[8px] uppercase">VERIFIED</Badge>
@@ -46,7 +46,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
           </Card>
 
           {/* In Development */}
-          <Card className="p-6 border-blue-500/40 bg-background-surface/50 space-y-4">
+          <Card className="p-4 sm:p-6 border-blue-500/40 bg-background-surface/50 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[10px] uppercase tracking-wider">
               <span className="text-blue-400 font-bold">02 // IN DEVELOPMENT</span>
               <Badge variant="default" className="text-[8px] uppercase">ACTIVE</Badge>
@@ -62,7 +62,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
           </Card>
 
           {/* Research */}
-          <Card className="p-6 border-purple-500/40 bg-background-surface/50 space-y-4">
+          <Card className="p-4 sm:p-6 border-purple-500/40 bg-background-surface/50 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[10px] uppercase tracking-wider">
               <span className="text-purple-400 font-bold">03 // RESEARCH HORIZON</span>
               <Badge variant="outline" className="text-[8px] uppercase">EXPLORATION</Badge>
@@ -97,7 +97,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {technologyStack.map((tier) => (
-            <Card key={tier.category} className="p-6 border-border/70 bg-background-surface/40 space-y-4">
+            <Card key={tier.category} className="p-4 sm:p-6 border-border/70 bg-background-surface/40 space-y-4">
               <span className="font-mono text-[10px] text-accent uppercase tracking-widest block pb-2 border-b border-border/30 font-semibold">
                 {tier.category}
               </span>

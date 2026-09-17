@@ -17,14 +17,14 @@ export const CreativeReturnNav: React.FC = () => {
         </p>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-        <Link to="/#projects">
-          <Button variant="magnetic" className="w-full sm:w-auto tracking-widest text-xs uppercase px-6 py-3">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 pt-4 max-w-md mx-auto sm:max-w-none">
+        <Link to="/#projects" className="w-full sm:w-auto">
+          <Button variant="magnetic" className="w-full sm:w-auto tracking-widest text-xs uppercase px-6 py-3 min-h-[44px] justify-center">
             ← RETURN TO PROJECT UNIVERSE
           </Button>
         </Link>
-        <Link to="/">
-          <Button variant="outline" className="w-full sm:w-auto tracking-widest text-xs uppercase px-6 py-3">
+        <Link to="/" className="w-full sm:w-auto">
+          <Button variant="outline" className="w-full sm:w-auto tracking-widest text-xs uppercase px-6 py-3 min-h-[44px] justify-center">
             PORTFOLIO OVERVIEW ↑
           </Button>
         </Link>

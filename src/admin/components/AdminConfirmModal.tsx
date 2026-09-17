@@ -91,7 +91,7 @@ export const AdminConfirmModal: React.FC<AdminConfirmModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-sm"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -101,7 +101,7 @@ export const AdminConfirmModal: React.FC<AdminConfirmModalProps> = ({
       <div
         ref={modalRef}
         tabIndex={-1}
-        className="w-full max-w-md border border-border-subtle bg-background-surface p-6 shadow-2xl space-y-4 focus:outline-none"
+        className="w-full max-w-md border border-border-subtle bg-background-surface p-4 sm:p-6 shadow-2xl space-y-4 focus:outline-none"
       >
         <div className="space-y-1">
           <span className="font-mono text-[10px] tracking-widest text-accent uppercase block">
@@ -119,8 +119,14 @@ export const AdminConfirmModal: React.FC<AdminConfirmModalProps> = ({
           {message}
         </p>
 
-        <div className="pt-4 flex items-center justify-end gap-3 border-t border-border-subtle">
-          <Button type="button" variant="ghost" size="sm" onClick={onClose}>
+        <div className="pt-4 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-border-subtle">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="w-full sm:w-auto min-h-[44px] sm:min-h-0 flex items-center justify-center"
+          >
             {cancelLabel}
           </Button>
           <Button
@@ -131,7 +137,9 @@ export const AdminConfirmModal: React.FC<AdminConfirmModalProps> = ({
               onConfirm();
               onClose();
             }}
-            className={isDestructive ? 'bg-red-500/90 hover:bg-red-600 text-white border-none' : ''}
+            className={`w-full sm:w-auto min-h-[44px] sm:min-h-0 flex items-center justify-center ${
+              isDestructive ? 'bg-red-500/90 hover:bg-red-600 text-white border-none' : ''
+            }`}
           >
             {confirmLabel}
           </Button>

@@ -183,7 +183,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ introComplete = true }
       ref={sectionRef}
       id="hero"
       data-section="hero"
-      className="relative min-h-[92vh] flex flex-col justify-between pt-20 sm:pt-28 pb-12 overflow-hidden border-b border-border"
+      className="relative min-h-[90dvh] sm:min-h-[92vh] flex flex-col justify-between pt-20 sm:pt-28 pb-10 sm:pb-12 overflow-hidden border-b border-border"
     >
       {/* Three.js 3D Spatial Atmosphere Layer (Quiet Background Depth) */}
       <div
@@ -196,7 +196,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ introComplete = true }
 
       {/* Main Hero Foreground Content */}
       <Container size="wide" className="relative z-10 my-auto">
-        <div ref={contentRef} className="max-w-5xl space-y-8">
+        <div ref={contentRef} className="max-w-5xl space-y-6 sm:space-y-8">
           {/* Eyebrow / Technical Specification */}
           <div ref={eyebrowRef} className="opacity-0">
             <TechnicalLabel indicator indicatorColor="accent">
@@ -229,13 +229,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ introComplete = true }
           {/* Primary & Secondary Call to Actions */}
           <div
             ref={ctaGroupRef}
-            className="pt-4 flex flex-wrap items-center gap-4 opacity-0"
+            className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 opacity-0 w-full sm:w-auto"
           >
             <InteractiveCursorTarget cursorType="interactive">
               <Button
                 variant="magnetic"
                 onClick={() => scrollTo(HERO_CONTENT.actions.primaryCta.href)}
-                className="bg-foreground text-background hover:bg-accent hover:text-background font-medium px-8 py-3.5"
+                className="w-full sm:w-auto bg-foreground text-background hover:bg-accent hover:text-background font-medium px-8 py-3.5 justify-center"
               >
                 {HERO_CONTENT.actions.primaryCta.label}
               </Button>
@@ -245,7 +245,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ introComplete = true }
               <Button
                 variant="outline"
                 onClick={() => scrollTo(HERO_CONTENT.actions.secondaryCta.href)}
-                className="px-6 py-3.5"
+                className="w-full sm:w-auto px-6 py-3.5 justify-center"
               >
                 {HERO_CONTENT.actions.secondaryCta.label} →
               </Button>
@@ -255,20 +255,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ introComplete = true }
       </Container>
 
       {/* Bottom Architectural Metadata Bar */}
-      <Container size="wide" className="relative z-10 pt-12">
+      <Container size="wide" className="relative z-10 pt-8 sm:pt-12">
         <div
           ref={metadataRef}
-          className="border-t border-border-subtle pt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 font-mono text-[10px] tracking-widest text-foreground-muted uppercase opacity-0"
+          className="border-t border-border-subtle pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 font-mono text-[10px] tracking-widest text-foreground-muted uppercase opacity-0"
         >
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <span className="text-foreground font-semibold">{HERO_CONTENT.identity.displayName}</span>
             <span className="text-border">/</span>
             <span>{HERO_CONTENT.identity.moniker}</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
             <span>LOC // {HERO_CONTENT.identity.coordinates.region}</span>
-            <span className="hidden sm:inline-block">COORD // {HERO_CONTENT.identity.coordinates.lat}</span>
+            <span className="hidden md:inline-block">COORD // {HERO_CONTENT.identity.coordinates.lat}</span>
             <div className="flex items-center gap-1.5 text-accent">
               <span className="w-1 h-1 rounded-full bg-accent animate-pulse" />
               <span>{HERO_CONTENT.identity.status}</span>

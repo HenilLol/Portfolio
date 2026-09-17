@@ -59,7 +59,7 @@ export const SkillGraphNode: React.FC<SkillGraphNodeProps> = ({
       aria-label={`${node.name} (${node.status})`}
       style={style}
       className={cn(
-        'group text-left p-3 min-w-[140px] max-w-[170px] select-none cursor-pointer',
+        'group text-left p-3 min-w-[140px] max-w-[170px] min-h-[44px] select-none cursor-pointer',
         'border bg-background-surface/90 backdrop-blur-md transition-all',
         reducedMotion ? 'duration-0' : 'duration-300',
         'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent',

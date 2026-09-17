@@ -230,12 +230,12 @@ export const ProjectView: React.FC = () => {
                     {/* Previous Project */}
                     <Link
                       to={`/project/${adjacent.prev.slug}`}
-                      className="group p-6 border border-border/70 bg-background-surface/30 hover:border-accent/50 transition-colors space-y-2 select-none"
+                      className="group p-4 sm:p-6 border border-border/70 bg-background-surface/30 hover:border-accent/50 transition-colors space-y-2 select-none"
                     >
                       <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block group-hover:text-accent transition-colors">
                         ← PREVIOUS BLUEPRINT
                       </span>
-                      <h4 className="font-editorial text-lg font-bold uppercase text-foreground">
+                      <h4 className="font-editorial text-base sm:text-lg font-bold uppercase text-foreground">
                         {adjacent.prev.title}
                       </h4>
                       <p className="font-mono text-xs text-foreground-muted truncate">
@@ -246,12 +246,12 @@ export const ProjectView: React.FC = () => {
                     {/* Next Project */}
                     <Link
                       to={`/project/${adjacent.next.slug}`}
-                      className="group p-6 border border-border/70 bg-background-surface/30 hover:border-accent/50 transition-colors space-y-2 text-right select-none"
+                      className="group p-4 sm:p-6 border border-border/70 bg-background-surface/30 hover:border-accent/50 transition-colors space-y-2 text-left sm:text-right select-none"
                     >
                       <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block group-hover:text-accent transition-colors">
                         NEXT BLUEPRINT →
                       </span>
-                      <h4 className="font-editorial text-lg font-bold uppercase text-foreground">
+                      <h4 className="font-editorial text-base sm:text-lg font-bold uppercase text-foreground">
                         {adjacent.next.title}
                       </h4>
                       <p className="font-mono text-xs text-foreground-muted truncate">
@@ -264,23 +264,23 @@ export const ProjectView: React.FC = () => {
             </div>
           ) : (
             /* Technical Not-Found State */
-            <div className="py-24 text-center space-y-6 max-w-xl mx-auto">
+            <div className="py-24 text-center space-y-6 max-w-xl mx-auto px-4">
               <div className="space-y-2">
                 <span className="font-mono text-xs text-accent tracking-widest uppercase block">
                   SYSTEM TELEMETRY // 404
                 </span>
-                <h2 className="font-editorial text-3xl sm:text-4xl font-bold uppercase tracking-tight text-foreground">
+                <h2 className="font-editorial text-2xl sm:text-4xl font-bold uppercase tracking-tight text-foreground">
                   Project World Not Found
                 </h2>
                 <p className="font-mono text-xs text-foreground-secondary leading-relaxed pt-2">
-                  The requested architectural identifier <code className="text-accent bg-background-surface px-2 py-0.5 border border-border">/project/{slug}</code> does not exist in the project universe.
+                  The requested architectural identifier <code className="text-accent bg-background-surface px-2 py-0.5 border border-border break-all">/project/{slug}</code> does not exist in the project universe.
                 </p>
               </div>
 
               <div className="pt-4">
                 <Link
                   to="/#projects"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all w-full sm:w-auto"
                 >
                   <span>RETURN TO PROJECT UNIVERSE</span>
                   <span>→</span>

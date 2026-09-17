@@ -23,7 +23,7 @@ export const SpatialAtmosphere: React.FC<SpatialAtmosphereProps> = ({
   const pointsRef = useRef<THREE.Points>(null);
 
   const reducedMotion = useReducedMotion();
-  const { isMobile } = useViewport();
+  const { isMobile, hasTouch } = useViewport();
   const { pointer } = useThree();
 
   // Constrained particle count: 80 on mobile, 220 on desktop for strict 60 FPS
@@ -60,9 +60,10 @@ export const SpatialAtmosphere: React.FC<SpatialAtmosphereProps> = ({
         ring2Ref.current.rotation.x -= delta * 0.04;
       }
 
-      // Smooth pointer parallax response via Three.js pointer coordinates
-      const targetRotationX = -pointer.y * pointerSensitivity * 0.3;
-      const targetRotationY = pointer.x * pointerSensitivity * 0.4;
+      // Smooth pointer parallax response via Three.js pointer coordinates (disabled on touch/mobile)
+      const disableParallax = isMobile || hasTouch;
+      const targetRotationX = disableParallax ? 0 : -pointer.y * pointerSensitivity * 0.3;
+      const targetRotationY = disableParallax ? 0 : pointer.x * pointerSensitivity * 0.4;
 
       groupRef.current.rotation.x = THREE.MathUtils.lerp(
         groupRef.current.rotation.x,

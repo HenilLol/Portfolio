@@ -49,9 +49,9 @@ export const SkillsSection: React.FC = () => {
       index="04"
       label="Technology Map & Systems"
       contained={false}
-      className="py-20 sm:py-28 lg:py-36 border-b border-border/60"
+      className="py-14 sm:py-28 lg:py-36 border-b border-border/60"
     >
-      <Container size="wide" className="space-y-12">
+      <Container size="wide" className="space-y-10 sm:space-y-12">
         {/* Header & Philosophy */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-border/40">
           <div className="space-y-3 max-w-2xl">
@@ -71,7 +71,7 @@ export const SkillsSection: React.FC = () => {
             <button
               type="button"
               onClick={() => setSelectedCluster('ALL')}
-              className={`px-3 py-1.5 border transition-colors cursor-pointer ${
+              className={`px-3 py-2 min-h-[38px] border transition-colors cursor-pointer flex items-center justify-center ${
                 selectedCluster === 'ALL'
                   ? 'border-accent text-accent bg-accent/10'
                   : 'border-border text-foreground-secondary hover:border-accent/40'
@@ -84,7 +84,7 @@ export const SkillsSection: React.FC = () => {
                 key={cluster.id}
                 type="button"
                 onClick={() => setSelectedCluster(cluster.id)}
-                className={`px-3 py-1.5 border transition-colors cursor-pointer ${
+                className={`px-3 py-2 min-h-[38px] border transition-colors cursor-pointer flex items-center justify-center ${
                   selectedCluster === cluster.id
                     ? 'border-accent text-accent bg-accent/10'
                     : 'border-border text-foreground-secondary hover:border-accent/40'
@@ -216,7 +216,14 @@ export const SkillsSection: React.FC = () => {
 
         {/* Mobile & Tablet Responsive View (<1024px) */}
         <div className="lg:hidden space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Mobile Inspection Card */}
+          <SkillGraphInspector
+            activeNode={activeNode}
+            onSelectNode={setActiveNode}
+            className="w-full"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {filteredNodes.map((node) => {
               const isActive = activeNode?.id === node.id;
               const isConnected =
@@ -240,13 +247,6 @@ export const SkillsSection: React.FC = () => {
               );
             })}
           </div>
-
-          {/* Mobile Inspection Card */}
-          <SkillGraphInspector
-            activeNode={activeNode}
-            onSelectNode={setActiveNode}
-            className="w-full"
-          />
         </div>
       </Container>
     </Section>

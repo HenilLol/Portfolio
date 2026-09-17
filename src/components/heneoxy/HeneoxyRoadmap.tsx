@@ -31,7 +31,7 @@ export const HeneoxyRoadmap: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {roadmap.map((ph) => (
-            <Card key={ph.phase} className="p-6 border-border/70 bg-background-surface/40 space-y-4">
+            <Card key={ph.phase} className="p-4 sm:p-6 border-border/70 bg-background-surface/40 space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-border/20">
                 <span className="font-mono text-[10px] text-accent uppercase tracking-widest">
                   {ph.phase}
@@ -68,7 +68,7 @@ export const HeneoxyRoadmap: React.FC = () => {
       </section>
 
       {/* 2. Long-Term Reference Benchmark (Hermes Agent) */}
-      <section id="benchmark" className="p-8 sm:p-10 border border-border/80 bg-background-surface/50 space-y-6">
+      <section id="benchmark" className="p-5 sm:p-10 border border-border/80 bg-background-surface/50 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-4 border-b border-border/30">
           <div className="space-y-1.5">
             <span className="font-mono text-[10px] text-accent uppercase tracking-widest font-semibold block">
@@ -116,7 +116,7 @@ export const HeneoxyRoadmap: React.FC = () => {
         <div>
           <Link
             to="/#projects"
-            className="inline-flex items-center gap-3 px-6 py-3.5 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 group"
+            className="inline-flex items-center justify-center gap-3 px-6 py-3.5 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 group w-full sm:w-auto min-h-[44px]"
           >
             <span>RETURN TO PROJECT UNIVERSE</span>
             <span className="group-hover:translate-x-1 transition-transform">→</span>

@@ -7,7 +7,7 @@ export const HeneoxyParadigm: React.FC = () => {
   const { currentModel, heneoxyModel } = HENEOXY_CONTENT.paradigmShift;
 
   return (
-    <section id="paradigm" className="py-16 sm:py-24 border-t border-border/40 space-y-12">
+    <section id="paradigm" className="py-12 sm:py-24 border-t border-border/40 space-y-12">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div className="space-y-2">
           <TechnicalLabel indicator indicatorColor="accent">
@@ -26,7 +26,7 @@ export const HeneoxyParadigm: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Left: Current Computing (Application Silos) */}
         <div className="lg:col-span-5 space-y-4">
-          <Card className="p-6 border-red-500/30 bg-background-surface/40 space-y-4">
+          <Card className="p-4 sm:p-6 border-red-500/30 bg-background-surface/40 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/30">
               <span className="font-mono text-xs uppercase tracking-wider text-red-400 font-semibold">
                 {currentModel.title}
@@ -59,16 +59,16 @@ export const HeneoxyParadigm: React.FC = () => {
         </div>
 
         {/* Center Transition Vector */}
-        <div className="lg:col-span-2 flex flex-col items-center justify-center py-4 lg:py-0 text-center font-mono text-[10px] text-accent space-y-2">
+        <div className="lg:col-span-2 flex flex-col items-center justify-center py-2 lg:py-0 text-center font-mono text-[10px] text-accent space-y-2">
           <span className="hidden lg:inline text-xs">TRANSITION</span>
           <div className="w-12 h-[1px] bg-accent/60 hidden lg:block" />
-          <span className="text-lg">→</span>
+          <span className="text-lg rotate-90 lg:rotate-0 inline-block">→</span>
           <span className="text-foreground-muted text-[9px]">RETHINKING THE INTERFACE</span>
         </div>
 
         {/* Right: HENEOXY Paradigm (Unified Workspace) */}
         <div className="lg:col-span-5 space-y-4">
-          <Card className="p-6 border-accent/40 bg-background-surface/60 space-y-4 shadow-[0_0_20px_rgba(0,240,255,0.05)]">
+          <Card className="p-4 sm:p-6 border-accent/40 bg-background-surface/60 space-y-4 shadow-[0_0_20px_rgba(0,240,255,0.05)]">
             <div className="flex items-center justify-between pb-3 border-b border-border/30">
               <span className="font-mono text-xs uppercase tracking-wider text-accent font-semibold">
                 {heneoxyModel.title}

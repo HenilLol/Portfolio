@@ -64,7 +64,7 @@ export const HeneoxyArchitecture: React.FC = () => {
                   setCursor('interactive');
                 }}
                 onMouseLeave={resetCursor}
-                className={`w-full text-left p-5 sm:p-6 border transition-all duration-300 cursor-pointer block select-none ${
+                className={`w-full text-left p-4 sm:p-6 border transition-all duration-300 cursor-pointer block select-none ${
                   isActive
                     ? 'border-accent bg-background-surface/90 shadow-[0_0_16px_rgba(0,240,255,0.15)] z-20 scale-[1.01]'
                     : isConnected
@@ -102,7 +102,7 @@ export const HeneoxyArchitecture: React.FC = () => {
 
         {/* Right: Architecture Inspector HUD */}
         <div className="lg:col-span-5 sticky top-24">
-          <Card className="p-6 sm:p-8 border-border/80 bg-background-surface/80 backdrop-blur-md space-y-6">
+          <Card className="p-4 sm:p-8 border-border/80 bg-background-surface/80 backdrop-blur-md space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-border/40 font-mono text-[10px] uppercase tracking-widest">
               <span className="text-accent">INSPECTING // LAYER-{activeLayer.index}</span>
               <Badge
@@ -123,7 +123,7 @@ export const HeneoxyArchitecture: React.FC = () => {
               <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block">
                 {activeLayer.category}
               </span>
-              <h4 className="font-editorial text-2xl font-bold uppercase text-foreground">
+              <h4 className="font-editorial text-xl sm:text-2xl font-bold uppercase text-foreground">
                 {activeLayer.name}
               </h4>
             </div>
@@ -166,7 +166,7 @@ export const HeneoxyArchitecture: React.FC = () => {
                       key={connId}
                       type="button"
                       onClick={() => setActiveLayer(target)}
-                      className="px-2 py-0.5 border border-border bg-background hover:border-accent hover:text-accent transition-colors text-foreground-secondary cursor-pointer"
+                      className="px-3 py-1.5 border border-border bg-background hover:border-accent hover:text-accent transition-colors text-foreground-secondary cursor-pointer min-h-[36px] flex items-center"
                     >
                       {target.name} →
                     </button>

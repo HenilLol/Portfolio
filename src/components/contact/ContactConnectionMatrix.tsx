@@ -18,7 +18,7 @@ export const ContactConnectionMatrix: React.FC = () => {
 
           const content = (
             <Card
-              className={`p-5 sm:p-6 bg-background-surface border-border/80 transition-all duration-300 relative group overflow-hidden ${
+              className={`p-4 sm:p-6 bg-background-surface border-border/80 transition-all duration-300 relative group overflow-hidden ${
                 isPending
                   ? 'opacity-70 cursor-not-allowed select-none'
                   : 'hover:border-accent/60 hover:bg-background-elevated/40'
@@ -39,11 +39,11 @@ export const ContactConnectionMatrix: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-                <div className="font-editorial text-base sm:text-lg font-semibold uppercase text-foreground tracking-tight group-hover:text-accent transition-colors">
+                <div className="font-editorial text-base sm:text-lg font-semibold uppercase text-foreground tracking-tight group-hover:text-accent transition-colors break-words">
                   {channel.value}
                 </div>
 
-                <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest">
+                <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest shrink-0">
                   {isPending && (
                     <span className="text-foreground-muted text-[10px]">
                       [NOT CONFIGURED]

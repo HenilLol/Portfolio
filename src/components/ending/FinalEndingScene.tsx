@@ -120,36 +120,36 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
           initial={reducedMotion ? false : { opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+          className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 pt-4"
         >
           {/* Primary Action: Return to Top */}
-          <InteractiveCursorTarget cursorType="interactive" cursorLabel="TOP">
+          <InteractiveCursorTarget cursorType="interactive" cursorLabel="TOP" className="w-full sm:w-auto">
             <Button
               variant="magnetic"
               onClick={handleReturnToTop}
-              className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center"
+              className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center min-h-[44px]"
             >
               {ENDING_CONTENT.actions.returnTop}
             </Button>
           </InteractiveCursorTarget>
 
           {/* Secondary Action: Restart Experience */}
-          <InteractiveCursorTarget cursorType="interactive" cursorLabel="RESTART">
+          <InteractiveCursorTarget cursorType="interactive" cursorLabel="RESTART" className="w-full sm:w-auto">
             <Button
               variant="outline"
               onClick={handleRestart}
-              className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center"
+              className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center min-h-[44px]"
             >
               {ENDING_CONTENT.actions.restart}
             </Button>
           </InteractiveCursorTarget>
 
           {/* Tertiary Action: Explore Work */}
-          <InteractiveCursorTarget cursorType="interactive" cursorLabel="WORKS">
+          <InteractiveCursorTarget cursorType="interactive" cursorLabel="WORKS" className="w-full sm:w-auto">
             <Button
               variant="outline"
               onClick={handleExploreWork}
-              className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center text-foreground-muted hover:text-foreground"
+              className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center text-foreground-muted hover:text-foreground min-h-[44px]"
             >
               {ENDING_CONTENT.actions.exploreWork}
             </Button>
@@ -157,29 +157,29 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
         </motion.div>
 
         {/* Minimal Technical Footer Row — Dynamic Current Year, No Exact Coordinates */}
-        <div className="pt-12 sm:pt-16 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-[10px] sm:text-[11px] tracking-widest uppercase text-foreground-muted">
+        <div className="pt-12 sm:pt-16 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-[10px] sm:text-[11px] tracking-widest uppercase text-foreground-muted text-center sm:text-left">
           <div>
             <span>{ENDING_CONTENT.copyright}</span>
             <span className="mx-2 text-border">•</span>
             <span className="text-foreground-secondary">{ENDING_CONTENT.location}</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4 sm:gap-6">
             <a
               href="https://github.com/HenilLol"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-accent transition-colors"
+              className="hover:text-accent transition-colors py-1 min-h-[36px] flex items-center"
             >
               GITHUB
             </a>
-            <Link to="/project/heneoxy" className="hover:text-accent transition-colors">
+            <Link to="/project/heneoxy" className="hover:text-accent transition-colors py-1 min-h-[36px] flex items-center">
               HENEOXY
             </Link>
-            <Link to="/creative" className="hover:text-accent transition-colors">
+            <Link to="/creative" className="hover:text-accent transition-colors py-1 min-h-[36px] flex items-center">
               CREATIVE LAB
             </Link>
-            <Link to="/admin" className="text-border hover:text-foreground-muted transition-colors">
+            <Link to="/admin" className="text-border hover:text-foreground-muted transition-colors py-1 min-h-[36px] flex items-center">
               SYSTEM CONSOLE
             </Link>
           </div>

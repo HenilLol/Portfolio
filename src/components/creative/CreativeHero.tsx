@@ -17,7 +17,7 @@ export const CreativeHero: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-border/80">
+    <section className="relative pt-12 sm:pt-24 pb-12 sm:pb-24 border-b border-border/80">
       {/* Editorial Header Coordinate Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-border/60 text-xs font-mono tracking-widest text-foreground-muted uppercase">
         <div className="flex items-center gap-3">
@@ -34,7 +34,7 @@ export const CreativeHero: React.FC = () => {
       </div>
 
       {/* Main Hero Spatial Content */}
-      <div className="mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+      <div className="mt-10 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
         {/* Left Column: Oversized Typography */}
         <div className="lg:col-span-8 space-y-6">
           <TechnicalLabel indicator indicatorColor="accent" className="mb-2">
@@ -72,7 +72,7 @@ export const CreativeHero: React.FC = () => {
 
         {/* Right Column: Telemetry & Primary Action */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="p-6 bg-background-surface border border-border/80 space-y-4">
+          <div className="p-4 sm:p-6 bg-background-surface border border-border/80 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/40 font-mono text-[10px] uppercase tracking-widest">
               <span className="text-accent">ARCHIVE STATUS</span>
               <span className="text-foreground-muted">PHASE 7 VERIFIED</span>
@@ -97,10 +97,10 @@ export const CreativeHero: React.FC = () => {
               <InteractiveCursorTarget cursorType="interactive" className="w-full">
                 <Button
                   variant="magnetic"
-                  className="w-full justify-center text-xs tracking-widest"
+                  className="w-full justify-center text-xs tracking-widest min-h-[44px]"
                   onClick={handleScrollToArchive}
                 >
-                  EXPLORE ARCHIVE ↓
+                  ENTER ARCHIVE ↓
                 </Button>
               </InteractiveCursorTarget>
             </div>

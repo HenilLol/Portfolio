@@ -15,7 +15,7 @@ export const HeneoxyHero: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/40 font-mono text-xs uppercase tracking-widest">
         <Link
           to="/#projects"
-          className="inline-flex items-center gap-2 text-accent hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-2 text-accent hover:text-foreground transition-colors min-h-[44px] sm:min-h-0"
         >
           <span>← RETURN TO PROJECT UNIVERSE</span>
         </Link>
@@ -44,7 +44,7 @@ export const HeneoxyHero: React.FC = () => {
         <DisplayText
           as="h1"
           size="2xl"
-          className="text-foreground font-extrabold uppercase tracking-tightest leading-none text-5xl sm:text-7xl lg:text-9xl"
+          className="text-foreground font-extrabold uppercase tracking-tightest leading-none text-4xl sm:text-7xl lg:text-9xl"
         >
           {HENEOXY_CONTENT.identity.name}
         </DisplayText>
@@ -58,18 +58,18 @@ export const HeneoxyHero: React.FC = () => {
         </p>
 
         {/* Action CTAs */}
-        <div className="flex flex-wrap gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4">
           <button
             type="button"
             onClick={() => scrollTo('#thesis', { offset: -80, duration: 1.2 })}
-            className="px-6 py-3 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 cursor-pointer"
+            className="px-6 py-3.5 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
           >
             EXPLORE SYSTEM ↓
           </button>
           <button
             type="button"
             onClick={() => scrollTo('#architecture', { offset: -80, duration: 1.2 })}
-            className="px-6 py-3 border border-border bg-background-surface/60 hover:border-accent/60 text-foreground font-mono text-xs uppercase tracking-widest transition-all duration-300 cursor-pointer"
+            className="px-6 py-3.5 border border-border bg-background-surface/60 hover:border-accent/60 text-foreground font-mono text-xs uppercase tracking-widest transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
           >
             VIEW ARCHITECTURE ↓
           </button>
@@ -77,7 +77,7 @@ export const HeneoxyHero: React.FC = () => {
       </div>
 
       {/* Hero Telemetry HUD Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 sm:p-6 border border-border/70 bg-background-surface/50 font-mono text-[10px] uppercase tracking-wider">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 sm:p-6 border border-border/70 bg-background-surface/50 font-mono text-[10px] uppercase tracking-wider">
         <div>
           <span className="text-foreground-muted block mb-1">SYSTEM STATE</span>
           <span className="text-accent font-semibold">IN DEVELOPMENT</span>

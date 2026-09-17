@@ -202,12 +202,12 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
           animate="open"
           exit="closed"
           variants={overlayVariants}
-          className="fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col justify-between pt-20 pb-8 sm:pb-12 px-6 sm:px-12 border-b border-border/80 select-none overflow-y-auto"
+          className="fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col justify-between pt-20 pb-8 sm:pb-12 px-4 sm:px-12 border-b border-border/80 select-none overflow-y-auto"
         >
           {/* Subtle architectural background coordinate lines */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 pointer-events-none grid grid-cols-12 max-w-7xl mx-auto px-6 sm:px-12 opacity-15"
+            className="absolute inset-0 pointer-events-none grid grid-cols-12 max-w-7xl mx-auto px-4 sm:px-12 opacity-15"
           >
             <div className="col-span-1 border-r border-border" />
             <div className="col-span-10 border-r border-border" />
@@ -254,7 +254,7 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
                         onClick={() => handleNavClick(item)}
                         onMouseEnter={() => setCursor('interactive')}
                         onMouseLeave={resetCursor}
-                        className="w-full text-left flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 sm:gap-6 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent group-hover:translate-x-1.5 transition-transform duration-300"
+                        className="w-full text-left flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 sm:gap-6 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent group-hover:translate-x-1.5 transition-transform duration-300 min-h-[44px] py-1"
                       >
                         {/* Index & Title */}
                         <div className="flex items-baseline gap-4 sm:gap-8">

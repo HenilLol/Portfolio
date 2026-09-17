@@ -70,7 +70,7 @@ export const HeneoxyBoot: React.FC<HeneoxyBootProps> = ({ onComplete }) => {
         aria-label="HENEOXY System Initialization"
         initial={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { duration: 0.4, ease: EASING.editorial } }}
-        className="fixed inset-0 z-50 bg-background text-foreground flex flex-col justify-between p-6 sm:p-12 lg:p-16 select-none cursor-pointer"
+        className="fixed inset-0 z-50 bg-background text-foreground flex flex-col justify-between p-4 sm:p-12 lg:p-16 select-none cursor-pointer"
         onClick={() => {
           sessionStorage.setItem('hp_heneoxy_boot_completed', 'true');
           setVisible(false);
@@ -83,7 +83,7 @@ export const HeneoxyBoot: React.FC<HeneoxyBootProps> = ({ onComplete }) => {
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             <span>HENEOXY // SYSTEM BOOT</span>
           </div>
-          <span>[CLICK OR PRESS ESC TO SKIP]</span>
+          <span>[TAP ANYWHERE OR PRESS ESC TO SKIP]</span>
         </div>
 
         {/* Central Boot Sequence */}
@@ -100,7 +100,7 @@ export const HeneoxyBoot: React.FC<HeneoxyBootProps> = ({ onComplete }) => {
             </p>
           </div>
 
-          <div className="p-6 border border-border/80 bg-background-surface/80 space-y-2.5 font-mono text-xs">
+          <div className="p-4 sm:p-6 border border-border/80 bg-background-surface/80 space-y-2.5 font-mono text-xs">
             {HENEOXY_CONTENT.bootSequence.map((seq, idx) => {
               const isVisible = idx <= completedSteps;
               const isLatest = idx === completedSteps;

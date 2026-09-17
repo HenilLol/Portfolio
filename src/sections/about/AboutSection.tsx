@@ -15,9 +15,9 @@ export const AboutSection: React.FC = () => {
       index={ABOUT_CONTENT.sectionIndex}
       label={ABOUT_CONTENT.sectionLabel}
       contained={false}
-      className="py-20 sm:py-28 lg:py-36 border-b border-border/60"
+      className="py-14 sm:py-28 lg:py-36 border-b border-border/60"
     >
-      <Container size="wide" className="space-y-16 sm:space-y-24">
+      <Container size="wide" className="space-y-12 sm:space-y-24">
         {/* Editorial Lead Statement Composition */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-4 space-y-4">
@@ -92,7 +92,7 @@ export const AboutSection: React.FC = () => {
                 key={dim.id}
                 className="col-span-12 sm:col-span-6 lg:col-span-4"
               >
-                <Card className="h-full p-6 border-border/70 bg-background-surface/50 hover:border-accent/50 transition-colors duration-300 flex flex-col justify-between space-y-6 group">
+                <Card className="h-full p-4 sm:p-6 border-border/70 bg-background-surface/50 hover:border-accent/50 transition-colors duration-300 flex flex-col justify-between space-y-6 group">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between pb-3 border-b border-border/30">
                       <span className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase">
@@ -131,7 +131,7 @@ export const AboutSection: React.FC = () => {
         </div>
 
         {/* Current Exploration Horizon Bar */}
-        <div className="p-6 sm:p-8 border border-border/70 bg-background-surface/40 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="p-4 sm:p-8 border border-border/70 bg-background-surface/40 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
             <span className="font-mono text-[10px] uppercase tracking-widest text-accent font-semibold block">
               ● {ABOUT_CONTENT.currentExploration.label}

@@ -36,11 +36,11 @@ export default {
         mono: ['JetBrains Mono', 'Menlo', 'monospace'],
       },
       fontSize: {
-        'display-2xl': ['clamp(4rem, 10vw + 1rem, 10rem)', { lineHeight: '0.9', letterSpacing: '-0.04em' }],
-        'display-xl': ['clamp(3rem, 7vw + 1rem, 7.5rem)', { lineHeight: '0.92', letterSpacing: '-0.035em' }],
-        'display-lg': ['clamp(2.25rem, 5vw + 0.5rem, 5rem)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
-        'display-md': ['clamp(1.75rem, 3.5vw + 0.5rem, 3.25rem)', { lineHeight: '1.05', letterSpacing: '-0.025em' }],
-        'display-sm': ['clamp(1.25rem, 2vw + 0.5rem, 2rem)', { lineHeight: '1.15', letterSpacing: '-0.02em' }],
+        'display-2xl': ['clamp(2.5rem, 8vw + 0.75rem, 10rem)', { lineHeight: '0.9', letterSpacing: '-0.04em' }],
+        'display-xl': ['clamp(2rem, 5.5vw + 0.5rem, 7.5rem)', { lineHeight: '0.92', letterSpacing: '-0.035em' }],
+        'display-lg': ['clamp(1.75rem, 4vw + 0.5rem, 5rem)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
+        'display-md': ['clamp(1.35rem, 2.5vw + 0.5rem, 3.25rem)', { lineHeight: '1.05', letterSpacing: '-0.025em' }],
+        'display-sm': ['clamp(1.15rem, 1.5vw + 0.4rem, 2rem)', { lineHeight: '1.15', letterSpacing: '-0.02em' }],
       },
       letterSpacing: {
         tightest: '-0.04em',

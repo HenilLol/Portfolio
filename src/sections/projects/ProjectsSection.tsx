@@ -61,9 +61,9 @@ export const ProjectsSection: React.FC = () => {
       index="05"
       label="Project Universe & Engineering"
       contained={false}
-      className="py-20 sm:py-28 lg:py-36 border-b border-border/60"
+      className="py-14 sm:py-28 lg:py-36 border-b border-border/60"
     >
-      <Container size="wide" className="space-y-12 sm:space-y-16">
+      <Container size="wide" className="space-y-10 sm:space-y-16">
         {/* Header & Category Filtering */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-border/40">
           <div className="space-y-3 max-w-2xl">
@@ -83,7 +83,7 @@ export const ProjectsSection: React.FC = () => {
             <button
               type="button"
               onClick={() => setFilter('ALL')}
-              className={`px-3 py-1.5 border transition-colors cursor-pointer ${
+              className={`px-3 py-2 min-h-[38px] border transition-colors cursor-pointer flex items-center justify-center ${
                 filter === 'ALL'
                   ? 'border-accent text-accent bg-accent/10'
                   : 'border-border text-foreground-secondary hover:border-accent/40'
@@ -94,7 +94,7 @@ export const ProjectsSection: React.FC = () => {
             <button
               type="button"
               onClick={() => setFilter('ai-systems')}
-              className={`px-3 py-1.5 border transition-colors cursor-pointer ${
+              className={`px-3 py-2 min-h-[38px] border transition-colors cursor-pointer flex items-center justify-center ${
                 filter === 'ai-systems'
                   ? 'border-accent text-accent bg-accent/10'
                   : 'border-border text-foreground-secondary hover:border-accent/40'
@@ -105,7 +105,7 @@ export const ProjectsSection: React.FC = () => {
             <button
               type="button"
               onClick={() => setFilter('systems-data')}
-              className={`px-3 py-1.5 border transition-colors cursor-pointer ${
+              className={`px-3 py-2 min-h-[38px] border transition-colors cursor-pointer flex items-center justify-center ${
                 filter === 'systems-data'
                   ? 'border-accent text-accent bg-accent/10'
                   : 'border-border text-foreground-secondary hover:border-accent/40'
@@ -116,7 +116,7 @@ export const ProjectsSection: React.FC = () => {
             <button
               type="button"
               onClick={() => setFilter('creative-development')}
-              className={`px-3 py-1.5 border transition-colors cursor-pointer ${
+              className={`px-3 py-2 min-h-[38px] border transition-colors cursor-pointer flex items-center justify-center ${
                 filter === 'creative-development'
                   ? 'border-accent text-accent bg-accent/10'
                   : 'border-border text-foreground-secondary hover:border-accent/40'

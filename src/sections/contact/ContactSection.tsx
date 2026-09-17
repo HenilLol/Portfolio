@@ -33,11 +33,11 @@ export const ContactSection: React.FC = () => {
                 {isEmailConfigured ? (
                   <a
                     href={`mailto:${CONTACT_CONTENT.email}`}
-                    className="focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+                    className="focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent w-full sm:w-auto"
                   >
                     <Button
                       variant="magnetic"
-                      className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-4 justify-center"
+                      className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-4 justify-center min-h-[44px]"
                     >
                       INITIATE TRANSMISSION →
                     </Button>
@@ -46,7 +46,7 @@ export const ContactSection: React.FC = () => {
                   <Button
                     variant="outline"
                     disabled
-                    className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-4 justify-center opacity-60 cursor-not-allowed border-border/80 text-foreground-muted"
+                    className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-4 justify-center opacity-60 cursor-not-allowed border-border/80 text-foreground-muted min-h-[44px]"
                   >
                     EMAIL CHANNEL PENDING
                   </Button>

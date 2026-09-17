@@ -84,7 +84,7 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
   return (
     <AnimatePresence>
       <div
-        className="fixed inset-0 z-[90] flex items-center justify-center p-4 sm:p-6 lg:p-10 bg-background/95 backdrop-blur-xl"
+        className="fixed inset-0 z-[90] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-background/95 backdrop-blur-xl"
         role="dialog"
         aria-modal="true"
         aria-labelledby="viewer-work-title"
@@ -95,10 +95,10 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.98, y: 16 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-6xl max-h-[92vh] flex flex-col bg-background-surface border border-border/80 shadow-2xl overflow-hidden"
+          className="relative w-full max-w-6xl max-h-[92dvh] sm:max-h-[92vh] flex flex-col bg-background-surface border border-border/80 shadow-2xl overflow-hidden"
         >
           {/* Top Bar: Telemetry & Close Button */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border/80 bg-background/80 font-mono text-xs uppercase tracking-widest">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-border/80 bg-background/80 font-mono text-xs uppercase tracking-widest">
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               <span className="text-foreground font-medium">STUDY INSPECTOR</span>
@@ -115,7 +115,7 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
                 size="sm"
                 onClick={handleClose}
                 aria-label="Close Study Viewer"
-                className="font-mono text-[10px] tracking-widest uppercase px-3 py-1"
+                className="font-mono text-[10px] tracking-widest uppercase px-3 py-1 min-h-[38px] flex items-center"
               >
                 ✕ CLOSE
               </Button>
@@ -123,7 +123,7 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
           </div>
 
           {/* Modal Scrollable Body */}
-          <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-8">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 sm:space-y-8">
             {/* Visual Canvas / Media Player Container */}
             <div className="w-full bg-[#070709] border border-border/60 overflow-hidden relative">
               {isVideo && work.media?.videoUrl ? (

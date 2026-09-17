@@ -41,7 +41,7 @@ export const CreativeArchive: React.FC = () => {
   }, [worksList]);
 
   return (
-    <section id="visual-archive" className="py-16 sm:py-24 border-b border-border/80">
+    <section id="visual-archive" className="py-14 sm:py-24 border-b border-border/80">
       {/* Lightbox / Study Viewer */}
       <CreativeViewer work={selectedWork} onClose={() => setSelectedWork(null)} />
 
@@ -71,7 +71,7 @@ export const CreativeArchive: React.FC = () => {
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`relative px-3 py-1.5 border transition-all duration-200 uppercase tracking-widest text-[11px] ${
+                className={`relative px-3 py-1.5 border transition-all duration-200 uppercase tracking-widest text-[11px] min-h-[38px] flex items-center cursor-pointer ${
                   isActive
                     ? 'border-accent text-accent bg-accent/5'
                     : 'border-border/60 text-foreground-muted hover:text-foreground hover:border-border'
@@ -150,7 +150,7 @@ export const CreativeArchive: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSelectedWork(work)}
-                        className="w-full text-left flex-1 flex flex-col bg-background-surface border border-border/80 hover:border-accent/60 transition-colors p-5 sm:p-6"
+                        className="w-full text-left flex-1 flex flex-col bg-background-surface border border-border/80 hover:border-accent/60 transition-colors p-4 sm:p-6 cursor-pointer"
                       >
                         {/* Visual Canvas Frame */}
                         <div className="w-full overflow-hidden mb-6">

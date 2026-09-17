@@ -55,7 +55,7 @@ export const Header: React.FC = () => {
               <span className="text-foreground-secondary">{location.pathname.toUpperCase()}</span>
             )}
             <span className="text-border">/</span>
-            <span>23.02°N 72.57°E</span>
+            <span>INDIA · IST</span>
           </div>
 
           {/* Right: Upgraded Menu Trigger */}

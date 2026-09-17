@@ -6,7 +6,7 @@ import { CREATIVE_PROCESS_STEPS } from '@/data/creativeContent';
 
 export const CreativeProcess: React.FC = () => {
   return (
-    <section className="py-16 sm:py-24 border-b border-border/80">
+    <section className="py-14 sm:py-24 border-b border-border/80">
       <div className="space-y-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-border/60">
@@ -28,7 +28,7 @@ export const CreativeProcess: React.FC = () => {
           {CREATIVE_PROCESS_STEPS.map((step) => (
             <Card
               key={step.index}
-              className="p-6 bg-background-surface border-border/80 space-y-4 hover:border-accent/40 transition-colors"
+              className="p-4 sm:p-6 bg-background-surface border-border/80 space-y-4 hover:border-accent/40 transition-colors"
             >
               <div className="flex items-center justify-between pb-3 border-b border-border/40 font-mono text-xs uppercase tracking-widest">
                 <span className="text-accent">PHASE // {step.index}</span>

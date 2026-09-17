@@ -46,7 +46,7 @@ export const ProjectNavigator: React.FC<ProjectNavigatorProps> = ({
               onMouseEnter={() => setCursor('interactive')}
               onMouseLeave={resetCursor}
               className={cn(
-                'group flex items-center gap-2 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider transition-all duration-200 border cursor-pointer',
+                'group flex items-center gap-2 px-3 py-2 min-h-[40px] font-mono text-[11px] uppercase tracking-wider transition-all duration-200 border cursor-pointer',
                 isActive
                   ? 'border-accent text-accent bg-accent/10 shadow-[0_0_10px_rgba(0,240,255,0.15)]'
                   : 'border-border/60 text-foreground-secondary hover:border-accent/40 hover:text-foreground bg-background-surface/40'

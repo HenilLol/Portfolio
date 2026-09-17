@@ -116,7 +116,7 @@ export const IntroSequence: React.FC<IntroSequenceProps> = ({ onComplete }) => {
       ref={containerRef}
       role="status"
       aria-label="System Identity Boot Sequence"
-      className="fixed inset-0 z-50 bg-background text-foreground flex flex-col justify-between p-8 sm:p-12 lg:p-16 select-none cursor-pointer"
+      className="fixed inset-0 z-50 bg-background text-foreground flex flex-col justify-between p-4 sm:p-12 lg:p-16 select-none cursor-pointer"
       onClick={() => {
         sessionStorage.setItem('hp_intro_completed', 'true');
         setActive(false);
@@ -129,13 +129,16 @@ export const IntroSequence: React.FC<IntroSequenceProps> = ({ onComplete }) => {
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           <span>INITIALIZING ENVIRONMENT</span>
         </div>
-        <span>
+        <span className="hidden sm:inline-block">
           {HERO_CONTENT.identity.coordinates.lat} // {HERO_CONTENT.identity.coordinates.lon}
+        </span>
+        <span className="sm:hidden">
+          {HERO_CONTENT.identity.coordinates.region}
         </span>
       </div>
 
       {/* Centerpiece Identity Reveal */}
-      <div className="my-auto max-w-4xl mx-auto w-full text-center space-y-4">
+      <div className="my-auto max-w-4xl mx-auto w-full text-center space-y-4 px-2">
         <span
           ref={statusRef}
           className="font-mono text-[10px] text-accent tracking-widest uppercase block opacity-0"
@@ -145,7 +148,7 @@ export const IntroSequence: React.FC<IntroSequenceProps> = ({ onComplete }) => {
 
         <h1
           ref={titleRef}
-          className="font-editorial text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tightest text-foreground opacity-0"
+          className="font-editorial text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tightest text-foreground opacity-0"
         >
           {HERO_CONTENT.identity.displayName}
         </h1>
@@ -160,7 +163,7 @@ export const IntroSequence: React.FC<IntroSequenceProps> = ({ onComplete }) => {
       <div className="flex items-center justify-between font-mono text-[9px] tracking-widest text-foreground-muted uppercase">
         <span>PHASE 2 // CINEMATIC INTEGRATION</span>
         <span className="hover:text-foreground transition-colors">
-          [PRESS ESC OR CLICK TO SKIP]
+          [TAP ANYWHERE OR PRESS ESC TO SKIP]
         </span>
       </div>
     </div>
