@@ -82,16 +82,55 @@ export type Experience = {
   createdAt: string;
 };
 
+export type CreativeCategory =
+  | 'ALL'
+  | 'VIDEO'
+  | 'MOTION'
+  | 'GRAPHICS'
+  | 'PHOTOGRAPHY'
+  | 'ASTROPHOTOGRAPHY'
+  | 'EXPERIMENTS';
+
+export type CreativeWorkStatus =
+  | 'ARCHIVE'
+  | 'EXPERIMENT'
+  | 'ONGOING'
+  | 'STUDY'
+  | 'PLACEHOLDER';
+
 export type CreativeWork = {
   id: string;
   slug: string;
   title: string;
-  medium: 'webgl' | 'shader' | 'generative' | 'audio-reactive' | 'interaction';
+  category?: Exclude<CreativeCategory, 'ALL'>;
+  year?: string;
+  status?: CreativeWorkStatus;
+  medium?: 'webgl' | 'shader' | 'generative' | 'audio-reactive' | 'interaction' | string;
   description: string;
-  thumbnailUrl: string;
+  shortDescription?: string;
+  thumbnailUrl?: string;
+  thumbnail?: string;
   interactiveUrl?: string;
+  media?: {
+    type: 'image' | 'video' | 'procedural';
+    src?: string;
+    videoUrl?: string;
+    poster?: string;
+    duration?: string;
+  };
   featured: boolean;
   order: number;
+  tools?: string[];
+  tags?: string[];
+  metadata?: { label: string; value: string }[];
+  aspectRatio?: '16/9' | '4/3' | '1/1' | '9/16' | '21/9';
+  slotNote?: string;
+  proceduralSignature?: {
+    type: 'grid' | 'waveform' | 'aperture' | 'celestial' | 'filmstrip';
+    accentColor?: string;
+    density?: number;
+    coordinates?: string;
+  };
   createdAt: string;
 };
 

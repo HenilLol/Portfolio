@@ -81,19 +81,9 @@ export const SAMPLE_EXPERIENCE: Experience[] = [
   },
 ];
 
-export const SAMPLE_CREATIVE_WORKS: CreativeWork[] = [
-  {
-    id: '1',
-    slug: 'kinetic-typography',
-    title: 'Kinetic Typography Study',
-    medium: 'shader',
-    description: 'Exploration of fragment shader displacement on custom typography.',
-    thumbnailUrl: '/favicon.svg',
-    featured: true,
-    order: 1,
-    createdAt: new Date().toISOString(),
-  },
-];
+import { CREATIVE_WORKS } from './creativeContent';
+
+export const SAMPLE_CREATIVE_WORKS: CreativeWork[] = CREATIVE_WORKS;
 
 export const SAMPLE_ACHIEVEMENTS: Achievement[] = [
   {

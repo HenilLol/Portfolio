@@ -10,6 +10,9 @@ const PortfolioHome = lazy(() =>
 const ProjectView = lazy(() =>
   import('./ProjectView').then((m) => ({ default: m.ProjectView }))
 );
+const CreativeView = lazy(() =>
+  import('./CreativeView').then((m) => ({ default: m.CreativeView }))
+);
 const NotFound = lazy(() =>
   import('./NotFound').then((m) => ({ default: m.NotFound }))
 );
@@ -70,6 +73,7 @@ export const AppRoutes: React.FC = () => {
           {/* Public Routes */}
           <Route path="/" element={<PortfolioHome />} />
           <Route path="/project/:slug" element={<ProjectView />} />
+          <Route path="/creative" element={<CreativeView />} />
 
           {/* Admin Authentication */}
           <Route path="/admin/login" element={<AdminLogin />} />

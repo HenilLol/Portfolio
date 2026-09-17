@@ -46,13 +46,13 @@ export const NAVIGATION_ITEMS: NavItem[] = [
     metadata: 'SEC // 04',
   },
   {
-    id: 'system',
+    id: 'creative',
     index: '05',
-    label: 'System Blueprint',
-    type: 'section',
-    target: '#visual-engine',
-    description: 'Visual operating system & token matrix',
-    metadata: 'SEC // 05',
+    label: 'Creative Lab',
+    type: 'route',
+    target: '/creative',
+    description: 'Visual experiment archive & motion studies',
+    metadata: 'ARCHIVE // 07',
   },
   {
     id: 'heneoxy-route',
@@ -64,18 +64,18 @@ export const NAVIGATION_ITEMS: NavItem[] = [
     metadata: 'FLAGSHIP // RT-01',
   },
   {
-    id: 'sample-project',
+    id: 'system',
     index: '07',
-    label: 'Sample Blueprint',
-    type: 'route',
-    target: '/project/sample-project',
-    description: 'Detailed project architecture route',
-    metadata: 'ROUTE // RT-02',
+    label: 'System Blueprint',
+    type: 'section',
+    target: '#visual-engine',
+    description: 'Visual operating system & token matrix',
+    metadata: 'SEC // 05',
   },
 ];
 
 export const NAV_TELEMETRY = {
-  systemVersion: 'PHASE 5 // PROJECT UNIVERSE',
+  systemVersion: 'PHASE 7 // CREATIVE LAB',
   coordinates: {
     lat: '23.0225° N',
     lon: '72.5714° E',
