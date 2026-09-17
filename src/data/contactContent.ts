@@ -4,7 +4,7 @@
  * Strict Policy:
  * Zero fabricated personal facts, client claims, or fake testimonials.
  * Verified GitHub handle @HenilLol is linked directly from repository context.
- * Email and other channels use transparent placeholders that can be updated in one location.
+ * Email and other channels use transparent non-functional placeholders until configured.
  */
 
 export interface ContactChannel {
@@ -30,8 +30,6 @@ export interface ContactContent {
   emailDisplay: string;
   emailLabel: string;
   status: string;
-  responseLatency: string;
-  coordinates: string;
   location: string;
   timezone: string;
   channels: ContactChannel[];
@@ -43,7 +41,8 @@ export interface EndingContent {
   discipline: string;
   completionBadge: string;
   sessionState: string;
-  coordinates: string;
+  location: string;
+  timezone: string;
   copyright: string;
   tagline: string;
   actions: {
@@ -59,25 +58,24 @@ export const CONTACT_CONTENT: ContactContent = {
   eyebrow: 'TRANSMISSION PROTOCOL // SEC-08',
   headline: "LET'S BUILD SOMETHING WORTH EXPERIENCING.",
   lead:
-    'Open for architectural software engineering discussions, creative technology collaborations, and intelligent system designs. Operating with disciplined technical execution and cinematic visual sensibility.',
-  email: 'contact@example.com',
-  emailDisplay: 'contact@example.com',
+    'Exploring software architecture, intelligent system workflows, and creative technology. Applying systems engineering discipline to interactive digital environments.',
+  email: 'EMAIL_ADDRESS_PENDING',
+  emailDisplay: 'EMAIL_ADDRESS_PENDING',
   emailLabel: 'DIRECT TRANSMISSION',
-  status: 'ACTIVE RESEARCH & SELECTED INQUIRIES',
-  responseLatency: 'TYPICAL RESPONSE: 24–48 HOURS',
-  coordinates: '23.0225° N, 72.5714° E',
-  location: 'AHMEDABAD, GUJARAT, INDIA',
-  timezone: 'UTC+05:30 [IST]',
+  status: 'CURRENT FOCUS // HENEOXY & CREATIVE TECHNOLOGY',
+  location: 'LOCATION // INDIA',
+  timezone: 'TIMEZONE // IST · UTC+05:30',
   channels: [
     {
       id: 'channel-email',
       specIndex: '01',
       label: 'DIRECT INBOX',
-      value: 'contact@example.com',
-      href: 'mailto:contact@example.com',
+      value: 'EMAIL_ADDRESS_PENDING',
+      href: '#',
       type: 'email',
-      badge: 'PRIMARY',
-      actionText: 'TRANSMIT MESSAGE',
+      badge: 'PENDING',
+      isPending: true,
+      actionText: 'EMAIL CHANNEL PENDING',
     },
     {
       id: 'channel-github',
@@ -94,18 +92,18 @@ export const CONTACT_CONTENT: ContactContent = {
       id: 'channel-linkedin',
       specIndex: '03',
       label: 'PROFESSIONAL GRAPH',
-      value: 'LINKEDIN PROFILE',
+      value: 'SOCIAL_LINK_PENDING',
       href: '#',
       type: 'linkedin',
       badge: 'PENDING',
       isPending: true,
-      actionText: 'AWAITING PROFILE URL',
+      actionText: 'AWAITING CONFIGURATION',
     },
     {
       id: 'channel-status',
       specIndex: '04',
       label: 'SYSTEM STATE',
-      value: 'BUILDING HENEOXY & CREATIVE LAB',
+      value: 'HENEOXY & CREATIVE LAB',
       href: '/project/heneoxy',
       type: 'status',
       badge: 'ACTIVE FOCUS',
@@ -115,14 +113,15 @@ export const CONTACT_CONTENT: ContactContent = {
 };
 
 export const ENDING_CONTENT: EndingContent = {
-  signalHeader: 'SYSTEM // SESSION COMPLETE',
+  signalHeader: 'SYSTEM METAPHOR // COMPLETE',
   name: 'HENIL PATEL',
   discipline: 'ENGINEERING × CREATIVE TECHNOLOGY',
-  completionBadge: 'ALL SYSTEMS NOMINAL',
-  sessionState: 'DIGITAL EXPERIENCE // COMPLETE',
-  coordinates: '23.0225° N, 72.5714° E',
-  copyright: `© ${new Date().getFullYear()} HENIL PATEL`,
-  tagline: 'DESIGNED & ARCHITECTED AS A HIGH-PERFORMANCE DIGITAL ENVIRONMENT.',
+  completionBadge: 'VISUAL SEQUENCE // COMPLETE',
+  sessionState: 'PORTFOLIO BUILD // PHASE 8',
+  location: 'LOCATION // INDIA',
+  timezone: 'TIMEZONE // IST · UTC+05:30',
+  copyright: `HENIL PATEL © ${new Date().getFullYear()}`,
+  tagline: 'DESIGNED & ARCHITECTED AS A DIGITAL ENVIRONMENT.',
   actions: {
     returnTop: 'RETURN TO TOP ↑',
     restart: 'RESTART EXPERIENCE ↺',

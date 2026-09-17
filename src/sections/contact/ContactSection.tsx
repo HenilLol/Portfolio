@@ -3,11 +3,12 @@ import { Section } from '@/components/ui/layout/Section';
 import { DisplayText } from '@/components/ui/typography/DisplayText';
 import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { Button } from '@/components/ui/Button';
-import { InteractiveCursorTarget } from '@/components/cursor/InteractiveCursorTarget';
 import { ContactConnectionMatrix } from '@/components/contact/ContactConnectionMatrix';
 import { CONTACT_CONTENT } from '@/data/contactContent';
 
 export const ContactSection: React.FC = () => {
+  const isEmailConfigured = !CONTACT_CONTENT.email.includes('PENDING');
+
   return (
     <Section id="contact" index="07" label={CONTACT_CONTENT.sectionLabel}>
       <div className="space-y-12">
@@ -29,24 +30,31 @@ export const ContactSection: React.FC = () => {
 
             <div className="pt-6 space-y-4">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                <a
-                  href={`mailto:${CONTACT_CONTENT.email}`}
-                  className="focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-                >
-                  <InteractiveCursorTarget cursorType="interactive" cursorLabel="MAIL">
+                {isEmailConfigured ? (
+                  <a
+                    href={`mailto:${CONTACT_CONTENT.email}`}
+                    className="focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+                  >
                     <Button
                       variant="magnetic"
                       className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-4 justify-center"
                     >
                       INITIATE TRANSMISSION →
                     </Button>
-                  </InteractiveCursorTarget>
-                </a>
+                  </a>
+                ) : (
+                  <Button
+                    variant="outline"
+                    disabled
+                    className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-4 justify-center opacity-60 cursor-not-allowed border-border/80 text-foreground-muted"
+                  >
+                    EMAIL CHANNEL PENDING
+                  </Button>
+                )}
               </div>
 
               <div className="flex items-center gap-3 font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                <span>AVAILABILITY:</span>
                 <span className="text-foreground">{CONTACT_CONTENT.status}</span>
               </div>
             </div>

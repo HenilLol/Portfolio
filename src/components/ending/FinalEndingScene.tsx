@@ -44,7 +44,7 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
       className="relative w-full pt-20 sm:pt-32 pb-12 sm:pb-16 border-t border-border/80 bg-[#050507] text-foreground overflow-hidden select-none"
       data-section="ending"
       role="contentinfo"
-      aria-label="Portfolio Session Completion"
+      aria-label="Portfolio Ending Sequence"
     >
       {/* Background Precision Grid */}
       <svg
@@ -69,19 +69,19 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
-        {/* Top Session Telemetry Bar */}
+        {/* Top Session Telemetry Bar — Non-operational presentational metaphor */}
         <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] sm:text-xs tracking-widest text-foreground-muted uppercase pb-6 border-b border-border/40">
           <div className="flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-accent" />
             <span className="text-foreground font-medium">{ENDING_CONTENT.signalHeader}</span>
             <span className="text-border">/</span>
             <span className="text-accent">{ENDING_CONTENT.completionBadge}</span>
           </div>
 
           <div className="flex items-center gap-4 text-[10px]">
-            <span className="hidden sm:inline-block">SESSION STATE // COMPLETE</span>
+            <span className="text-foreground-secondary">{ENDING_CONTENT.sessionState}</span>
             <span className="text-border hidden sm:inline-block">/</span>
-            <span className="text-foreground-secondary">{ENDING_CONTENT.coordinates}</span>
+            <span className="hidden sm:inline-block">{ENDING_CONTENT.timezone}</span>
           </div>
         </div>
 
@@ -156,12 +156,12 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
           </InteractiveCursorTarget>
         </motion.div>
 
-        {/* Minimal Technical Footer Row */}
+        {/* Minimal Technical Footer Row — Dynamic Current Year, No Exact Coordinates */}
         <div className="pt-12 sm:pt-16 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-[10px] sm:text-[11px] tracking-widest uppercase text-foreground-muted">
           <div>
             <span>{ENDING_CONTENT.copyright}</span>
             <span className="mx-2 text-border">•</span>
-            <span className="text-foreground-secondary">AHMEDABAD, INDIA</span>
+            <span className="text-foreground-secondary">{ENDING_CONTENT.location}</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-6">
