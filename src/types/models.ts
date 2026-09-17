@@ -27,7 +27,11 @@ export type Skill = {
   id: string;
   name: string;
   category: 'frontend' | 'creative-coding' | 'backend' | 'tooling' | 'architecture';
-  proficiency: number; // 0 to 100
+  status?: 'USING' | 'LEARNING' | 'EXPLORING' | 'FAMILIAR';
+  cluster?: 'CORE' | 'WEB' | 'CREATIVE' | 'AI' | 'SYSTEMS';
+  description?: string;
+  connections?: string[];
+  proficiency?: number; // 0 to 100 (optional legacy support)
   order: number;
   featured: boolean;
   iconName?: string;

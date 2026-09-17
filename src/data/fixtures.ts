@@ -42,9 +42,42 @@ export const SAMPLE_PROJECTS: Project[] = [
 ];
 
 export const SAMPLE_SKILLS: Skill[] = [
-  { id: '1', name: 'React / TypeScript', category: 'frontend', proficiency: 95, order: 1, featured: true, createdAt: new Date().toISOString() },
-  { id: '2', name: 'Three.js / WebGL', category: 'creative-coding', proficiency: 85, order: 2, featured: true, createdAt: new Date().toISOString() },
-  { id: '3', name: 'GSAP / Motion', category: 'creative-coding', proficiency: 90, order: 3, featured: true, createdAt: new Date().toISOString() },
+  {
+    id: '1',
+    name: 'React / TypeScript',
+    category: 'frontend',
+    cluster: 'CORE',
+    status: 'USING',
+    description: 'Component architecture, scalable type systems, and custom hooks.',
+    proficiency: 95,
+    order: 1,
+    featured: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    name: 'Three.js / WebGL',
+    category: 'creative-coding',
+    cluster: 'CREATIVE',
+    status: 'LEARNING',
+    description: 'Perspective cameras, buffer geometry, and procedural shader passes.',
+    proficiency: 85,
+    order: 2,
+    featured: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '3',
+    name: 'GSAP / Motion',
+    category: 'creative-coding',
+    cluster: 'CREATIVE',
+    status: 'USING',
+    description: 'ScrollTrigger choreography, timeline sequencing, and physics.',
+    proficiency: 90,
+    order: 3,
+    featured: true,
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 export const SAMPLE_EXPERIENCE: Experience[] = [

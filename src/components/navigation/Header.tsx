@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   // Active section tracking via IntersectionObserver
-  const activeSection = useScrollspy(['hero', 'visual-engine', 'projects', 'skills', 'experience', 'contact']);
+  const activeSection = useScrollspy(['hero', 'visual-engine', 'about', 'skills', 'projects', 'experience', 'contact']);
 
   return (
     <>

@@ -19,26 +19,44 @@ export const NAVIGATION_ITEMS: NavItem[] = [
     metadata: 'SEC // 01',
   },
   {
-    id: 'projects',
+    id: 'about',
     index: '02',
+    label: 'About // Identity',
+    type: 'section',
+    target: '#about',
+    description: 'Human + technical blueprint & philosophy',
+    metadata: 'SEC // 02',
+  },
+  {
+    id: 'skills',
+    index: '03',
+    label: 'Technology Map',
+    type: 'section',
+    target: '#skills',
+    description: 'Living systems graph & relational tools',
+    metadata: 'SEC // 03',
+  },
+  {
+    id: 'projects',
+    index: '04',
     label: 'Selected Projects',
     type: 'section',
     target: '#projects',
     description: 'Featured architectural explorations',
-    metadata: 'SEC // 02',
+    metadata: 'SEC // 04',
   },
   {
     id: 'system',
-    index: '03',
+    index: '05',
     label: 'System Blueprint',
     type: 'section',
     target: '#visual-engine',
     description: 'Visual operating system & token matrix',
-    metadata: 'SEC // 03',
+    metadata: 'SEC // 05',
   },
   {
     id: 'sample-project',
-    index: '04',
+    index: '06',
     label: 'Sample Blueprint',
     type: 'route',
     target: '/project/sample-project',
@@ -48,7 +66,7 @@ export const NAVIGATION_ITEMS: NavItem[] = [
 ];
 
 export const NAV_TELEMETRY = {
-  systemVersion: 'PHASE 3 // NAVIGATION',
+  systemVersion: 'PHASE 4 // TECHNICAL IDENTITY',
   coordinates: {
     lat: '23.0225° N',
     lon: '72.5714° E',
