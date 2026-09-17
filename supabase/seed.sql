@@ -19,9 +19,9 @@ INSERT INTO public.site_settings (
   'default-settings',
   'Henil Patel',
   'Engineering & Creative Development',
-  'Lead frontend architect & creative technologist building immersive digital products.',
+  'Frontend engineer & creative technologist crafting bespoke digital experiences and interactive systems.',
   'EMAIL_ADDRESS_PENDING',
-  'Available for selected architectural projects',
+  'Available for selected software and creative engineering projects',
   'available',
   '[
     {"id": "1", "platform": "github", "label": "GitHub", "url": "https://github.com/HenilLol", "order": 1},
@@ -64,7 +64,7 @@ INSERT INTO public.projects (
   'AI / PERSONAL COMPUTING',
   'ACTIVE',
   'IN DEVELOPMENT',
-  'System Architect & Frontend Engineer',
+  'Frontend Engineering & Prototyping',
   '01',
   'An experimental personal computing environment driven by local agentic orchestration, deterministic boundaries, and spatial interfaces.',
   'Architected as an operating canvas for autonomous workflows. Replaces fragmented web tabs and cloud-dependent SaaS dashboards with a unified, high-performance workspace combining deterministic tool calling, prompt-context streaming, and spatial UI layout.',
@@ -75,7 +75,7 @@ INSERT INTO public.projects (
   true,
   1,
   true,
-  '{"pattern": "matrix", "gridDensity": 16, "coordinates": "23.02°N 72.57°E", "primaryColor": "#00F0FF"}'::JSONB,
+  '{"pattern": "matrix", "gridDensity": 16, "coordinates": "INDIA · IST", "primaryColor": "#00F0FF"}'::JSONB,
   '{
     "overview": "HENEOXY is an ongoing architectural exploration into human-agent collaboration. The core premise is that modern digital work is throttled by disjointed web interfaces, black-box cloud services, and lack of spatial coherence in software tools.",
     "context": "Personal computing has largely stalled into standardized browser tabs and chat bubbles. HENEOXY is built to treat LLMs not as chatbots, but as background workers executing structured tasks within defined local permissions.",
@@ -106,7 +106,7 @@ INSERT INTO public.projects (
   'SYSTEMS / DATA TELEMETRY',
   'STABLE',
   'COMPLETED BLUEPRINT',
-  'Data Visualization Engineer & Architecture Lead',
+  'Frontend & Data Systems Engineer',
   '02',
   'High-density spatial telemetry visualizer translating multi-sensor microclimate data streams into predictive environmental risk surfaces.',
   'A specialized environmental analytics console that aggregates raw sensor feeds and satellite observations to deliver hyper-localized microclimate forecasts with millisecond client-side render latencies.',
@@ -117,7 +117,7 @@ INSERT INTO public.projects (
   false,
   2,
   true,
-  '{"pattern": "signal", "gridDensity": 24, "coordinates": "28.61°N 77.20°E", "primaryColor": "#00FF88"}'::JSONB,
+  '{"pattern": "signal", "gridDensity": 24, "coordinates": "GRID // 02", "primaryColor": "#00FF88"}'::JSONB,
   '{
     "overview": "AEROINDEX bridges the gap between raw scientific atmospheric data and intuitive visual exploration.",
     "context": "Urban microclimates fluctuate drastically across individual city blocks, rendering macro-level city weather stations insufficient for localized safety interventions.",
@@ -150,7 +150,7 @@ INSERT INTO public.projects (
   false,
   3,
   true,
-  '{"pattern": "orbital", "gridDensity": 20, "coordinates": "21.17°N 72.83°E", "primaryColor": "#FFB800"}'::JSONB,
+  '{"pattern": "orbital", "gridDensity": 20, "coordinates": "GRID // 03", "primaryColor": "#FFB800"}'::JSONB,
   '{
     "overview": "COALINTEL modeled multi-modal transportation corridors to detect single-point-of-failure vulnerabilities in energy supply networks.",
     "problem": "Unplanned rail corridor maintenance caused unpredictable downstream inventory shortages with no automated rerouting guidance.",
@@ -173,12 +173,12 @@ ON CONFLICT DO NOTHING;
 -- 4. EXPERIENCES
 INSERT INTO public.experiences (role, company, location, start_date, current, description, highlights, technologies, sort_order, published)
 VALUES (
-  'Creative Developer & Architect',
+  'Creative Developer & Interface Engineer',
   'Independent Practice',
   'Remote / India',
   '2023-01-01',
   true,
-  'Engineering bespoke interactive products, digital identities, and high-performance WebGL applications.',
+  'Engineering bespoke interactive products, digital identities, and responsive WebGL applications.',
   ARRAY['Scalable frontend architecture', 'Interactive 3D integration', 'Deterministic agent workflows'],
   ARRAY['React', 'Three.js', 'TypeScript', 'Tailwind CSS'],
   1,
@@ -245,7 +245,7 @@ VALUES (
   'Digital Experience Foundation',
   'System Architecture',
   2024,
-  'Completed Phase 0-8 modular creative engineering setup and verification.',
+  'Engineered modular web architecture and interaction design foundations.',
   1,
   true
 ) ON CONFLICT DO NOTHING;

@@ -16,7 +16,7 @@ export const ProjectVisualField: React.FC<ProjectVisualFieldProps> = ({
   const signature = project.proceduralSignature || {
     pattern: 'matrix' as const,
     gridDensity: 12,
-    coordinates: '23.02°N 72.57°E',
+    coordinates: 'INDIA · IST',
     primaryColor: '#00F0FF',
   };
 

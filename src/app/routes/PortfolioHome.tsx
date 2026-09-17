@@ -75,7 +75,7 @@ export const PortfolioHome: React.FC = () => {
           <div className="space-y-12">
             <div>
               <TechnicalLabel indicator indicatorColor="accent" className="mb-3">
-                FOUNDATION SPECIFICATION // PHASE 1 & 2
+                FOUNDATION SPECIFICATION // DESIGN SYSTEM
               </TechnicalLabel>
               <DisplayText as="h2" size="lg" className="mb-4">
                 Design System & Visual Engine
@@ -93,7 +93,7 @@ export const PortfolioHome: React.FC = () => {
                     <span className="font-mono text-[10px] text-accent tracking-widest uppercase">
                       Design Token Matrix
                     </span>
-                    <Badge variant="accent">Phase 2 Verified</Badge>
+                    <Badge variant="accent">Design System v1.0</Badge>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-4">

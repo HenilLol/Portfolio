@@ -226,7 +226,7 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
               </div>
               <div className="flex items-center gap-4">
                 <span className="hidden sm:inline">
-                  COORDS // {NAV_TELEMETRY.coordinates.lat} {NAV_TELEMETRY.coordinates.lon}
+                  LOC // {NAV_TELEMETRY.location}
                 </span>
                 <span className="text-foreground-secondary border border-border/60 px-2 py-0.5">
                   {NAV_TELEMETRY.closeKeyHint}
@@ -306,7 +306,7 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
               <div className="flex items-center gap-3">
                 <span className="text-foreground">HENIL PATEL</span>
                 <span className="text-border">/</span>
-                <span>CREATIVE TECHNOLOGIST & ARCHITECT</span>
+                <span>CREATIVE TECHNOLOGIST & SOFTWARE ENGINEER</span>
               </div>
               <div className="flex items-center gap-4">
                 <span>STATUS: {NAV_TELEMETRY.status}</span>

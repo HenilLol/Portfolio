@@ -10,8 +10,8 @@ export interface HeroContent {
     moniker: string;
     status: string;
     coordinates: {
-      lat: string;
-      lon: string;
+      location: string;
+      timezone: string;
       region: string;
     };
   };
@@ -40,11 +40,11 @@ export interface HeroContent {
 export const HERO_CONTENT: HeroContent = {
   identity: {
     displayName: 'Henil Patel',
-    moniker: 'HP // ARCHITECT',
+    moniker: 'HP // CREATIVE TECH',
     status: 'SYSTEM OPERATIONAL',
     coordinates: {
-      lat: '23.0225° N',
-      lon: '72.5714° E',
+      location: 'INDIA',
+      timezone: 'IST · UTC+05:30',
       region: 'IN // GLOBAL',
     },
   },
@@ -53,7 +53,7 @@ export const HERO_CONTENT: HeroContent = {
     headlinePrimary: 'DIGITAL EXPERIENCES',
     headlineSecondary: 'AT THE THRESHOLD OF CRAFT & CODE',
     positioningStatement:
-      'Designing and engineering bespoke digital products, immersive WebGL environments, and high-performance interactive architectures.',
+      'Designing and engineering bespoke digital products, immersive WebGL environments, and modular system interfaces.',
   },
   actions: {
     primaryCta: {
@@ -61,13 +61,13 @@ export const HERO_CONTENT: HeroContent = {
       href: '#projects',
     },
     secondaryCta: {
-      label: 'System Blueprint',
-      href: '#visual-engine',
+      label: 'Get in Touch',
+      href: '#contact',
     },
   },
   metadata: [
-    { label: 'DISCIPLINE', value: 'Creative Development & Architecture' },
-    { label: 'SPECIALIZATION', value: 'Interactive WebGL / Realtime Systems' },
-    { label: 'STATUS', value: 'Available for Selected Commissions' },
+    { label: 'REGION', value: 'IN // GLOBAL' },
+    { label: 'STACK', value: 'TypeScript · React · WebGL' },
+    { label: 'DISCIPLINE', value: 'Software Engineering & Creative Tech' },
   ],
 };

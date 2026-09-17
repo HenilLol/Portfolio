@@ -84,11 +84,8 @@ export const NAVIGATION_ITEMS: NavItem[] = [
 ];
 
 export const NAV_TELEMETRY = {
-  systemVersion: 'PHASE 8 // CONTACT & ENDING',
-  coordinates: {
-    lat: '23.0225° N',
-    lon: '72.5714° E',
-  },
+  systemVersion: 'SYSTEM SPEC // v1.0',
+  location: 'INDIA // IST · UTC+05:30',
   status: 'ALL SYSTEMS NOMINAL',
   closeKeyHint: '[ESC] RETURN',
 };

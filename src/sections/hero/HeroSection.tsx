@@ -267,8 +267,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ introComplete = true }
           </div>
 
           <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-            <span>LOC // {HERO_CONTENT.identity.coordinates.region}</span>
-            <span className="hidden md:inline-block">COORD // {HERO_CONTENT.identity.coordinates.lat}</span>
+            <span>LOC // {HERO_CONTENT.identity.coordinates.location}</span>
+            <span className="hidden md:inline-block">TIMEZONE // {HERO_CONTENT.identity.coordinates.timezone}</span>
             <div className="flex items-center gap-1.5 text-accent">
               <span className="w-1 h-1 rounded-full bg-accent animate-pulse" />
               <span>{HERO_CONTENT.identity.status}</span>

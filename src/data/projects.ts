@@ -32,7 +32,7 @@ export const CANONICAL_PROJECTS: Project[] = [
     proceduralSignature: {
       pattern: 'matrix',
       gridDensity: 16,
-      coordinates: '23.02°N 72.57°E',
+      coordinates: 'INDIA · IST',
       primaryColor: '#00F0FF',
     },
     caseStudy: {
@@ -61,7 +61,7 @@ export const CANONICAL_PROJECTS: Project[] = [
         'Implemented strict token-budget limits per execution loop.',
       ],
       outcomes: [
-        'Sub-16ms UI responsiveness during intensive multi-agent streaming.',
+        'Responsive UI execution during multi-turn agent streaming.',
         'Zero external cloud runtime lock-in; entirely self-contained local architecture.',
       ],
     },
@@ -78,12 +78,12 @@ export const CANONICAL_PROJECTS: Project[] = [
     categoryLabel: 'WEB / DATA SYSTEMS',
     year: '2024',
     status: 'STABLE PROTOTYPE',
-    role: 'Lead Frontend Engineer',
+    role: 'Frontend Engineering & Prototyping',
     specIndex: '02',
     shortDescription:
       'High-performance streaming telemetry visualizer designed for dense spatial and temporal data pipelines.',
     description:
-      'Engineered with zero-layout-shift rendering pipelines and lightweight SVG/WebGL overlays to stream dense architectural telemetry at a constant 60 FPS. Features coordinate mapping, live latency monitoring, and spatial clustering.',
+      'Engineered with zero-layout-shift rendering pipelines and lightweight SVG/WebGL overlays to stream dense architectural telemetry. Features coordinate mapping, live latency monitoring, and spatial clustering.',
     technologies: ['TypeScript', 'React', 'WebGL', 'GSAP', 'Edge APIs'],
     tags: ['Telemetry', 'Spatial Data', 'Zero-Jank Streams', 'GLSL', 'Performance Budgets'],
     coverImage: '/favicon.svg',
@@ -94,7 +94,7 @@ export const CANONICAL_PROJECTS: Project[] = [
     proceduralSignature: {
       pattern: 'signal',
       gridDensity: 12,
-      coordinates: '40.71°N 74.00°W',
+      coordinates: 'GRID // 02',
       primaryColor: '#3B82F6',
     },
     caseStudy: {
@@ -121,7 +121,7 @@ export const CANONICAL_PROJECTS: Project[] = [
         'Used off-screen canvas buffers for background waveform rendering.',
       ],
       outcomes: [
-        'Sustained 60 FPS during continuous 100Hz data stream updates.',
+        'Smooth frame pacing during continuous telemetry updates.',
         'Zero layout reflows during live metric oscillations.',
       ],
     },
@@ -138,7 +138,7 @@ export const CANONICAL_PROJECTS: Project[] = [
     categoryLabel: 'AI / INDUSTRIAL DATA',
     year: '2024',
     status: 'ACTIVE ARCHITECTURE',
-    role: 'Full-Stack Architect',
+    role: 'Full-Stack Engineering & Modeling',
     specIndex: '03',
     shortDescription:
       'Geospatial intelligence platform monitoring commodities flow, vessel tracking, and logistics prediction.',
@@ -154,7 +154,7 @@ export const CANONICAL_PROJECTS: Project[] = [
     proceduralSignature: {
       pattern: 'vector',
       gridDensity: 14,
-      coordinates: '51.50°N 0.12°W',
+      coordinates: 'GRID // 03',
       primaryColor: '#F59E0B',
     },
     caseStudy: {
@@ -198,7 +198,7 @@ export const CANONICAL_PROJECTS: Project[] = [
     categoryLabel: 'CREATIVE / SYSTEMS',
     year: '2024',
     status: 'COMPLETED BLUEPRINT',
-    role: 'Creative Developer & Architect',
+    role: 'Creative Development & Interface Engineering',
     specIndex: '04',
     shortDescription:
       'A structural exploration of performance-first animations, GSAP scroll choreography, and decoupled 3D atmosphere.',
@@ -214,7 +214,7 @@ export const CANONICAL_PROJECTS: Project[] = [
     proceduralSignature: {
       pattern: 'orbital',
       gridDensity: 18,
-      coordinates: '35.67°N 139.65°E',
+      coordinates: 'GRID // 04',
       primaryColor: '#A855F7',
     },
     caseStudy: {
@@ -223,7 +223,7 @@ export const CANONICAL_PROJECTS: Project[] = [
       context:
         'Creative-tech portfolios often succumb to flashy, distracting animations that degrade performance, violate accessibility, and distract from the work.',
       problem:
-        'Creating a cinematic, dark editorial experience while strictly preserving 60 FPS rendering, zero-lag scrolling, and complete accessibility under prefers-reduced-motion.',
+        'Creating a cinematic, dark editorial experience while strictly preserving responsive frame pacing, smooth scrolling, and complete accessibility under prefers-reduced-motion.',
       approach:
         'Engineered a centralized motion token system (`EASING.editorial`, `SPRINGS.magnetic`), lazy-evaluated Three.js atmospheres, and synchronized Lenis smooth-scrolling with the GSAP ticker.',
       architecture: {

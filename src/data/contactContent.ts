@@ -117,7 +117,7 @@ export const ENDING_CONTENT: EndingContent = {
   name: 'HENIL PATEL',
   discipline: 'ENGINEERING × CREATIVE TECHNOLOGY',
   completionBadge: 'VISUAL SEQUENCE // COMPLETE',
-  sessionState: 'PORTFOLIO BUILD // PHASE 8',
+  sessionState: 'SYSTEM // OPERATIONAL',
   location: 'LOCATION // INDIA',
   timezone: 'TIMEZONE // IST · UTC+05:30',
   copyright: `HENIL PATEL © ${new Date().getFullYear()}`,

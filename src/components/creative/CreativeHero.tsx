@@ -27,7 +27,7 @@ export const CreativeHero: React.FC = () => {
           <span className="text-foreground-secondary">{CREATIVE_LAB_IDENTITY.mode}</span>
         </div>
         <div className="flex items-center gap-4 text-[10px] sm:text-xs">
-          <span className="hidden sm:inline-block">LOC // {CREATIVE_LAB_IDENTITY.coordinates}</span>
+          <span className="hidden sm:inline-block">LOC // {CREATIVE_LAB_IDENTITY.location}</span>
           <span className="text-border hidden sm:inline-block">/</span>
           <span className="text-accent">EXPERIMENT ARCHIVE</span>
         </div>
@@ -75,7 +75,7 @@ export const CreativeHero: React.FC = () => {
           <div className="p-4 sm:p-6 bg-background-surface border border-border/80 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/40 font-mono text-[10px] uppercase tracking-widest">
               <span className="text-accent">ARCHIVE STATUS</span>
-              <span className="text-foreground-muted">PHASE 7 VERIFIED</span>
+              <span className="text-foreground-muted">ARCHIVE // VERIFIED</span>
             </div>
 
             <div className="space-y-2 font-mono text-xs">

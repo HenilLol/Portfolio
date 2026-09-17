@@ -130,10 +130,10 @@ export const IntroSequence: React.FC<IntroSequenceProps> = ({ onComplete }) => {
           <span>INITIALIZING ENVIRONMENT</span>
         </div>
         <span className="hidden sm:inline-block">
-          {HERO_CONTENT.identity.coordinates.lat} // {HERO_CONTENT.identity.coordinates.lon}
+          LOCATION // {HERO_CONTENT.identity.coordinates.location} · {HERO_CONTENT.identity.coordinates.timezone}
         </span>
         <span className="sm:hidden">
-          {HERO_CONTENT.identity.coordinates.region}
+          LOCATION // {HERO_CONTENT.identity.coordinates.location}
         </span>
       </div>
 
@@ -161,7 +161,7 @@ export const IntroSequence: React.FC<IntroSequenceProps> = ({ onComplete }) => {
 
       {/* Bottom Hint */}
       <div className="flex items-center justify-between font-mono text-[9px] tracking-widest text-foreground-muted uppercase">
-        <span>PHASE 2 // CINEMATIC INTEGRATION</span>
+        <span>SYSTEM SPEC // PRODUCTION CANDIDATE</span>
         <span className="hover:text-foreground transition-colors">
           [TAP ANYWHERE OR PRESS ESC TO SKIP]
         </span>

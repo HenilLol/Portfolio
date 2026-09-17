@@ -16,7 +16,7 @@ export interface CreativeLabIdentity {
   tagline: string;
   medium: string;
   mode: string;
-  coordinates: string;
+  location: string;
   manifestoHeadline: string;
   manifestoSub: string;
 }
@@ -44,7 +44,7 @@ export const CREATIVE_LAB_IDENTITY: CreativeLabIdentity = {
   tagline: 'VISUAL SYSTEM // 07',
   medium: 'IMAGE / MOTION / LIGHT / FRAME / FORM',
   mode: 'EXPERIMENTAL ARCHIVE',
-  coordinates: '23.0225° N, 72.5714° E',
+  location: 'INDIA // IST · UTC+05:30',
   manifestoHeadline:
     'A FIELD LOG OF VISUAL EXPERIMENTS, MOTION STUDIES, IMAGES & LIGHT THAT LIVE BETWEEN DESIGN AND TECHNOLOGY.',
   manifestoSub:

@@ -130,7 +130,7 @@ export const ABOUT_CONTENT: AboutContent = {
       'Actively studying and prototyping with these technologies. No claims of commercial mastery—only direct hands-on experimentation.',
   },
   telemetry: {
-    discipline: 'CREATIVE TECHNOLOGIST & ARCHITECT',
+    discipline: 'CREATIVE TECHNOLOGIST & SOFTWARE ENGINEER',
     mindset: 'CONTINUOUS REFINEMENT',
     status: 'SYS // ALL METRICS NOMINAL',
   },
