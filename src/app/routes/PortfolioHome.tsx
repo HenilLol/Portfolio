@@ -36,6 +36,17 @@ export const PortfolioHome: React.FC = () => {
   const reducedMotion = useReducedMotion();
   const { scrollTo } = useLenisScroll();
 
+  // Smooth scroll to URL hash if navigated from another route or directly with anchor
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash;
+      const timer = setTimeout(() => {
+        scrollTo(hash, { offset: -64, duration: 1.2 });
+      }, introComplete ? 150 : 500);
+      return () => clearTimeout(timer);
+    }
+  }, [introComplete, scrollTo]);
+
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       {/* Cinematic Opening Sequence */}

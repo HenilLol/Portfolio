@@ -1,5 +1,7 @@
-import React, { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'motion/react';
+import { useLenisScroll } from '@/hooks/useLenisScroll';
 
 // Code-split routes so /admin never downloads or initializes Three.js or portfolio animations
 const PortfolioHome = lazy(() =>
@@ -52,37 +54,48 @@ const RouteFallback: React.FC = () => (
 );
 
 export const AppRoutes: React.FC = () => {
+  const location = useLocation();
+  const { controller } = useLenisScroll();
+
+  // Reset scroll position on route change without breaking Lenis virtual scroll
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    controller?.scrollTo(0, { immediate: true });
+  }, [location.pathname, controller]);
+
   return (
     <Suspense fallback={<RouteFallback />}>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<PortfolioHome />} />
-        <Route path="/project/:slug" element={<ProjectView />} />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          {/* Public Routes */}
+          <Route path="/" element={<PortfolioHome />} />
+          <Route path="/project/:slug" element={<ProjectView />} />
 
-        {/* Admin Authentication */}
-        <Route path="/admin/login" element={<AdminLogin />} />
+          {/* Admin Authentication */}
+          <Route path="/admin/login" element={<AdminLogin />} />
 
-        {/* Protected Admin Routes */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<AdminDashboard />} />
-          <Route path="projects" element={<AdminProjects />} />
-          <Route path="experience" element={<AdminExperience />} />
-          <Route path="skills" element={<AdminSkills />} />
-          <Route path="creative" element={<AdminCreative />} />
-          <Route path="achievements" element={<AdminAchievements />} />
-          <Route path="settings" element={<AdminSettings />} />
-        </Route>
+          {/* Protected Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="projects" element={<AdminProjects />} />
+            <Route path="experience" element={<AdminExperience />} />
+            <Route path="skills" element={<AdminSkills />} />
+            <Route path="creative" element={<AdminCreative />} />
+            <Route path="achievements" element={<AdminAchievements />} />
+            <Route path="settings" element={<AdminSettings />} />
+          </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          {/* Fallback */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnimatePresence>
     </Suspense>
   );
 };
