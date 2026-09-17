@@ -5,6 +5,7 @@ import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { DisplayText } from '@/components/ui/typography/DisplayText';
 import { ProjectWorld } from '@/components/projects/ProjectWorld';
 import { ProjectNavigator } from '@/components/projects/ProjectNavigator';
+import { WorldMorphTransition } from '@/components/projects/WorldMorphTransition';
 import { CANONICAL_PROJECTS } from '@/data/projects';
 import { getProjects } from '@/services/projects';
 import { useScrollspy } from '@/hooks/useScrollspy';
@@ -133,8 +134,8 @@ export const ProjectsSection: React.FC = () => {
           activeSlug={activeSlug}
         />
 
-        {/* Project Worlds Sequence */}
-        <div className="space-y-12 sm:space-y-16">
+        {/* Project Worlds Sequence with Inter-World Morphing Transitions */}
+        <div className="space-y-6 sm:space-y-8">
           {/* Flagship Project World (if visible in current filter) */}
           {isFeaturedVisible && (
             <ProjectWorld
@@ -144,15 +145,31 @@ export const ProjectsSection: React.FC = () => {
             />
           )}
 
+          {/* Morph Transition between Flagship and first supporting project */}
+          {isFeaturedVisible && supportingProjects.length > 0 && (
+            <WorldMorphTransition
+              fromWorld={featuredProject.title}
+              toWorld={supportingProjects[0].title}
+            />
+          )}
+
           {/* Supporting Project Worlds */}
-          <div className="space-y-8 sm:space-y-12">
-            {supportingProjects.map((project) => (
-              <ProjectWorld
-                key={project.id}
-                project={project}
-                isFeatured={false}
-                className="w-full"
-              />
+          <div className="space-y-6 sm:space-y-8">
+            {supportingProjects.map((project, index) => (
+              <React.Fragment key={project.id}>
+                <ProjectWorld
+                  project={project}
+                  isFeatured={false}
+                  className="w-full"
+                />
+
+                {index < supportingProjects.length - 1 && (
+                  <WorldMorphTransition
+                    fromWorld={project.title}
+                    toWorld={supportingProjects[index + 1].title}
+                  />
+                )}
+              </React.Fragment>
             ))}
           </div>
         </div>

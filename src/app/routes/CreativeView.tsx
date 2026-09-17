@@ -4,6 +4,7 @@ import { PageTransition } from '@/components/transitions/PageTransition';
 import { CustomCursor } from '@/components/cursor/CustomCursor';
 import { GrainLayer } from '@/components/ui/atmosphere/GrainLayer';
 import { GridOverlay } from '@/components/ui/layout/GridOverlay';
+import { EnvironmentSystem } from '@/components/experience/EnvironmentSystem';
 import { Container } from '@/components/ui/layout/Container';
 import { CreativeHero } from '@/components/creative/CreativeHero';
 import { EngineeringCreativeBridge } from '@/components/creative/EngineeringCreativeBridge';
@@ -23,6 +24,7 @@ export const CreativeView: React.FC = () => {
       {/* Atmospheric & Structural Layers */}
       <GrainLayer />
       <GridOverlay />
+      <EnvironmentSystem currentSection="creative" />
       <CustomCursor />
       <Header />
 

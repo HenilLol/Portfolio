@@ -1,6 +1,16 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
-export type CursorType = 'default' | 'interactive' | 'project' | 'drag' | 'hidden';
+export type CursorType =
+  | 'default'
+  | 'interactive'
+  | 'project'
+  | 'explore'
+  | 'view'
+  | 'open'
+  | 'drag'
+  | 'rotate'
+  | 'play'
+  | 'hidden';
 
 export interface CursorContextValue {
   cursorType: CursorType;

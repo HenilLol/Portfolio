@@ -64,13 +64,13 @@ export const NAVIGATION_ITEMS: NavItem[] = [
     metadata: 'FLAGSHIP // RT-01',
   },
   {
-    id: 'system',
+    id: 'experience',
     index: '07',
-    label: 'System Blueprint',
+    label: 'Practice // Timeline',
     type: 'section',
-    target: '#visual-engine',
-    description: 'Visual operating system & token matrix',
-    metadata: 'SEC // 05',
+    target: '#experience',
+    description: 'Engineering practice & technical trajectory',
+    metadata: 'SEC // 07',
   },
   {
     id: 'contact',

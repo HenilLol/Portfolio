@@ -2,6 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import type { Project } from '@/types/models';
 import { ProjectVisualField } from './ProjectVisualField';
+import { HeneoxyWorldVisualizer } from './worlds/HeneoxyWorldVisualizer';
+import { AeroIndexWorldVisualizer } from './worlds/AeroIndexWorldVisualizer';
+import { CoalIntelWorldVisualizer } from './worlds/CoalIntelWorldVisualizer';
+import { BlueprintWorldVisualizer } from './worlds/BlueprintWorldVisualizer';
 import { DisplayText } from '@/components/ui/typography/DisplayText';
 import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { Badge } from '@/components/ui/Badge';
@@ -19,14 +23,36 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
   isFeatured = false,
   className = '',
 }) => {
+  // Render dedicated visualizer per world
+  const renderWorldVisualizer = () => {
+    switch (project.slug) {
+      case 'heneoxy':
+        return <HeneoxyWorldVisualizer />;
+      case 'aeroindex':
+        return <AeroIndexWorldVisualizer />;
+      case 'coalintel':
+        return <CoalIntelWorldVisualizer />;
+      case 'sample-project':
+        return <BlueprintWorldVisualizer />;
+      default:
+        return (
+          <ProjectVisualField
+            project={project}
+            aspectRatio="aspect-[16/9]"
+            className="group-hover:border-accent/40 transition-colors duration-300"
+          />
+        );
+    }
+  };
+
   if (isFeatured) {
-    // Flagship Project World (e.g. HENEOXY)
+    // Flagship Project World (HENEOXY)
     return (
       <article
         id={`project-world-${project.slug}`}
         data-project-slug={project.slug}
         className={cn(
-          'relative p-4 sm:p-10 lg:p-14 border border-border/80 bg-background-surface/40 hover:border-accent/50 transition-colors duration-500 space-y-6 sm:space-y-8 group',
+          'relative p-4 sm:p-10 lg:p-14 border border-accent/40 bg-background-surface/60 hover:border-accent/80 transition-colors duration-500 space-y-6 sm:space-y-8 group shadow-[0_0_40px_rgba(0,240,255,0.03)]',
           className
         )}
       >
@@ -54,7 +80,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
           <div className="lg:col-span-6 space-y-6">
             <div>
               <span className="font-mono text-xs uppercase tracking-widest text-accent font-semibold block mb-2">
-                PROJECT IDENTITY
+                PROJECT IDENTITY // FLAGSHIP
               </span>
               <DisplayText as="h3" size="xl" className="text-foreground font-extrabold uppercase tracking-tightest leading-none">
                 {project.title}
@@ -88,29 +114,23 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
 
             {/* CTA */}
             <div className="pt-4">
-              <Link
-                to={`/project/${project.slug}`}
-                className="inline-flex items-center justify-center gap-3 px-5 py-3.5 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 group/cta w-full sm:w-auto"
-              >
-                <span>ENTER SYSTEM BLUEPRINT</span>
-                <span className="group-hover/cta:translate-x-1 transition-transform">→</span>
-              </Link>
+              <InteractiveCursorTarget cursorType="explore" cursorLabel="ENTER">
+                <Link
+                  to={`/project/${project.slug}`}
+                  className="inline-flex items-center justify-center gap-3 px-6 py-4 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 group/cta w-full sm:w-auto shadow-lg"
+                >
+                  <span>ENTER SYSTEM BLUEPRINT</span>
+                  <span className="group-hover/cta:translate-x-1 transition-transform">→</span>
+                </Link>
+              </InteractiveCursorTarget>
             </div>
           </div>
 
-          {/* Right Column: Large Procedural Visual Field */}
+          {/* Right Column: Interactive Dedicated World Visualizer */}
           <div className="lg:col-span-6">
-            <InteractiveCursorTarget
-              cursorType="project"
-              cursorLabel="INSPECT"
-              className="block"
-            >
+            <InteractiveCursorTarget cursorType="explore" cursorLabel="INSPECT" className="block">
               <Link to={`/project/${project.slug}`} className="block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent">
-                <ProjectVisualField
-                  project={project}
-                  aspectRatio="aspect-[4/3] sm:aspect-[16/10]"
-                  className="shadow-2xl group-hover:border-accent/60 transition-colors duration-500"
-                />
+                {renderWorldVisualizer()}
               </Link>
             </InteractiveCursorTarget>
           </div>
@@ -119,13 +139,13 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
     );
   }
 
-  // Standard Supporting Project World (e.g. AEROINDEX, COALINTEL, BLUEPRINT)
+  // Supporting Project Worlds (AEROINDEX, COALINTEL, BLUEPRINT)
   return (
     <article
       id={`project-world-${project.slug}`}
       data-project-slug={project.slug}
       className={cn(
-        'relative p-4 sm:p-8 border border-border/70 bg-background-surface/30 hover:border-border-strong hover:bg-background-surface/50 transition-all duration-500 group',
+        'relative p-4 sm:p-8 border border-border/80 bg-background-surface/40 hover:border-border-strong hover:bg-background-surface/60 transition-all duration-500 group',
         className
       )}
     >
@@ -164,29 +184,23 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
           </div>
 
           <div className="pt-2">
-            <Link
-              to={`/project/${project.slug}`}
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-accent hover:text-foreground transition-colors group/link"
-            >
-              <span>INSPECT BLUEPRINT</span>
-              <span className="group-hover/link:translate-x-1 transition-transform">→</span>
-            </Link>
+            <InteractiveCursorTarget cursorType="explore" cursorLabel="INSPECT">
+              <Link
+                to={`/project/${project.slug}`}
+                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-accent hover:text-foreground transition-colors group/link"
+              >
+                <span>INSPECT BLUEPRINT</span>
+                <span className="group-hover/link:translate-x-1 transition-transform">→</span>
+              </Link>
+            </InteractiveCursorTarget>
           </div>
         </div>
 
-        {/* Right: Interactive Procedural Visual Canvas */}
+        {/* Right: Interactive Dedicated World Visualizer */}
         <div className="lg:col-span-7">
-          <InteractiveCursorTarget
-            cursorType="project"
-            cursorLabel="INSPECT"
-            className="block"
-          >
+          <InteractiveCursorTarget cursorType="explore" cursorLabel="INSPECT" className="block">
             <Link to={`/project/${project.slug}`} className="block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent">
-              <ProjectVisualField
-                project={project}
-                aspectRatio="aspect-[16/9]"
-                className="group-hover:border-accent/40 transition-colors duration-300"
-              />
+              {renderWorldVisualizer()}
             </Link>
           </InteractiveCursorTarget>
         </div>

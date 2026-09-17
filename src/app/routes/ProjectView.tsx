@@ -2,10 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Header } from '@/components/navigation/Header';
 import { PageTransition } from '@/components/transitions/PageTransition';
+import { CustomCursor } from '@/components/cursor/CustomCursor';
+import { GrainLayer } from '@/components/ui/atmosphere/GrainLayer';
+import { GridOverlay } from '@/components/ui/layout/GridOverlay';
+import { EnvironmentSystem } from '@/components/experience/EnvironmentSystem';
 import { getProjectBySlug } from '@/services/projects';
 import { getAdjacentProjects } from '@/data/projects';
 import type { Project } from '@/types/models';
 import { ProjectVisualField } from '@/components/projects/ProjectVisualField';
+import { AeroIndexWorldVisualizer } from '@/components/projects/worlds/AeroIndexWorldVisualizer';
+import { CoalIntelWorldVisualizer } from '@/components/projects/worlds/CoalIntelWorldVisualizer';
+import { BlueprintWorldVisualizer } from '@/components/projects/worlds/BlueprintWorldVisualizer';
 import { DisplayText } from '@/components/ui/typography/DisplayText';
 import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { Badge } from '@/components/ui/Badge';
@@ -41,7 +48,11 @@ export const ProjectView: React.FC = () => {
   // If viewing the flagship HENEOXY project, render the dedicated cinematic experience
   if (slug === 'heneoxy') {
     return (
-      <div className="min-h-screen bg-background text-foreground bg-grain">
+      <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+        <GrainLayer />
+        <GridOverlay />
+        <EnvironmentSystem currentSection="heneoxy" />
+        <CustomCursor />
         <Header />
         <PageTransition>
           <HeneoxyExperience />
@@ -54,7 +65,11 @@ export const ProjectView: React.FC = () => {
   const adjacent = slug ? getAdjacentProjects(slug) : null;
 
   return (
-    <div className="min-h-screen bg-background text-foreground bg-grain">
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <GrainLayer />
+      <GridOverlay />
+      <EnvironmentSystem currentSection={slug} />
+      <CustomCursor />
       <Header />
 
       <PageTransition>
@@ -106,12 +121,22 @@ export const ProjectView: React.FC = () => {
                 </p>
               </div>
 
-              {/* Procedural Visual Field / Media Hero */}
-              <ProjectVisualField
-                project={project}
-                aspectRatio="aspect-[16/9] sm:aspect-[21/9]"
-                className="w-full shadow-2xl border-border/80"
-              />
+              {/* Dedicated World Visualizer / Media Hero */}
+              <div className="w-full shadow-2xl border border-border/80 overflow-hidden">
+                {slug === 'aeroindex' ? (
+                  <AeroIndexWorldVisualizer />
+                ) : slug === 'coalintel' ? (
+                  <CoalIntelWorldVisualizer />
+                ) : slug === 'sample-project' ? (
+                  <BlueprintWorldVisualizer />
+                ) : (
+                  <ProjectVisualField
+                    project={project}
+                    aspectRatio="aspect-[16/9] sm:aspect-[21/9]"
+                    className="w-full"
+                  />
+                )}
+              </div>
 
               {/* Two-Column Overview & Architecture */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 pt-10 border-t border-border/40">

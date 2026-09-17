@@ -17,6 +17,7 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
   const isInView = useInView(containerRef, { once: true, margin: '-10% 0px -10% 0px' });
   const reducedMotion = useReducedMotion();
   const { scrollTo } = useLenisScroll();
+  const [isCollapsing, setIsCollapsing] = React.useState(false);
 
   const handleReturnToTop = () => {
     scrollTo('#hero', { offset: 0, duration: 1.4 });
@@ -27,21 +28,38 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
   };
 
   const handleRestart = () => {
-    if (onRestartExperience) {
-      onRestartExperience();
-    } else {
-      sessionStorage.removeItem('hp_intro_completed');
-      window.scrollTo(0, 0);
-      scrollTo(0, { immediate: true });
-      window.location.reload();
+    if (reducedMotion) {
+      if (onRestartExperience) onRestartExperience();
+      else {
+        sessionStorage.removeItem('hp_intro_completed');
+        window.scrollTo(0, 0);
+        window.location.reload();
+      }
+      return;
     }
+
+    // Initiate visual collapse loop
+    setIsCollapsing(true);
+    setTimeout(() => {
+      if (onRestartExperience) {
+        onRestartExperience();
+      } else {
+        sessionStorage.removeItem('hp_intro_completed');
+        window.scrollTo(0, 0);
+        scrollTo(0, { immediate: true });
+        window.location.reload();
+      }
+      setTimeout(() => setIsCollapsing(false), 500);
+    }, 1100);
   };
 
   return (
     <footer
       id="ending"
       ref={containerRef}
-      className="relative w-full pt-20 sm:pt-32 pb-12 sm:pb-16 border-t border-border/80 bg-[#050507] text-foreground overflow-hidden select-none"
+      className={`relative w-full pt-20 sm:pt-32 pb-12 sm:pb-16 border-t border-border/80 bg-[#050507] text-foreground overflow-hidden select-none transition-all duration-1000 ${
+        isCollapsing ? 'opacity-0 scale-95 filter blur-sm pointer-events-none' : 'opacity-100 scale-100'
+      }`}
       data-section="ending"
       role="contentinfo"
       aria-label="Portfolio Ending Sequence"

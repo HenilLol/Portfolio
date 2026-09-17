@@ -7,7 +7,6 @@ import { useScrollspy } from '@/hooks/useScrollspy';
 
 const NAV_SECTION_IDS = [
   'hero',
-  'visual-engine',
   'about',
   'skills',
   'projects',
