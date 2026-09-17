@@ -11,6 +11,7 @@ import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { Container } from '@/components/ui/layout/Container';
+import { HeneoxyExperience } from '@/components/heneoxy/HeneoxyExperience';
 
 export const ProjectView: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -25,6 +26,18 @@ export const ProjectView: React.FC = () => {
         .finally(() => setLoading(false));
     }
   }, [slug]);
+
+  // If viewing the flagship HENEOXY project, render the dedicated cinematic experience
+  if (slug === 'heneoxy') {
+    return (
+      <div className="min-h-screen bg-background text-foreground bg-grain">
+        <Header />
+        <PageTransition>
+          <HeneoxyExperience />
+        </PageTransition>
+      </div>
+    );
+  }
 
   // Compute adjacent projects for navigation rail
   const adjacent = slug ? getAdjacentProjects(slug) : null;
