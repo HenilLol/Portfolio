@@ -192,7 +192,7 @@ export const HENEOXY_CONTENT: HeneoxyContent = {
       status: 'IN DEVELOPMENT',
       role: 'Real-time telemetry canvas, plan visualization, and tool response streaming.',
       description:
-        'Built with React, TypeScript, and Tailwind CSS. Provides sub-16ms latency updates, interactive visual state machines, and distraction-free dark editorial aesthetics.',
+        'Built with React, TypeScript, and Tailwind CSS. Provides responsive streaming updates, interactive visual state machines, and distraction-free dark editorial aesthetics.',
       connections: ['layer-user', 'layer-orchestration'],
       capabilities: ['Spatial layout', 'Streaming telemetry', 'Step-by-step diff reviews', 'Keyboard accelerators'],
     },
@@ -270,7 +270,7 @@ export const HENEOXY_CONTENT: HeneoxyContent = {
         step: '05',
         actor: 'INTERFACE HUD',
         action: 'Telemetry & State Update',
-        detail: 'Visual canvas updates in real-time with zero UI stutter.',
+        detail: 'Visual canvas updates in real-time with decoupled state transitions.',
         status: 'IMPLEMENTED',
       },
     ],

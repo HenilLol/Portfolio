@@ -122,7 +122,7 @@ export const ABOUT_CONTENT: AboutContent = {
     topics: [
       'GLSL Fragment Shaders',
       'Agentic Tool Calling Patterns',
-      'Zero-Layout-Shift Motion',
+      'Layout-Stable Motion',
       'Web Audio Reactivity',
       'Headless CMS Pipelines',
     ],

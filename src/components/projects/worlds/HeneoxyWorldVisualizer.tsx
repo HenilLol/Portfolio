@@ -9,8 +9,8 @@ export const HeneoxyWorldVisualizer: React.FC<{ className?: string }> = ({ class
   const nodes = [
     { id: 0, label: 'KERNEL', role: 'State Streaming Event Bus', x: 20, y: 35, status: 'STREAMING' },
     { id: 1, label: 'AGENT // DISPATCH', role: 'Context & Prompt Memory', x: 50, y: 22, status: 'DISPATCHING' },
-    { id: 2, label: 'RPC SANDBOX', role: 'Deterministic Local Tools', x: 80, y: 38, status: 'VERIFIED' },
-    { id: 3, label: 'SPATIAL CANVAS', role: 'Zero-GC Telemetry UI', x: 50, y: 68, status: 'SYNCED' },
+    { id: 2, label: 'RPC SANDBOX', role: 'Deterministic Local Tools', x: 80, y: 38, status: 'ACTIVE' },
+    { id: 3, label: 'SPATIAL CANVAS', role: 'Spatial Telemetry UI', x: 50, y: 68, status: 'SYNCED' },
   ];
 
   return (

@@ -26,7 +26,7 @@ export const SpatialAtmosphere: React.FC<SpatialAtmosphereProps> = ({
   const { isMobile, hasTouch } = useViewport();
   const { pointer } = useThree();
 
-  // Constrained particle count: 80 on mobile, 220 on desktop for strict 60 FPS
+  // Constrained particle count: 80 on mobile, 220 on desktop for smooth frame pacing
   const particleCount = useMemo(() => (isMobile ? 80 : 220), [isMobile]);
 
   const particlePositions = useMemo(() => {

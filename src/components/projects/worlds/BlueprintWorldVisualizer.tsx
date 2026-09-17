@@ -59,7 +59,7 @@ export const BlueprintWorldVisualizer: React.FC<{ className?: string }> = ({ cla
       {/* Bottom Status Bar */}
       <div className="absolute bottom-3 left-4 right-4 bg-background/90 border border-purple-500/30 p-2 z-10 flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-foreground-muted">
         <span>BLUEPRINT READY</span>
-        <span className="text-purple-400">ZERO JANK VERIFIED</span>
+        <span className="text-purple-400">ANIMATION CALIBRATED</span>
       </div>
     </div>
   );

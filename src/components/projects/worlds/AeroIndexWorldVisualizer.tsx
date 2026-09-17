@@ -48,7 +48,7 @@ export const AeroIndexWorldVisualizer: React.FC<{ className?: string }> = ({ cla
           <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping" />
           <span>RADAR // HIGH-THROUGHPUT SPATIAL TELEMETRY</span>
         </div>
-        <span className="text-foreground-muted">LATENCY: &lt;16MS</span>
+        <span className="text-foreground-muted">STREAM: CONTINUOUS</span>
       </div>
 
       {/* Flight Target Blips */}

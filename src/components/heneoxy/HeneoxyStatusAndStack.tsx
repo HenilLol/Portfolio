@@ -14,7 +14,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div className="space-y-2">
             <TechnicalLabel indicator indicatorColor="accent">
-              DEVELOPMENT REALITY // VERIFIED STATE
+              DEVELOPMENT REALITY // CURRENT STATE
             </TechnicalLabel>
             <h3 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
               Current Implementation State
@@ -33,7 +33,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
           <Card className="p-4 sm:p-6 border-accent/40 bg-background-surface/50 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[10px] uppercase tracking-wider">
               <span className="text-accent font-bold">01 // IMPLEMENTED</span>
-              <Badge variant="accent" className="text-[8px] uppercase">VERIFIED</Badge>
+              <Badge variant="accent" className="text-[8px] uppercase">COMPLETED</Badge>
             </div>
             <ul className="space-y-2.5 text-xs text-foreground-secondary">
               {implementationStatus.implemented.map((item, i) => (

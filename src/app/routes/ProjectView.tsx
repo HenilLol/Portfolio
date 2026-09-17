@@ -177,7 +177,7 @@ export const ProjectView: React.FC = () => {
                     </p>
                   ) : (
                     <p className="font-sans text-sm text-foreground-secondary leading-relaxed">
-                      Engineered with a performance-first mindset. Employs decoupled state management, strict TypeScript contracts, and zero-jank animation budgets.
+                      Engineered with a performance-first mindset. Employs decoupled state management, strict TypeScript contracts, and calibrated animation budgets.
                     </p>
                   )}
 

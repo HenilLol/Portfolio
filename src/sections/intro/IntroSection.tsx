@@ -16,7 +16,7 @@ export const IntroSection: React.FC = () => {
           </span>
         </div>
         <div className="flex items-center gap-4 text-[10px] tracking-widest text-foreground-muted uppercase">
-          <span>IDENTITY SEQUENCE VERIFIED</span>
+          <span>IDENTITY SEQUENCE INITIALIZED</span>
           <span className="text-accent">[ACTIVE]</span>
         </div>
       </div>

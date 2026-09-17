@@ -75,7 +75,7 @@ export const CreativeHero: React.FC = () => {
           <div className="p-4 sm:p-6 bg-background-surface border border-border/80 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/40 font-mono text-[10px] uppercase tracking-widest">
               <span className="text-accent">ARCHIVE STATUS</span>
-              <span className="text-foreground-muted">ARCHIVE // VERIFIED</span>
+              <span className="text-foreground-muted">ARCHIVE // INDEXED</span>
             </div>
 
             <div className="space-y-2 font-mono text-xs">

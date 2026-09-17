@@ -62,7 +62,7 @@ export const CANONICAL_PROJECTS: Project[] = [
       ],
       outcomes: [
         'Responsive UI execution during multi-turn agent streaming.',
-        'Zero external cloud runtime lock-in; entirely self-contained local architecture.',
+        'No external cloud runtime lock-in; entirely self-contained local architecture.',
       ],
     },
     createdAt: new Date('2024-01-15').toISOString(),
@@ -83,9 +83,9 @@ export const CANONICAL_PROJECTS: Project[] = [
     shortDescription:
       'High-performance streaming telemetry visualizer designed for dense spatial and temporal data pipelines.',
     description:
-      'Engineered with zero-layout-shift rendering pipelines and lightweight SVG/WebGL overlays to stream dense architectural telemetry. Features coordinate mapping, live latency monitoring, and spatial clustering.',
+      'Engineered with layout-contained rendering pipelines and lightweight SVG/WebGL overlays to stream dense architectural telemetry. Features coordinate mapping, stream monitoring, and spatial clustering.',
     technologies: ['TypeScript', 'React', 'WebGL', 'GSAP', 'Edge APIs'],
-    tags: ['Telemetry', 'Spatial Data', 'Zero-Jank Streams', 'GLSL', 'Performance Budgets'],
+    tags: ['Telemetry', 'Spatial Data', 'Streaming Data', 'GLSL', 'Performance Budgets'],
     coverImage: '/favicon.svg',
     gallery: ['/favicon.svg'],
     featured: false,
@@ -107,7 +107,7 @@ export const CANONICAL_PROJECTS: Project[] = [
       approach:
         'Employed pre-allocated ArrayBuffers and normalized coordinate matrices rendered through hardware-accelerated SVG and WebGL viewports.',
       architecture: {
-        title: 'ZERO-ALLOCATION BUFFER PIPELINE',
+        title: 'BUFFER STREAMING PIPELINE',
         description:
           'Direct memory streaming from Edge WebSocket connections into typed arrays rendered on a shared animation RAF loop.',
         stack: ['TypeScript', 'React', 'WebGL', 'Edge Runtime', 'Tailwind CSS'],
@@ -122,7 +122,7 @@ export const CANONICAL_PROJECTS: Project[] = [
       ],
       outcomes: [
         'Smooth frame pacing during continuous telemetry updates.',
-        'Zero layout reflows during live metric oscillations.',
+        'Contained layout reflows during live metric oscillations.',
       ],
     },
     createdAt: new Date('2024-03-20').toISOString(),
@@ -177,7 +177,7 @@ export const CANONICAL_PROJECTS: Project[] = [
         'Preserving complex multi-column filter states across route navigation.',
       ],
       keyDecisions: [
-        'Leveraged client-side spatial trees for immediate sub-millisecond filtering.',
+        'Leveraged client-side spatial trees for responsive client-side filtering.',
         'Used dark editorial cartography to prioritize high-contrast logistical data points.',
       ],
       outcomes: [
@@ -241,8 +241,8 @@ export const CANONICAL_PROJECTS: Project[] = [
         'Built fallback reduced-motion paths for all key animations.',
       ],
       outcomes: [
-        'Flawless 60 FPS scroll performance across desktop and mobile.',
-        'Total isolation of 3D dependencies; zero bundle penalty on administrative and detail routes.',
+        'Responsive scroll pacing and fluid interaction across desktop and mobile.',
+        'Total isolation of 3D dependencies; no bundle penalty on administrative and detail routes.',
       ],
     },
     createdAt: new Date('2024-02-01').toISOString(),
