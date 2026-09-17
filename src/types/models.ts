@@ -7,10 +7,18 @@ export type Project = {
   id: string;
   slug: string;
   title: string;
+  shortTitle?: string;
+  tagline?: string;
+  categoryLabel?: string;
+  year?: string;
+  status?: 'ACTIVE ARCHITECTURE' | 'STABLE PROTOTYPE' | 'IN DEVELOPMENT' | 'COMPLETED BLUEPRINT';
+  role?: string;
+  specIndex?: string;
   shortDescription: string;
   description: string;
-  category: 'web-engineering' | 'creative-development' | 'systems' | 'experimental';
+  category: 'web-engineering' | 'creative-development' | 'systems' | 'experimental' | 'ai-systems' | 'systems-data';
   technologies: string[];
+  tags?: string[];
   coverImage: string;
   gallery: string[];
   videos?: string[];
@@ -19,6 +27,27 @@ export type Project = {
   featured: boolean;
   order: number;
   published: boolean;
+  proceduralSignature?: {
+    pattern: 'matrix' | 'signal' | 'orbital' | 'vector';
+    gridDensity: number;
+    coordinates: string;
+    primaryColor?: string;
+  };
+  caseStudy?: {
+    overview?: string;
+    context?: string;
+    problem?: string;
+    approach?: string;
+    architecture?: {
+      title: string;
+      description: string;
+      stack: string[];
+    };
+    challenges?: string[];
+    solution?: string;
+    outcomes?: string[];
+    keyDecisions?: string[];
+  };
   createdAt: string;
   updatedAt: string;
 };

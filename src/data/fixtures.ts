@@ -22,24 +22,9 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   updatedAt: new Date().toISOString(),
 };
 
-export const SAMPLE_PROJECTS: Project[] = [
-  {
-    id: 'demo-project-1',
-    slug: 'sample-project',
-    title: 'Architectural Blueprint',
-    shortDescription: 'Cinematic digital experience exploration demonstrating motion and WebGL systems.',
-    description: 'A structural exploration of performance-first animations, GSAP scroll choreography, and Three.js canvas integration.',
-    category: 'creative-development',
-    technologies: ['React', 'TypeScript', 'Three.js', 'GSAP', 'Tailwind CSS'],
-    coverImage: '/favicon.svg',
-    gallery: ['/favicon.svg'],
-    featured: true,
-    order: 1,
-    published: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+import { CANONICAL_PROJECTS } from './projects';
+
+export const SAMPLE_PROJECTS: Project[] = CANONICAL_PROJECTS;
 
 export const SAMPLE_SKILLS: Skill[] = [
   {

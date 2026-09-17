@@ -55,18 +55,27 @@ export const NAVIGATION_ITEMS: NavItem[] = [
     metadata: 'SEC // 05',
   },
   {
-    id: 'sample-project',
+    id: 'heneoxy-route',
     index: '06',
+    label: 'Flagship // HENEOXY',
+    type: 'route',
+    target: '/project/heneoxy',
+    description: 'Autonomous agentic computing environment',
+    metadata: 'FLAGSHIP // RT-01',
+  },
+  {
+    id: 'sample-project',
+    index: '07',
     label: 'Sample Blueprint',
     type: 'route',
     target: '/project/sample-project',
     description: 'Detailed project architecture route',
-    metadata: 'ROUTE // RT-01',
+    metadata: 'ROUTE // RT-02',
   },
 ];
 
 export const NAV_TELEMETRY = {
-  systemVersion: 'PHASE 4 // TECHNICAL IDENTITY',
+  systemVersion: 'PHASE 5 // PROJECT UNIVERSE',
   coordinates: {
     lat: '23.0225° N',
     lon: '72.5714° E',
