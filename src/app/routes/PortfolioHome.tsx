@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Header } from '@/components/navigation/Header';
 import { PageTransition } from '@/components/transitions/PageTransition';
 import { CustomCursor } from '@/components/cursor/CustomCursor';
 import { InteractiveCursorTarget } from '@/components/cursor/InteractiveCursorTarget';
+import { IntroSequence } from '@/components/intro/IntroSequence';
 import { GrainLayer } from '@/components/ui/atmosphere/GrainLayer';
 import { GridOverlay } from '@/components/ui/layout/GridOverlay';
 import { Container } from '@/components/ui/layout/Container';
@@ -29,6 +30,7 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 
 export const PortfolioHome: React.FC = () => {
+  const [introComplete, setIntroComplete] = useState<boolean>(false);
   const diagnosticRef = useRef<HTMLDivElement>(null);
   const viewport = useViewport();
   const reducedMotion = useReducedMotion();
@@ -36,23 +38,25 @@ export const PortfolioHome: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      {/* Cinematic Opening Sequence */}
+      <IntroSequence onComplete={() => setIntroComplete(true)} />
+
+      {/* Atmospheric & Structural Layers */}
       <GrainLayer />
       <GridOverlay />
       <CustomCursor />
       <Header />
 
       <PageTransition>
-        {/* Editorial Hero Area */}
-        <Container size="wide" className="pt-8">
-          <HeroSection />
-        </Container>
+        {/* Full-Viewport Hero Experience with Coordinated GSAP Choreography */}
+        <HeroSection introComplete={introComplete} />
 
-        {/* Phase 1 Visual Engine & Design System System Telemetry */}
+        {/* Phase 1 Visual Operating System Telemetry */}
         <Section id="visual-engine" index="02" label="Visual Operating System">
           <div className="space-y-12">
             <div>
               <TechnicalLabel indicator indicatorColor="accent" className="mb-3">
-                FOUNDATION SPECIFICATION // PHASE 1
+                FOUNDATION SPECIFICATION // PHASE 1 & 2
               </TechnicalLabel>
               <DisplayText as="h2" size="lg" className="mb-4">
                 Design System & Visual Engine
@@ -70,7 +74,7 @@ export const PortfolioHome: React.FC = () => {
                     <span className="font-mono text-[10px] text-accent tracking-widest uppercase">
                       Design Token Matrix
                     </span>
-                    <Badge variant="accent">Phase 1 Verified</Badge>
+                    <Badge variant="accent">Phase 2 Verified</Badge>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-4">

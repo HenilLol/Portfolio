@@ -17,6 +17,13 @@ export const EASING = {
   outExpo: [0.19, 1, 0.22, 1] as const,
 } as const;
 
+export const GSAP_EASING = {
+  editorial: 'power3.out',
+  smooth: 'power2.out',
+  outExpo: 'expo.out',
+  snappy: 'power4.out',
+} as const;
+
 export const SPRINGS = {
   snappy: { type: 'spring' as const, stiffness: 400, damping: 30 },
   gentle: { type: 'spring' as const, stiffness: 120, damping: 14 },
