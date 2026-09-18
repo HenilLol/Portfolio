@@ -1,12 +1,10 @@
 import React from 'react';
 import { Section } from '@/components/ui/layout/Section';
 import { Container } from '@/components/ui/layout/Container';
-import { Grid } from '@/components/ui/layout/Grid';
 import { DisplayText } from '@/components/ui/typography/DisplayText';
 import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
 import { ABOUT_CONTENT } from '@/data/aboutContent';
+import { SpatialDimensionConstellation } from '@/components/about/SpatialDimensionConstellation';
 
 export const AboutSection: React.FC = () => {
   return (
@@ -70,7 +68,7 @@ export const AboutSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Technical Identity Dimensions — Answers: "What kind of builder is this?" */}
+        {/* Interactive Spatial Constellation — Dimensional Explorer */}
         <div className="space-y-6 pt-12 border-t border-border/40">
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
             <div>
@@ -78,56 +76,15 @@ export const AboutSection: React.FC = () => {
                 BUILDER TAXONOMY // SIX DIMENSIONS
               </TechnicalLabel>
               <h3 className="font-editorial text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
-                Technical Identity & Exploration Areas
+                Interactive Spatial Identity & Constellation Matrix
               </h3>
             </div>
             <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
-              ACTIVE DIMENSIONS // NOT INVENTED CLAIMS
+              ACTIVE DIMENSIONS // HOVER TO INSPECT
             </span>
           </div>
 
-          <Grid columns={12} gap="md">
-            {ABOUT_CONTENT.dimensions.map((dim) => (
-              <div
-                key={dim.id}
-                className="col-span-12 sm:col-span-6 lg:col-span-4"
-              >
-                <Card className="h-full p-4 sm:p-6 border-border/70 bg-background-surface/50 hover:border-accent/50 transition-colors duration-300 flex flex-col justify-between space-y-6 group">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between pb-3 border-b border-border/30">
-                      <span className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase">
-                        SPEC // {dim.specIndex}
-                      </span>
-                      <Badge
-                        variant={
-                          dim.status === 'CORE PRACTICE'
-                            ? 'accent'
-                            : dim.status === 'ACTIVE EXPLORATION'
-                            ? 'default'
-                            : 'outline'
-                        }
-                        className="text-[9px] uppercase tracking-wider"
-                      >
-                        {dim.status}
-                      </Badge>
-                    </div>
-
-                    <h4 className="font-mono text-sm font-bold uppercase tracking-wider text-foreground group-hover:text-accent transition-colors">
-                      {dim.category}
-                    </h4>
-                    <p className="font-sans text-xs text-foreground-secondary leading-relaxed">
-                      {dim.focus}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-border/20 font-mono text-[10px] text-foreground-muted flex items-baseline gap-2">
-                    <span className="text-accent uppercase">IN STUDY:</span>
-                    <span className="text-foreground-secondary">{dim.currentLearning}</span>
-                  </div>
-                </Card>
-              </div>
-            ))}
-          </Grid>
+          <SpatialDimensionConstellation />
         </div>
 
         {/* Current Exploration Horizon Bar */}

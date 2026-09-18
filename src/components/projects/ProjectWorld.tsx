@@ -119,7 +119,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
                   to={`/project/${project.slug}`}
                   className="inline-flex items-center justify-center gap-3 px-6 py-4 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 group/cta w-full sm:w-auto shadow-lg"
                 >
-                  <span>ENTER SYSTEM BLUEPRINT</span>
+                  <span>INITIALIZE IMMERSIVE OS TAKEOVER</span>
                   <span className="group-hover/cta:translate-x-1 transition-transform">→</span>
                 </Link>
               </InteractiveCursorTarget>

@@ -9,6 +9,7 @@ export type CursorType =
   | 'open'
   | 'drag'
   | 'rotate'
+  | 'scroll'
   | 'play'
   | 'hidden';
 

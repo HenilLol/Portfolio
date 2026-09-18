@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { InteractiveCursorTarget } from '@/components/cursor/InteractiveCursorTarget';
 import { DisplayText } from '@/components/ui/typography/DisplayText';
 import { ENDING_CONTENT } from '@/data/contactContent';
+import { soundEngine } from '@/lib/sound';
 
 interface FinalEndingSceneProps {
   onRestartExperience?: () => void;
@@ -28,6 +29,8 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
   };
 
   const handleRestart = () => {
+    soundEngine.playReboot();
+
     if (reducedMotion) {
       if (onRestartExperience) onRestartExperience();
       else {

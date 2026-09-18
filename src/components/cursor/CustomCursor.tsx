@@ -131,6 +131,14 @@ export const CustomCursor: React.FC = () => {
       border: '1px solid rgba(0, 240, 255, 0.8)',
       label: '↻ ROTATE',
     },
+    scroll: {
+      width: 86,
+      height: 30,
+      borderRadius: '15px',
+      backgroundColor: 'rgba(11, 11, 14, 0.9)',
+      border: '1px solid rgba(0, 240, 255, 0.8)',
+      label: '↓ SCROLL',
+    },
     play: {
       width: 70,
       height: 30,

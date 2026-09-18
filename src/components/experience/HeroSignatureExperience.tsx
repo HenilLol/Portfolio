@@ -5,7 +5,6 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useViewport } from '@/hooks/useViewport';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 import { HERO_CONTENT } from '@/data/heroContent';
-import { LazyHeroScene } from '@/components/3d/LazyHeroScene';
 import { Container } from '@/components/ui/layout/Container';
 import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { Button } from '@/components/ui/Button';
@@ -24,7 +23,6 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
 
   const heroSectionRef = useRef<HTMLElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
-  const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const nameContainerRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLDivElement>(null);
   const positioningRef = useRef<HTMLParagraphElement>(null);
@@ -46,7 +44,6 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
 
     const ctx = gsap.context(() => {
       // 1. Initial State
-      gsap.set(canvasWrapperRef.current, { opacity: 0 });
       gsap.set(
         [
           eyebrowRef.current,
@@ -67,14 +64,10 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
         onComplete: () => setIsConstructed(true),
       });
 
-      // Ambient 3D field awakens
-      tl.to(canvasWrapperRef.current, { opacity: 1, duration: 1.2 });
-
       // Technical calibration eyebrow reveals
       tl.to(
         eyebrowRef.current,
-        { opacity: 1, y: 0, duration: 0.6 },
-        '-=0.8'
+        { opacity: 1, y: 0, duration: 0.6 }
       );
 
       // Monumental Name letterforms assemble with staggered kinetic entrance
@@ -133,18 +126,6 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
         opacity: 0,
         ease: 'none',
       });
-
-      gsap.to(canvasWrapperRef.current, {
-        scrollTrigger: {
-          trigger: heroSectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-        scale: 0.82,
-        opacity: 0.15,
-        ease: 'none',
-      });
     }, heroSectionRef);
 
     return () => ctx.revert();
@@ -176,14 +157,7 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
       onMouseLeave={handleMouseLeave}
       className="relative min-h-[92dvh] sm:min-h-[95vh] flex flex-col justify-between pt-20 sm:pt-28 pb-10 sm:pb-12 overflow-hidden border-b border-border/70 select-none perspective-[1200px]"
     >
-      {/* Three.js 3D Spatial Atmosphere Canvas */}
-      <div
-        ref={canvasWrapperRef}
-        className="absolute inset-0 pointer-events-none z-0 overflow-hidden"
-        style={{ opacity: reducedMotion ? 1 : 0 }}
-      >
-        <LazyHeroScene pointerSensitivity={0.4} />
-      </div>
+      {/* Subtle Atmospheric Light & Horizon Grid is handled globally by EnvironmentSystem */}
 
       {/* Main Hero Foreground */}
       <Container size="wide" className="relative z-10 my-auto w-full">
@@ -310,11 +284,18 @@ const KineticLetter: React.FC<{
   isDesktop: boolean;
 }> = ({ char, mousePos, reducedMotion, isDesktop }) => {
   const letterRef = useRef<HTMLSpanElement>(null);
-  const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [physics, setPhysics] = useState<{
+    x: number;
+    y: number;
+    z: number;
+    rotateX: number;
+    rotateY: number;
+    isNear: boolean;
+  }>({ x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, isNear: false });
 
   useEffect(() => {
     if (!isDesktop || reducedMotion || !letterRef.current) {
-      setOffset({ x: 0, y: 0 });
+      setPhysics({ x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, isNear: false });
       return;
     }
 
@@ -325,17 +306,23 @@ const KineticLetter: React.FC<{
     const dx = letterCenterX - mousePos.x;
     const dy = letterCenterY - mousePos.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    const threshold = 140; // repulsion radius
+    const threshold = 160; // 3D repulsion radius
 
     if (distance < threshold && distance > 0) {
-      const force = (1 - distance / threshold) * 16; // up to 16px displacement
+      const normalizedDist = 1 - distance / threshold;
+      const force = normalizedDist * 22; // up to 22px physical displacement
       const angle = Math.atan2(dy, dx);
-      setOffset({
+
+      setPhysics({
         x: Math.cos(angle) * force,
         y: Math.sin(angle) * force,
+        z: normalizedDist * 24,
+        rotateY: -Math.cos(angle) * normalizedDist * 20,
+        rotateX: Math.sin(angle) * normalizedDist * 16,
+        isNear: distance < 90,
       });
     } else {
-      setOffset({ x: 0, y: 0 });
+      setPhysics({ x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, isNear: false });
     }
   }, [mousePos, isDesktop, reducedMotion]);
 
@@ -343,16 +330,21 @@ const KineticLetter: React.FC<{
     <motion.span
       ref={letterRef}
       animate={{
-        x: offset.x,
-        y: offset.y,
+        x: physics.x,
+        y: physics.y,
+        z: physics.z,
+        rotateX: physics.rotateX,
+        rotateY: physics.rotateY,
       }}
       transition={{
         type: 'spring',
-        stiffness: 280,
-        damping: 20,
-        mass: 0.1,
+        stiffness: 300,
+        damping: 22,
+        mass: 0.12,
       }}
-      className="hero-letter inline-block font-editorial text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold uppercase select-none transition-colors duration-200"
+      className={`hero-letter inline-block font-editorial text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold uppercase select-none transition-colors duration-300 will-change-transform ${
+        physics.isNear ? 'text-accent' : ''
+      }`}
     >
       {char}
     </motion.span>

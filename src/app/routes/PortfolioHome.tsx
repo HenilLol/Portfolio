@@ -7,6 +7,7 @@ import { GrainLayer } from '@/components/ui/atmosphere/GrainLayer';
 import { GridOverlay } from '@/components/ui/layout/GridOverlay';
 import { Container } from '@/components/ui/layout/Container';
 import { EnvironmentSystem } from '@/components/experience/EnvironmentSystem';
+import { EnvironmentProvider } from '@/components/experience/EnvironmentContext';
 import { HeroSection } from '@/sections/hero/HeroSection';
 import { IntroSection } from '@/sections/intro/IntroSection';
 import { AboutSection } from '@/sections/about/AboutSection';
@@ -56,35 +57,37 @@ export const PortfolioHome: React.FC = () => {
   }, [introComplete, scrollTo]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
-      {/* Cinematic Opening Sequence */}
-      <IntroSequence key={introKey} onComplete={() => setIntroComplete(true)} />
+    <EnvironmentProvider currentSection={activeSection}>
+      <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+        {/* Cinematic Opening Sequence */}
+        <IntroSequence key={introKey} onComplete={() => setIntroComplete(true)} />
 
-      {/* Atmospheric & Structural Experience Layers */}
-      <GrainLayer />
-      <GridOverlay />
-      <EnvironmentSystem currentSection={activeSection} />
-      <CustomCursor />
-      <Header />
+        {/* Atmospheric & Structural Experience Layers */}
+        <GrainLayer />
+        <GridOverlay />
+        <EnvironmentSystem currentSection={activeSection} />
+        <CustomCursor />
+        <Header />
 
-      <PageTransition>
-        {/* Full-Viewport Hero Experience with Kinetic Letterforms & Scroll Choreography */}
-        <HeroSection introComplete={introComplete} />
+        <PageTransition>
+          {/* Full-Viewport Hero Experience with Kinetic Letterforms & Scroll Choreography */}
+          <HeroSection introComplete={introComplete} />
 
-        {/* Continuous Architectural Narrative Flow */}
-        <Container size="wide" className="space-y-16 sm:space-y-24 pt-12 sm:pt-20">
-          <IntroSection />
-          <AboutSection />
-          <SkillsSection />
-          <ProjectsSection />
-          <CreativeSection />
-          <ExperienceSection />
-          <ContactSection />
-        </Container>
+          {/* Continuous Architectural Narrative Flow */}
+          <Container size="wide" className="space-y-16 sm:space-y-24 pt-12 sm:pt-20">
+            <IntroSection />
+            <AboutSection />
+            <SkillsSection />
+            <ProjectsSection />
+            <CreativeSection />
+            <ExperienceSection />
+            <ContactSection />
+          </Container>
 
-        {/* Final Cinematic Ending Scene with System Collapse & Reboot Loop */}
-        <EndingSection onRestartExperience={handleRestartExperience} />
-      </PageTransition>
-    </div>
+          {/* Final Cinematic Ending Scene with System Collapse & Reboot Loop */}
+          <EndingSection onRestartExperience={handleRestartExperience} />
+        </PageTransition>
+      </div>
+    </EnvironmentProvider>
   );
 };

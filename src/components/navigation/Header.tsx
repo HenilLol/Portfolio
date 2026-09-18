@@ -4,6 +4,7 @@ import { MenuTrigger } from './MenuTrigger';
 import { NavigationOverlay } from './NavigationOverlay';
 import { Container } from '@/components/ui/layout/Container';
 import { useScrollspy } from '@/hooks/useScrollspy';
+import { soundEngine } from '@/lib/sound';
 
 const NAV_SECTION_IDS = [
   'hero',
@@ -18,6 +19,7 @@ const NAV_SECTION_IDS = [
 
 export const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [soundActive, setSoundActive] = useState(() => soundEngine.isEnabled());
   const location = useLocation();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
@@ -57,12 +59,27 @@ export const Header: React.FC = () => {
             <span>INDIA · IST</span>
           </div>
 
-          {/* Right: Upgraded Menu Trigger */}
-          <MenuTrigger
-            ref={triggerRef}
-            isOpen={menuOpen}
-            onClick={() => setMenuOpen((prev) => !prev)}
-          />
+          {/* Right: Sound Toggle + Menu Trigger */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setSoundActive(soundEngine.toggle())}
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded border border-border/80 hover:border-accent font-mono text-[9px] uppercase tracking-widest text-foreground-muted hover:text-accent transition-colors cursor-pointer"
+              title="Toggle Experience Sound"
+              aria-label={soundActive ? 'Mute Sound' : 'Enable Sound'}
+            >
+              <span className={soundActive ? 'text-accent animate-pulse' : 'text-foreground-muted'}>
+                {soundActive ? '●' : '○'}
+              </span>
+              <span>AUDIO // {soundActive ? 'ON' : 'OFF'}</span>
+            </button>
+
+            <MenuTrigger
+              ref={triggerRef}
+              isOpen={menuOpen}
+              onClick={() => setMenuOpen((prev) => !prev)}
+            />
+          </div>
         </Container>
       </header>
 
