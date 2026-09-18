@@ -22,6 +22,7 @@ export const WorldMorphTransition: React.FC<WorldMorphTransitionProps> = ({
   const isHeneoxyToAero = fromLower.includes('heneoxy') || toLower.includes('aero');
   const isAeroToCoal = fromLower.includes('aero') || toLower.includes('coal');
   const isCoalToBlueprint = fromLower.includes('coal') || toLower.includes('blueprint');
+  const isBlueprintToCreative = fromLower.includes('blueprint') || toLower.includes('creative') || fromLower.includes('sample') || toLower.includes('archive');
 
   // Mouse scrub interaction across transition
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -241,6 +242,48 @@ export const WorldMorphTransition: React.FC<WorldMorphTransitionProps> = ({
                 </text>
               </g>
             )}
+          </svg>
+        )}
+
+        {/* Archetype 4: BLUEPRINT (Orthogonal Wireframe Planes) -> CREATIVE LAB (Cinematic Media Frames) */}
+        {isBlueprintToCreative && !isCoalToBlueprint && !isAeroToCoal && !isHeneoxyToAero && (
+          <svg className="w-full h-full" viewBox="0 0 800 160" fill="none">
+            {/* Morphing Frames: Orthogonal wireframe grid rotating into 3 floating aspect ratio film planes */}
+            {[-180, 0, 180].map((xOffset, idx) => {
+              const cx = 400 + xOffset;
+              const frameWidth = 100 + progress * 20;
+              const frameHeight = 65 + progress * 10;
+              const rotation = (1 - progress) * (idx * 8) + progress * (idx * 3);
+
+              return (
+                <g key={idx} transform={`rotate(${rotation} ${cx} 80)`}>
+                  {/* Outer Frame Plane */}
+                  <rect
+                    x={cx - frameWidth / 2}
+                    y={80 - frameHeight / 2}
+                    width={frameWidth}
+                    height={frameHeight}
+                    stroke={progress > 0.5 ? '#EC4899' : '#C084FC'}
+                    strokeWidth={idx === 1 ? '1.5' : '1'}
+                    strokeDasharray={progress > 0.6 ? 'none' : '4 4'}
+                    fill={progress > 0.4 ? 'rgba(236, 72, 153, 0.05)' : 'none'}
+                  />
+
+                  {/* Filmstrip Sprockets appearing on Creative side */}
+                  {progress > 0.5 && (
+                    <g opacity={(progress - 0.5) * 2}>
+                      <rect x={cx - frameWidth / 2 + 4} y={80 - frameHeight / 2 + 4} width="4" height="4" fill="#EC4899" />
+                      <rect x={cx + frameWidth / 2 - 8} y={80 - frameHeight / 2 + 4} width="4" height="4" fill="#EC4899" />
+                      <rect x={cx - frameWidth / 2 + 4} y={80 + frameHeight / 2 - 8} width="4" height="4" fill="#EC4899" />
+                      <rect x={cx + frameWidth / 2 - 8} y={80 + frameHeight / 2 - 8} width="4" height="4" fill="#EC4899" />
+                      <text x={cx - 30} y="84" fill="#F472B6" fontSize="7" fontFamily="monospace">
+                        16:9 // ARCHIVE
+                      </text>
+                    </g>
+                  )}
+                </g>
+              );
+            })}
           </svg>
         )}
       </div>

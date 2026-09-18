@@ -18,6 +18,7 @@ export interface TechNode {
   categoryLabel: string;
   description: string;
   connections: string[]; // Relational connections to other tech node IDs
+  projects: string[]; // Project slugs in the universe utilizing this technology
   // Coordinate positioning in normalized 0-100 canvas space for desktop SVG graph
   coords: { x: number; y: number };
 }
@@ -72,6 +73,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Language Foundation',
     description: 'Static type checking, generics, strict null safety, and architecture scalability.',
     connections: ['react', 'tailwind', 'threejs', 'node', 'supabase'],
+    projects: ['heneoxy', 'aeroindex', 'coalintel', 'sample-project'],
     coords: { x: 50, y: 46 },
   },
   {
@@ -82,6 +84,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'UI Architecture',
     description: 'Component lifecycles, custom hooks, Suspense code-splitting, and memoization.',
     connections: ['typescript', 'motion', 'tailwind', 'llm-integration'],
+    projects: ['heneoxy', 'aeroindex', 'sample-project'],
     coords: { x: 50, y: 56 },
   },
 
@@ -94,6 +97,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Layout Primitives',
     description: 'CSS Grid, Flexbox, subgrid, container queries, and semantic DOM trees.',
     connections: ['tailwind', 'typescript'],
+    projects: ['aeroindex', 'coalintel', 'sample-project'],
     coords: { x: 22, y: 44 },
   },
   {
@@ -104,6 +108,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Design Tokens',
     description: 'Utility-first token systems, dark mode palettes, and responsive breakpoints.',
     connections: ['html-css', 'react', 'typescript'],
+    projects: ['heneoxy', 'aeroindex', 'coalintel'],
     coords: { x: 28, y: 58 },
   },
   {
@@ -114,6 +119,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Data Fetching',
     description: 'Asynchronous HTTP communications, client-side caching, and error resilience.',
     connections: ['supabase', 'typescript'],
+    projects: ['aeroindex', 'coalintel'],
     coords: { x: 18, y: 68 },
   },
 
@@ -126,6 +132,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Scroll Choreography',
     description: 'Timeline sequences, scrubbed scroll triggers, pinned layers, and ticker sync.',
     connections: ['motion', 'threejs', 'react'],
+    projects: ['sample-project', 'heneoxy'],
     coords: { x: 74, y: 44 },
   },
   {
@@ -136,6 +143,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Interaction Physics',
     description: 'Spring dynamics, AnimatePresence page transitions, and layout animations.',
     connections: ['gsap', 'react', 'typescript'],
+    projects: ['heneoxy', 'aeroindex'],
     coords: { x: 78, y: 58 },
   },
   {
@@ -146,6 +154,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: '3D Graphics',
     description: 'Perspective cameras, buffer geometry, custom shaders, and RAF render loops.',
     connections: ['glsl', 'gsap', 'typescript'],
+    projects: ['sample-project', 'heneoxy'],
     coords: { x: 86, y: 38 },
   },
   {
@@ -156,6 +165,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Fragment Math',
     description: 'Procedural noise, vertex displacement, and GPU-driven chromatic aberrations.',
     connections: ['threejs'],
+    projects: ['sample-project', 'heneoxy'],
     coords: { x: 88, y: 54 },
   },
 
@@ -168,6 +178,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Applied AI',
     description: 'Streaming completions, structured JSON outputs, and function-calling schemas.',
     connections: ['prompt-eng', 'react', 'typescript'],
+    projects: ['heneoxy'],
     coords: { x: 42, y: 22 },
   },
   {
@@ -178,6 +189,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Context Engineering',
     description: 'Few-shot framing, chain-of-thought instructions, and deterministic evaluation.',
     connections: ['llm-integration'],
+    projects: ['heneoxy'],
     coords: { x: 58, y: 18 },
   },
   {
@@ -188,6 +200,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Tool Calling',
     description: 'Multi-turn autonomous loops, memory summarization, and MCP integration.',
     connections: ['llm-integration', 'typescript'],
+    projects: ['heneoxy'],
     coords: { x: 50, y: 28 },
   },
 
@@ -200,6 +213,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Version Control',
     description: 'Branch management, pull requests, semantic commit conventions, and CI flows.',
     connections: ['node', 'typescript'],
+    projects: ['heneoxy', 'aeroindex', 'coalintel'],
     coords: { x: 38, y: 78 },
   },
   {
@@ -210,6 +224,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Build Tooling',
     description: 'Bundling pipelines, ES modules, tree-shaking, and dev server orchestration.',
     connections: ['git', 'typescript', 'supabase'],
+    projects: ['heneoxy', 'aeroindex'],
     coords: { x: 50, y: 74 },
   },
   {
@@ -220,6 +235,7 @@ export const TECH_NODES: TechNode[] = [
     categoryLabel: 'Cloud Persistence',
     description: 'Row Level Security, relational schemas, auth state, and realtime channels.',
     connections: ['node', 'typescript', 'edge-apis'],
+    projects: ['coalintel', 'heneoxy'],
     coords: { x: 62, y: 80 },
   },
 ];

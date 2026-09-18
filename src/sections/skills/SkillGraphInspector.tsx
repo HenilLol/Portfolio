@@ -83,6 +83,27 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
               ))}
             </div>
           </div>
+
+          {/* Connected Project Worlds */}
+          {activeNode.projects && activeNode.projects.length > 0 && (
+            <div className="space-y-3 pt-4 border-t border-border/40">
+              <span className="font-mono text-[10px] text-accent tracking-widest uppercase block">
+                CONNECTED PROJECT WORLDS ({activeNode.projects.length})
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {activeNode.projects.map((slug) => (
+                  <a
+                    key={slug}
+                    href={`#project-world-${slug}`}
+                    className="px-2.5 py-1 text-[10px] font-mono border border-accent/60 bg-accent/10 text-accent hover:bg-accent hover:text-background transition-colors uppercase tracking-wider flex items-center gap-1.5"
+                  >
+                    <span>WORLD // {slug.toUpperCase()}</span>
+                    <span>↓</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-6">

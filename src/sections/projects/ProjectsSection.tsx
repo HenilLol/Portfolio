@@ -172,6 +172,12 @@ export const ProjectsSection: React.FC = () => {
               </React.Fragment>
             ))}
           </div>
+
+          {/* Morph Transition from Final Project World into Creative Lab */}
+          <WorldMorphTransition
+            fromWorld="Blueprint Architectural Engine"
+            toWorld="Creative Lab & Kinetic Archive"
+          />
         </div>
       </Container>
     </Section>

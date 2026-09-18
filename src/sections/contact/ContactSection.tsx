@@ -20,8 +20,10 @@ export const ContactSection: React.FC = () => {
               {CONTACT_CONTENT.eyebrow}
             </TechnicalLabel>
 
-            <DisplayText as="h2" size="xl" className="leading-[0.95] tracking-tight">
-              {CONTACT_CONTENT.headline}
+            <DisplayText as="h2" size="xl" className="leading-[0.92] tracking-tightest font-extrabold uppercase text-foreground">
+              IF SOMETHING HERE<br />
+              CAUGHT YOUR ATTENTION,<br />
+              <span className="text-accent">LET'S BUILD.</span>
             </DisplayText>
 
             <p className="text-foreground-secondary text-base sm:text-lg leading-relaxed font-normal pt-2">

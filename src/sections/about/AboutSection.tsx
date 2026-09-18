@@ -11,16 +11,16 @@ export const AboutSection: React.FC = () => {
     <Section
       id="about"
       index={ABOUT_CONTENT.sectionIndex}
-      label={ABOUT_CONTENT.sectionLabel}
+      label="Who is Henil? // Identity Matrix"
       contained={false}
       className="py-14 sm:py-28 lg:py-36 border-b border-border/60"
     >
       <Container size="wide" className="space-y-12 sm:space-y-24">
-        {/* Editorial Lead Statement Composition */}
+        {/* Section 02 Headline per Master Spec: WHO IS HENIL? */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-4 space-y-4">
             <TechnicalLabel indicator indicatorColor="accent">
-              IDENTITY PROFILE // SPEC-01
+              IDENTITY BLUEPRINT // SCENE-02
             </TechnicalLabel>
             <div className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase space-y-1">
               <div>DISCIPLINE: {ABOUT_CONTENT.telemetry.discipline}</div>
@@ -29,18 +29,40 @@ export const AboutSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-8 space-y-4">
             <DisplayText
               as="h2"
-              size="lg"
-              className="leading-[1.15] text-foreground font-bold uppercase tracking-tight"
+              size="xl"
+              className="leading-none text-foreground font-extrabold uppercase tracking-tightest"
             >
-              {ABOUT_CONTENT.leadStatement.headline}
+              WHO IS HENIL?
             </DisplayText>
-            <p className="text-foreground-secondary text-base sm:text-lg font-light leading-relaxed max-w-2xl">
+            <p className="text-foreground text-base sm:text-lg font-light leading-relaxed max-w-2xl">
+              {ABOUT_CONTENT.leadStatement.headline}
+            </p>
+            <p className="text-foreground-secondary text-sm sm:text-base leading-relaxed max-w-2xl font-light">
               {ABOUT_CONTENT.leadStatement.subheadline}
             </p>
           </div>
+        </div>
+
+        {/* Interactive Spatial Identity Matrix — Four Core Cardinal Dimensions */}
+        <div className="space-y-6 pt-6">
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-border/40 pb-4">
+            <div>
+              <TechnicalLabel indicator indicatorColor="accent" className="mb-1">
+                SPATIAL TAXONOMY // CORE DIMENSIONS
+              </TechnicalLabel>
+              <h3 className="font-editorial text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
+                Engineering, AI, Systems & Creative Practice
+              </h3>
+            </div>
+            <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+              SELECT DIMENSION TO INTERROGATE ARCHITECTURE
+            </span>
+          </div>
+
+          <SpatialDimensionConstellation />
         </div>
 
         {/* Two-Column Editorial Narrative */}
@@ -66,25 +88,6 @@ export const AboutSection: React.FC = () => {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Interactive Spatial Constellation — Dimensional Explorer */}
-        <div className="space-y-6 pt-12 border-t border-border/40">
-          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-            <div>
-              <TechnicalLabel indicator indicatorColor="accent" className="mb-2">
-                BUILDER TAXONOMY // SIX DIMENSIONS
-              </TechnicalLabel>
-              <h3 className="font-editorial text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
-                Interactive Spatial Identity & Constellation Matrix
-              </h3>
-            </div>
-            <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
-              ACTIVE DIMENSIONS // HOVER TO INSPECT
-            </span>
-          </div>
-
-          <SpatialDimensionConstellation />
         </div>
 
         {/* Current Exploration Horizon Bar */}

@@ -10,13 +10,13 @@ interface SubsystemTab {
 }
 
 const SUBSYSTEMS: SubsystemTab[] = [
-  { id: 'system', label: 'SYSTEM', targetId: '#architecture', code: '01' },
+  { id: 'system', label: 'SYSTEM', targetId: '#thesis', code: '01' },
   { id: 'agents', label: 'AGENTS', targetId: '#system-flow', code: '02' },
   { id: 'memory', label: 'MEMORY', targetId: '#knowledge-research', code: '03' },
   { id: 'context', label: 'CONTEXT', targetId: '#paradigm', code: '04' },
   { id: 'tools', label: 'TOOLS', targetId: '#technology-stack', code: '05' },
   { id: 'security', label: 'SECURITY', targetId: '#knowledge-research', code: '06' },
-  { id: 'roadmap', label: 'ROADMAP', targetId: '#benchmark', code: '07' },
+  { id: 'architecture', label: 'ARCHITECTURE', targetId: '#architecture', code: '07' },
 ];
 
 export const HeneoxyOsNavBar: React.FC = () => {

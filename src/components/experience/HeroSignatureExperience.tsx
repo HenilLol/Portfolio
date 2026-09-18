@@ -98,34 +98,58 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
         '-=0.3'
       );
 
-      // 2. Scroll Choreography: Hero transforms into the next world
-      // As user scrolls, the hero compresses vertically with perspective shift
-      gsap.to(nameContainerRef.current, {
+      // 2. Scroll Choreography: 5-Stage Spatial Evolution per Master Spec 5.1
+      // 0–20%: Identity stabilizes
+      // 20–40%: Typography begins separating from composition
+      // 40–60%: Spatial perspective tilt activates
+      // 60–80%: Letters and geometry occupy spatial depth
+      // 80–100%: Entire composition compresses toward next scene
+      const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: heroSectionRef.current,
           start: 'top top',
           end: 'bottom top',
-          scrub: true,
+          scrub: 0.6,
         },
-        scaleY: 0.88,
-        letterSpacing: '0.08em',
-        rotateX: 12,
-        y: -40,
-        opacity: 0.2,
-        ease: 'none',
       });
 
-      gsap.to(positioningRef.current, {
-        scrollTrigger: {
-          trigger: heroSectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-        y: -60,
-        opacity: 0,
-        ease: 'none',
+      // Stage 20–40%: Typography separation and letter-spacing dilation
+      scrollTl.to(nameContainerRef.current, {
+        letterSpacing: '0.06em',
+        y: -15,
+        duration: 0.3,
+        ease: 'power1.out',
       });
+
+      // Stage 40–60%: 3D spatial rotation & perspective translation
+      scrollTl.to(nameContainerRef.current, {
+        rotateX: 14,
+        scaleY: 0.94,
+        y: -40,
+        duration: 0.3,
+        ease: 'power2.inOut',
+      });
+
+      // Stage 60–100%: Compression toward next scene
+      scrollTl.to(nameContainerRef.current, {
+        y: -80,
+        scale: 0.9,
+        opacity: 0.12,
+        duration: 0.4,
+        ease: 'power3.in',
+      });
+
+      // Synchronized fade and displacement for supporting positioning statement & CTAs
+      scrollTl.to(
+        [positioningRef.current, ctaGroupRef.current],
+        {
+          y: -50,
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.in',
+        },
+        0.2
+      );
     }, heroSectionRef);
 
     return () => ctx.revert();

@@ -5,11 +5,9 @@ import { CustomCursor } from '@/components/cursor/CustomCursor';
 import { IntroSequence } from '@/components/intro/IntroSequence';
 import { GrainLayer } from '@/components/ui/atmosphere/GrainLayer';
 import { GridOverlay } from '@/components/ui/layout/GridOverlay';
-import { Container } from '@/components/ui/layout/Container';
 import { EnvironmentSystem } from '@/components/experience/EnvironmentSystem';
 import { EnvironmentProvider } from '@/components/experience/EnvironmentContext';
 import { HeroSection } from '@/sections/hero/HeroSection';
-import { IntroSection } from '@/sections/intro/IntroSection';
 import { AboutSection } from '@/sections/about/AboutSection';
 import { SkillsSection } from '@/sections/skills/SkillsSection';
 import { ProjectsSection } from '@/sections/projects/ProjectsSection';
@@ -59,10 +57,10 @@ export const PortfolioHome: React.FC = () => {
   return (
     <EnvironmentProvider currentSection={activeSection}>
       <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
-        {/* Cinematic Opening Sequence */}
+        {/* Scene 00: Dormant / Environmental Boot Initialization */}
         <IntroSequence key={introKey} onComplete={() => setIntroComplete(true)} />
 
-        {/* Atmospheric & Structural Experience Layers */}
+        {/* Atmospheric & Structural Persistent Experience Layers */}
         <GrainLayer />
         <GridOverlay />
         <EnvironmentSystem currentSection={activeSection} />
@@ -70,21 +68,31 @@ export const PortfolioHome: React.FC = () => {
         <Header />
 
         <PageTransition>
-          {/* Full-Viewport Hero Experience with Kinetic Letterforms & Scroll Choreography */}
+          {/* Scene 01: Full-Viewport Hero with Kinetic Typography Physics & 5-Stage Scroll Choreography */}
           <HeroSection introComplete={introComplete} />
 
-          {/* Continuous Architectural Narrative Flow */}
-          <Container size="wide" className="space-y-16 sm:space-y-24 pt-12 sm:pt-20">
-            <IntroSection />
+          {/* Continuous Architectural Flow — Edge-to-Edge Spatial Worlds */}
+          <main className="relative z-10 w-full flex flex-col">
+            {/* Scene 02: Who is Henil? // Spatial Identity Matrix */}
             <AboutSection />
-            <SkillsSection />
-            <ProjectsSection />
-            <CreativeSection />
-            <ExperienceSection />
-            <ContactSection />
-          </Container>
 
-          {/* Final Cinematic Ending Scene with System Collapse & Reboot Loop */}
+            {/* Scene 03: Living Technology Constellation */}
+            <SkillsSection />
+
+            {/* Scene 04 & 05: Project Universe with Continuous World Morphing */}
+            <ProjectsSection />
+
+            {/* Scene 07: Creative Lab // Kinetic Filmstrip Archive */}
+            <CreativeSection />
+
+            {/* Scene 08: Spatial Journey & Evolution Map */}
+            <ExperienceSection />
+
+            {/* Scene 09: Minimal Transmission // Contact Protocol */}
+            <ContactSection />
+          </main>
+
+          {/* Scene 10 & 11: System Disconnect Sequence & Reinitialize */}
           <EndingSection onRestartExperience={handleRestartExperience} />
         </PageTransition>
       </div>

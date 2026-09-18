@@ -106,6 +106,43 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
           </div>
         </div>
 
+        {/* System Disconnect Telemetry Grid per Master Spec Section 20 */}
+        <motion.div
+          initial={reducedMotion ? false : { opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="max-w-xl mx-auto p-4 sm:p-6 border border-border/60 bg-background-surface/60 font-mono text-[11px] uppercase tracking-wider space-y-3"
+        >
+          <div className="flex items-center justify-between pb-2 border-b border-border/30 text-foreground-muted text-[10px]">
+            <span>SYSTEM DISCONNECT PROTOCOL</span>
+            <span className="text-accent animate-pulse">DISCONNECTING...</span>
+          </div>
+
+          <div className="space-y-1.5 text-foreground-secondary">
+            <div className="flex justify-between">
+              <span>HENEOXY ENVIRONMENT</span>
+              <span className="text-red-400/80 font-semibold">[OFFLINE]</span>
+            </div>
+            <div className="flex justify-between">
+              <span>AEROINDEX TELEMETRY</span>
+              <span className="text-red-400/80 font-semibold">[OFFLINE]</span>
+            </div>
+            <div className="flex justify-between">
+              <span>COALINTEL VALIDATION</span>
+              <span className="text-red-400/80 font-semibold">[OFFLINE]</span>
+            </div>
+            <div className="flex justify-between">
+              <span>CREATIVE LAB ARCHIVE</span>
+              <span className="text-red-400/80 font-semibold">[OFFLINE]</span>
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-border/30 flex items-center justify-between text-foreground text-[10px] font-semibold">
+            <span>SESSION STATUS</span>
+            <span className="text-accent">SESSION COMPLETE</span>
+          </div>
+        </motion.div>
+
         {/* Central Monumental Identity Typography */}
         <div className="text-center space-y-6 max-w-4xl mx-auto">
           <motion.div
@@ -143,25 +180,25 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
           transition={{ duration: 0.8, delay: 0.4 }}
           className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 pt-4"
         >
-          {/* Primary Action: Return to Top */}
-          <InteractiveCursorTarget cursorType="interactive" cursorLabel="TOP" className="w-full sm:w-auto">
+          {/* Primary Action: REINITIALIZE ↗ */}
+          <InteractiveCursorTarget cursorType="interactive" cursorLabel="REBOOT" className="w-full sm:w-auto">
             <Button
               variant="magnetic"
-              onClick={handleReturnToTop}
-              className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center min-h-[44px]"
+              onClick={handleRestart}
+              className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center min-h-[44px] bg-accent text-background font-bold hover:bg-accent/80 shadow-[0_0_20px_rgba(0,240,255,0.4)]"
             >
-              {ENDING_CONTENT.actions.returnTop}
+              REINITIALIZE ↗
             </Button>
           </InteractiveCursorTarget>
 
-          {/* Secondary Action: Restart Experience */}
-          <InteractiveCursorTarget cursorType="interactive" cursorLabel="RESTART" className="w-full sm:w-auto">
+          {/* Secondary Action: Return to Top */}
+          <InteractiveCursorTarget cursorType="interactive" cursorLabel="TOP" className="w-full sm:w-auto">
             <Button
               variant="outline"
-              onClick={handleRestart}
+              onClick={handleReturnToTop}
               className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center min-h-[44px]"
             >
-              {ENDING_CONTENT.actions.restart}
+              RETURN TO TOP ↑
             </Button>
           </InteractiveCursorTarget>
 
@@ -172,7 +209,7 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
               onClick={handleExploreWork}
               className="w-full sm:w-auto tracking-widest text-xs uppercase px-8 py-3.5 justify-center text-foreground-muted hover:text-foreground min-h-[44px]"
             >
-              {ENDING_CONTENT.actions.exploreWork}
+              EXPLORE WORKS →
             </Button>
           </InteractiveCursorTarget>
         </motion.div>
