@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useViewport } from '@/hooks/useViewport';
+import { useEnvironment } from '@/components/experience/EnvironmentContext';
 
 export interface PersistentWorldAtmosphereProps {
   currentSection?: string;
@@ -10,21 +11,19 @@ export interface PersistentWorldAtmosphereProps {
   pointerSensitivity?: number;
 }
 
-// 6 Dimensions coordinates in 3D around the celestial / architectural core
-const DIMENSION_NODES = [
-  { id: 'software', label: 'SOFTWARE', pos: [2.6, 1.4, -0.4] as [number, number, number], color: '#00F0FF' },
-  { id: 'ai-agents', label: 'AI & AGENTS', pos: [-2.4, 1.6, 0.6] as [number, number, number], color: '#38BDF8' },
-  { id: 'systems', label: 'SYSTEMS', pos: [2.8, -1.2, 0.5] as [number, number, number], color: '#818CF8' },
-  { id: 'webgl-3d', label: 'WEBGL & 3D', pos: [-2.0, -1.8, -0.6] as [number, number, number], color: '#A855F7' },
-  { id: 'creative-tech', label: 'CREATIVE', pos: [0.2, 2.7, 0.8] as [number, number, number], color: '#EC4899' },
-  { id: 'exploration', label: 'EXPLORATION', pos: [-0.3, -2.6, -0.7] as [number, number, number], color: '#F59E0B' },
+// 4 Cardinal Dimensions coordinates in 3D around central HENIL anchor
+const CARDINAL_NODES = [
+  { id: 'engineering', label: 'ENGINEERING', pos: [0, 2.2, 0.2] as [number, number, number], color: '#00F0FF' },
+  { id: 'ai', label: 'AI', pos: [2.5, 0.1, -0.3] as [number, number, number], color: '#38BDF8' },
+  { id: 'systems', label: 'SYSTEMS', pos: [0, -2.2, 0.2] as [number, number, number], color: '#818CF8' },
+  { id: 'creative', label: 'CREATIVE', pos: [-2.5, 0.1, -0.3] as [number, number, number], color: '#EC4899' },
 ];
 
 export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps> = ({
-  currentSection = 'hero',
   activeDimension = null,
   pointerSensitivity = 0.35,
 }) => {
+  const { worldProgress } = useEnvironment();
   const masterGroupRef = useRef<THREE.Group>(null);
   const planetGroupRef = useRef<THREE.Group>(null);
   const planetMeshRef = useRef<THREE.Mesh>(null);
@@ -35,12 +34,14 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
   const satelliteRef = useRef<THREE.Mesh>(null);
 
   const constellationGroupRef = useRef<THREE.Group>(null);
+  const techNetworkGroupRef = useRef<THREE.Group>(null);
   const projectTopologyGroupRef = useRef<THREE.Group>(null);
+  const creativePlanesGroupRef = useRef<THREE.Group>(null);
   const starPointsRef = useRef<THREE.Points>(null);
 
   const reducedMotion = useReducedMotion();
   const { isMobile, hasTouch } = useViewport();
-  const { pointer } = useThree();
+  const { camera, pointer } = useThree();
 
   // 1. Procedural Starfield (650 stars desktop / 240 mobile)
   const starCount = useMemo(() => (isMobile ? 240 : 650), [isMobile]);
@@ -69,174 +70,293 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
     return [positions, colors];
   }, [starCount]);
 
-  // 2. Constellation line buffer connecting central anchor (0,0,0) to dimension nodes
+  // 2. Constellation line buffer connecting central anchor (0,0,0) to cardinal nodes
   const constellationLinePositions = useMemo(() => {
     const coords: number[] = [];
-    DIMENSION_NODES.forEach((node) => {
+    CARDINAL_NODES.forEach((node) => {
       coords.push(0, 0, 0);
       coords.push(node.pos[0], node.pos[1], node.pos[2]);
     });
+    // Cross connections between adjacent cardinal nodes
+    coords.push(CARDINAL_NODES[0].pos[0], CARDINAL_NODES[0].pos[1], CARDINAL_NODES[0].pos[2]);
+    coords.push(CARDINAL_NODES[1].pos[0], CARDINAL_NODES[1].pos[1], CARDINAL_NODES[1].pos[2]);
+
+    coords.push(CARDINAL_NODES[1].pos[0], CARDINAL_NODES[1].pos[1], CARDINAL_NODES[1].pos[2]);
+    coords.push(CARDINAL_NODES[2].pos[0], CARDINAL_NODES[2].pos[1], CARDINAL_NODES[2].pos[2]);
+
+    coords.push(CARDINAL_NODES[2].pos[0], CARDINAL_NODES[2].pos[1], CARDINAL_NODES[2].pos[2]);
+    coords.push(CARDINAL_NODES[3].pos[0], CARDINAL_NODES[3].pos[1], CARDINAL_NODES[3].pos[2]);
+
+    coords.push(CARDINAL_NODES[3].pos[0], CARDINAL_NODES[3].pos[1], CARDINAL_NODES[3].pos[2]);
+    coords.push(CARDINAL_NODES[0].pos[0], CARDINAL_NODES[0].pos[1], CARDINAL_NODES[0].pos[2]);
+
     return new Float32Array(coords);
   }, []);
 
-  // 3. Section targets: Continuous environmental narrative progression
-  // As specified in Master Spec Section 5 & 23:
-  // The celestial planet belongs primarily to the identity scene.
-  // As user moves down, the planet dissolves, constellation activates,
-  // then project topology forms, and finally it resolves into shutdown.
-  const targetState = useMemo(() => {
-    const sec = currentSection?.toLowerCase() || 'hero';
+  // 3. Continuous Camera & World Choreography driven by worldProgress (0 to 1)
+  const targetWorld = useMemo(() => {
+    const p = worldProgress;
 
-    if (sec === 'hero') {
+    // Stage 0.00 – 0.08: DORMANT
+    if (p < 0.04) {
       return {
-        pos: [isMobile ? 0 : 1.4, isMobile ? -0.2 : 0, 0] as [number, number, number],
-        rot: [0.2, 0.4, 0] as [number, number, number],
-        scale: isMobile ? 0.85 : 1.05,
+        camPos: [0, 0, 6.8] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [isMobile ? 0 : 1.3, isMobile ? -0.2 : 0, 0] as [number, number, number],
+        groupRot: [0.2, 0.4, 0] as [number, number, number],
+        groupScale: isMobile ? 0.85 : 1.05,
         planetOpacity: 1.0,
         ringsOpacity: 0.35,
         constellationOpacity: 0.0,
+        techNetworkOpacity: 0.0,
         projectTopologyOpacity: 0.0,
-        starfieldOpacity: 0.8,
+        creativePlanesOpacity: 0.0,
+        starfieldOpacity: 0.75,
       };
     }
 
-    if (sec === 'about') {
+    // Stage 0.04 – 0.14: IDENTITY BREAK (Letters & celestial body fragment into field)
+    if (p < 0.14) {
+      const stageP = (p - 0.04) / 0.10;
       return {
-        pos: [isMobile ? 0 : -1.6, 0.1, -0.6] as [number, number, number],
-        rot: [0.35, 1.2, -0.2] as [number, number, number],
-        scale: isMobile ? 0.85 : 1.15,
-        planetOpacity: 0.08, // Planet dissolves into the background
-        ringsOpacity: 0.06,
-        constellationOpacity: 0.95, // Constellation blooms forward
+        camPos: [0.4 * (1 - stageP), 0.2 * stageP, 6.8 - stageP * 1.8] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [1.3 * (1 - stageP), 0.2 * stageP, -0.4 * stageP] as [number, number, number],
+        groupRot: [0.2 + stageP * 0.4, 0.4 + stageP * 1.2, stageP * 0.2] as [number, number, number],
+        groupScale: 1.05 + stageP * 0.15,
+        planetOpacity: 1.0 - stageP * 0.85, // Planet dissolves into particle dust
+        ringsOpacity: 0.35 * (1 - stageP) + 0.05,
+        constellationOpacity: stageP * 0.6,
+        techNetworkOpacity: 0.0,
         projectTopologyOpacity: 0.0,
+        creativePlanesOpacity: 0.0,
+        starfieldOpacity: 0.75,
+      };
+    }
+
+    // Stage 0.14 – 0.28: CONSTELLATION / ABOUT SPATIAL COORDINATE SPACE
+    if (p < 0.28) {
+      const stageP = (p - 0.14) / 0.14;
+      return {
+        camPos: [-1.4 * stageP, 0.2, 5.0 - stageP * 0.6] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [isMobile ? 0 : -1.6, 0.1, -0.6] as [number, number, number],
+        groupRot: [0.35, 1.2 + stageP * 0.4, -0.2] as [number, number, number],
+        groupScale: isMobile ? 0.85 : 1.15,
+        planetOpacity: 0.05,
+        ringsOpacity: 0.04,
+        constellationOpacity: 0.95, // 4-dimension cardinal constellation blooms
+        techNetworkOpacity: stageP * 0.3,
+        projectTopologyOpacity: 0.0,
+        creativePlanesOpacity: 0.0,
         starfieldOpacity: 0.65,
       };
     }
 
-    if (sec === 'skills') {
+    // Stage 0.28 – 0.42: LIVING TECHNOLOGY NETWORK
+    if (p < 0.42) {
+      const stageP = (p - 0.28) / 0.14;
       return {
-        pos: [0, 0, -1.2] as [number, number, number],
-        rot: [Math.PI / 2.2, 0.2, 0.4] as [number, number, number],
-        scale: 1.0,
+        camPos: [0, 0.3 * stageP, 4.4 + stageP * 0.8] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [0, 0, -1.0] as [number, number, number],
+        groupRot: [Math.PI / 2.2, 0.2 + stageP * 0.4, 0.4] as [number, number, number],
+        groupScale: 1.0,
         planetOpacity: 0.0,
         ringsOpacity: 0.0,
-        constellationOpacity: 0.8, // Wide technical constellation
-        projectTopologyOpacity: 0.15,
+        constellationOpacity: 0.6 * (1 - stageP),
+        techNetworkOpacity: 0.9, // Living relational graph expands
+        projectTopologyOpacity: stageP * 0.2,
+        creativePlanesOpacity: 0.0,
         starfieldOpacity: 0.55,
       };
     }
 
-    if (sec.includes('project')) {
+    // Stage 0.42 – 0.64: HENEOXY ENTRY & SYSTEM OPERATING ENVIRONMENT
+    if (p < 0.64) {
+      const stageP = (p - 0.42) / 0.22;
       return {
-        pos: [isMobile ? 0 : 1.5, -0.2, -0.3] as [number, number, number],
-        rot: [0.5, 2.5, 0.3] as [number, number, number],
-        scale: isMobile ? 0.85 : 1.1,
+        camPos: [0.6 * (1 - stageP), -0.2 * stageP, 5.2 - stageP * 1.6] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [isMobile ? 0 : 1.4, -0.2, -0.2] as [number, number, number],
+        groupRot: [0.4, 2.2 + stageP * 0.6, 0.2] as [number, number, number],
+        groupScale: isMobile ? 0.85 : 1.1,
         planetOpacity: 0.0,
         ringsOpacity: 0.0,
         constellationOpacity: 0.0,
-        projectTopologyOpacity: 0.85, // Dedicated project altitude / strata topology
+        techNetworkOpacity: 0.2 * (1 - stageP),
+        projectTopologyOpacity: 0.95, // OS system planes & agent routes active
+        creativePlanesOpacity: 0.0,
         starfieldOpacity: 0.5,
       };
     }
 
-    if (sec === 'creative') {
+    // Stage 0.64 – 0.74: AEROINDEX (Navigation World, Radar Arcs, Altitude Vectors)
+    if (p < 0.74) {
+      const stageP = (p - 0.64) / 0.10;
       return {
-        pos: [0, 0.3, -0.9] as [number, number, number],
-        rot: [0.1, 3.2, -0.3] as [number, number, number],
-        scale: 0.95,
+        camPos: [0, 0.6 * stageP, 3.6 + stageP * 0.6] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [isMobile ? 0 : 1.2, 0.2 * stageP, -0.2] as [number, number, number],
+        groupRot: [0.6, 2.8 + stageP * 0.5, 0.1] as [number, number, number],
+        groupScale: 1.05,
         planetOpacity: 0.0,
         ringsOpacity: 0.0,
-        constellationOpacity: 0.1,
-        projectTopologyOpacity: 0.05,
-        starfieldOpacity: 0.9, // Deep field cinematic dust
+        constellationOpacity: 0.0,
+        techNetworkOpacity: 0.0,
+        projectTopologyOpacity: 0.9,
+        creativePlanesOpacity: 0.0,
+        starfieldOpacity: 0.5,
       };
     }
 
-    if (sec === 'experience' || sec === 'journey') {
+    // Stage 0.74 – 0.82: COALINTEL (Camera Descends into Geological Strata)
+    if (p < 0.82) {
+      const stageP = (p - 0.74) / 0.08;
       return {
-        pos: [0, 0, -0.8] as [number, number, number],
-        rot: [0.2, 1.8, 0.1] as [number, number, number],
-        scale: 0.9,
+        camPos: [0, -0.8 * stageP, 4.2 - stageP * 0.4] as [number, number, number],
+        camLookAt: [0, -0.4 * stageP, 0] as [number, number, number],
+        groupPos: [0, -0.4 * stageP, -0.4] as [number, number, number],
+        groupRot: [0.8 + stageP * 0.2, 3.2, 0] as [number, number, number],
+        groupScale: 1.0,
         planetOpacity: 0.0,
-        ringsOpacity: 0.04,
-        constellationOpacity: 0.4,
-        projectTopologyOpacity: 0.2,
+        ringsOpacity: 0.0,
+        constellationOpacity: 0.0,
+        techNetworkOpacity: 0.0,
+        projectTopologyOpacity: 0.9,
+        creativePlanesOpacity: 0.0,
+        starfieldOpacity: 0.4,
+      };
+    }
+
+    // Stage 0.82 – 0.88: BLUEPRINT (Isometric Perspective Wireframe Planes)
+    if (p < 0.88) {
+      const stageP = (p - 0.82) / 0.06;
+      return {
+        camPos: [0.4 * stageP, 0.4 * stageP, 3.8 + stageP * 0.6] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [0, 0.2 * stageP, -0.6] as [number, number, number],
+        groupRot: [Math.PI / 4, Math.PI / 4, 0] as [number, number, number],
+        groupScale: 0.95,
+        planetOpacity: 0.0,
+        ringsOpacity: 0.0,
+        constellationOpacity: 0.0,
+        techNetworkOpacity: 0.0,
+        projectTopologyOpacity: 0.85,
+        creativePlanesOpacity: stageP * 0.4,
+        starfieldOpacity: 0.45,
+      };
+    }
+
+    // Stage 0.88 – 0.94: CREATIVE LAB (Kinetic Media Planes & Chromatic Starfield)
+    if (p < 0.94) {
+      const stageP = (p - 0.88) / 0.06;
+      return {
+        camPos: [0, 0.2 * (1 - stageP), 4.4 + stageP * 0.6] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [0, 0.2, -0.8] as [number, number, number],
+        groupRot: [0.1, 3.6 + stageP * 0.5, -0.2] as [number, number, number],
+        groupScale: 0.95,
+        planetOpacity: 0.0,
+        ringsOpacity: 0.0,
+        constellationOpacity: 0.0,
+        techNetworkOpacity: 0.0,
+        projectTopologyOpacity: 0.1 * (1 - stageP),
+        creativePlanesOpacity: 0.9, // Floating media planes shimmers
+        starfieldOpacity: 0.85,
+      };
+    }
+
+    // Stage 0.94 – 0.97: JOURNEY (Evolution Trajectory)
+    if (p < 0.97) {
+      return {
+        camPos: [0, 0, 5.2] as [number, number, number],
+        camLookAt: [0, 0, 0] as [number, number, number],
+        groupPos: [0, 0, -0.8] as [number, number, number],
+        groupRot: [0.2, 4.2, 0.1] as [number, number, number],
+        groupScale: 0.85,
+        planetOpacity: 0.0,
+        ringsOpacity: 0.02,
+        constellationOpacity: 0.3,
+        techNetworkOpacity: 0.0,
+        projectTopologyOpacity: 0.1,
+        creativePlanesOpacity: 0.2,
         starfieldOpacity: 0.6,
       };
     }
 
-    if (sec === 'ending' || sec === 'contact') {
-      return {
-        pos: [0, 0, -0.6] as [number, number, number],
-        rot: [0.1, 4.5, 0] as [number, number, number],
-        scale: 0.35,
-        planetOpacity: 0.0,
-        ringsOpacity: 0.0,
-        constellationOpacity: 0.0,
-        projectTopologyOpacity: 0.0,
-        starfieldOpacity: 0.2, // Atmosphere powers down
-      };
-    }
-
-    // Default fallback
+    // Stage 0.97 – 1.00: SHUTDOWN (Disconnect Protocol & Collapse to Origin)
+    const stageP = (p - 0.97) / 0.03;
     return {
-      pos: [1.2, 0, 0] as [number, number, number],
-      rot: [0.2, 0.4, 0] as [number, number, number],
-      scale: 1.0,
-      planetOpacity: 0.5,
-      ringsOpacity: 0.15,
-      constellationOpacity: 0.2,
-      projectTopologyOpacity: 0.1,
-      starfieldOpacity: 0.7,
+      camPos: [0, 0, 5.2 + stageP * 2.5] as [number, number, number],
+      camLookAt: [0, 0, 0] as [number, number, number],
+      groupPos: [0, 0, -0.6 - stageP * 1.5] as [number, number, number],
+      groupRot: [0.1, 4.8 + stageP * 1.0, 0] as [number, number, number],
+      groupScale: 0.85 * (1 - stageP * 0.7),
+      planetOpacity: 0.0,
+      ringsOpacity: 0.0,
+      constellationOpacity: 0.0,
+      techNetworkOpacity: 0.0,
+      projectTopologyOpacity: 0.0,
+      creativePlanesOpacity: 0.0,
+      starfieldOpacity: 0.6 * (1 - stageP) + 0.15,
     };
-  }, [currentSection, isMobile]);
+  }, [worldProgress, isMobile]);
 
-  // Frame tick: smooth continuous kinematics and deterministic lerping
+  // Frame tick: Smooth continuous kinematics & Camera translation
   useFrame((state, delta) => {
     if (!masterGroupRef.current) return;
 
     const group = masterGroupRef.current;
-    const lerpSpeed = Math.min(delta * 2.8, 0.12);
+    const lerpSpeed = Math.min(delta * 3.2, 0.14);
 
-    // 1. Lerp master group position and scale
-    group.position.x = THREE.MathUtils.lerp(group.position.x, targetState.pos[0], lerpSpeed);
-    group.position.y = THREE.MathUtils.lerp(group.position.y, targetState.pos[1], lerpSpeed);
-    group.position.z = THREE.MathUtils.lerp(group.position.z, targetState.pos[2], lerpSpeed);
+    // 1. Camera translation through 3D spatial coordinate space
+    if (!reducedMotion) {
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetWorld.camPos[0], lerpSpeed);
+      camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetWorld.camPos[1], lerpSpeed);
+      camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetWorld.camPos[2], lerpSpeed);
+      camera.lookAt(targetWorld.camLookAt[0], targetWorld.camLookAt[1], targetWorld.camLookAt[2]);
+    }
+
+    // 2. Master Group position, scale, and base rotation
+    group.position.x = THREE.MathUtils.lerp(group.position.x, targetWorld.groupPos[0], lerpSpeed);
+    group.position.y = THREE.MathUtils.lerp(group.position.y, targetWorld.groupPos[1], lerpSpeed);
+    group.position.z = THREE.MathUtils.lerp(group.position.z, targetWorld.groupPos[2], lerpSpeed);
 
     const currentScale = group.scale.x;
-    const nextScale = THREE.MathUtils.lerp(currentScale, targetState.scale, lerpSpeed);
+    const nextScale = THREE.MathUtils.lerp(currentScale, targetWorld.groupScale, lerpSpeed);
     group.scale.set(nextScale, nextScale, nextScale);
 
-    // 2. Dynamically interpolate planet & rings opacity
+    // 3. Dynamic material opacity transitions
     if (planetMeshRef.current) {
       const mat = planetMeshRef.current.material as THREE.MeshStandardMaterial;
-      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetState.planetOpacity, lerpSpeed);
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetWorld.planetOpacity, lerpSpeed);
       mat.transparent = true;
     }
     if (atmosphereRef.current) {
       const mat = atmosphereRef.current.material as THREE.MeshBasicMaterial;
-      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetState.planetOpacity * 0.08, lerpSpeed);
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetWorld.planetOpacity * 0.08, lerpSpeed);
     }
     if (ring1Ref.current) {
       const mat = ring1Ref.current.material as THREE.MeshBasicMaterial;
-      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetState.ringsOpacity, lerpSpeed);
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetWorld.ringsOpacity, lerpSpeed);
     }
     if (ring2Ref.current) {
       const mat = ring2Ref.current.material as THREE.MeshBasicMaterial;
-      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetState.ringsOpacity * 0.5, lerpSpeed);
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetWorld.ringsOpacity * 0.5, lerpSpeed);
     }
     if (ring3Ref.current) {
       const mat = ring3Ref.current.material as THREE.MeshBasicMaterial;
-      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetState.ringsOpacity * 0.4, lerpSpeed);
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetWorld.ringsOpacity * 0.4, lerpSpeed);
     }
     if (satelliteRef.current) {
       const mat = satelliteRef.current.material as THREE.MeshBasicMaterial;
-      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetState.planetOpacity, lerpSpeed);
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetWorld.planetOpacity, lerpSpeed);
       mat.transparent = true;
     }
     if (starPointsRef.current) {
       const mat = starPointsRef.current.material as THREE.PointsMaterial;
-      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetState.starfieldOpacity, lerpSpeed);
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetWorld.starfieldOpacity, lerpSpeed);
     }
 
     if (!reducedMotion) {
@@ -249,8 +369,6 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
       if (atmosphereRef.current) {
         atmosphereRef.current.rotation.y += delta * 0.03;
       }
-
-      // Orbital Rings Rotation
       if (ring1Ref.current) {
         ring1Ref.current.rotation.z += delta * 0.04;
       }
@@ -261,7 +379,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
         ring3Ref.current.rotation.z -= delta * 0.05;
       }
 
-      // Satellite orbit
+      // Orbiting satellite
       if (satelliteRef.current) {
         const satAngle = time * 0.6;
         const satRadius = 2.45;
@@ -274,31 +392,31 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
 
       // Pointer parallax response (disabled on touch / mobile)
       const disableParallax = isMobile || hasTouch;
-      const targetParallaxX = disableParallax ? 0 : -pointer.y * pointerSensitivity * 0.4;
-      const targetParallaxY = disableParallax ? 0 : pointer.x * pointerSensitivity * 0.5;
+      const targetParallaxX = disableParallax ? 0 : -pointer.y * pointerSensitivity * 0.3;
+      const targetParallaxY = disableParallax ? 0 : pointer.x * pointerSensitivity * 0.4;
 
       group.rotation.x = THREE.MathUtils.lerp(
         group.rotation.x,
-        targetState.rot[0] + targetParallaxX,
+        targetWorld.groupRot[0] + targetParallaxX,
         lerpSpeed
       );
       group.rotation.y = THREE.MathUtils.lerp(
         group.rotation.y,
-        targetState.rot[1] + targetParallaxY + time * 0.015,
+        targetWorld.groupRot[1] + targetParallaxY + time * 0.015,
         lerpSpeed
       );
       group.rotation.z = THREE.MathUtils.lerp(
         group.rotation.z,
-        targetState.rot[2],
+        targetWorld.groupRot[2],
         lerpSpeed
       );
     }
   });
 
   return (
-    <group ref={masterGroupRef} position={targetState.pos}>
+    <group ref={masterGroupRef} position={targetWorld.groupPos}>
       {/* =======================================================
-          1. CELESTIAL PLANET CORE & ATMOSPHERE (HERO NARRATIVE)
+          1. CELESTIAL PLANET CORE & ATMOSPHERE (IDENTITY SCENE)
       ======================================================= */}
       <group ref={planetGroupRef}>
         {/* Dark Obsidian Planet Body */}
@@ -310,7 +428,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
             metalness={0.3}
             wireframe={false}
             transparent={true}
-            opacity={targetState.planetOpacity}
+            opacity={targetWorld.planetOpacity}
           />
         </mesh>
 
@@ -320,7 +438,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#00F0FF"
             transparent
-            opacity={targetState.planetOpacity * 0.08}
+            opacity={targetWorld.planetOpacity * 0.08}
             wireframe={true}
             blending={THREE.AdditiveBlending}
           />
@@ -332,7 +450,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#00F0FF"
             transparent
-            opacity={targetState.ringsOpacity}
+            opacity={targetWorld.ringsOpacity}
           />
         </mesh>
 
@@ -342,7 +460,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#E4E4E7"
             transparent
-            opacity={targetState.ringsOpacity * 0.5}
+            opacity={targetWorld.ringsOpacity * 0.5}
           />
         </mesh>
 
@@ -352,7 +470,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#00F0FF"
             transparent
-            opacity={targetState.ringsOpacity * 0.4}
+            opacity={targetWorld.ringsOpacity * 0.4}
           />
         </mesh>
 
@@ -362,16 +480,16 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#00F0FF"
             transparent={true}
-            opacity={targetState.planetOpacity}
+            opacity={targetWorld.planetOpacity}
           />
         </mesh>
       </group>
 
       {/* =======================================================
-          2. SPATIAL DIMENSION CONSTELLATION (ABOUT / SKILLS NARRATIVE)
+          2. SPATIAL CARDINAL CONSTELLATION (ABOUT / WHO IS HENIL?)
       ======================================================= */}
       <group ref={constellationGroupRef}>
-        {/* Radiating Links from Core to Dimension Nodes */}
+        {/* Radiating Links from Core to Cardinal Dimension Nodes */}
         <lineSegments>
           <bufferGeometry>
             <bufferAttribute
@@ -382,23 +500,23 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <lineBasicMaterial
             color="#00F0FF"
             transparent
-            opacity={targetState.constellationOpacity * 0.4}
+            opacity={targetWorld.constellationOpacity * 0.4}
             blending={THREE.AdditiveBlending}
           />
         </lineSegments>
 
-        {/* 6 Dimension System Spatial Nodes */}
-        {DIMENSION_NODES.map((node) => {
+        {/* 4 Cardinal Dimension Nodes */}
+        {CARDINAL_NODES.map((node) => {
           const isNodeActive = activeDimension === node.id;
           return (
             <group key={node.id} position={node.pos}>
-              {/* Core Node Beacon */}
+              {/* Core Beacon */}
               <mesh>
                 <sphereGeometry args={[isNodeActive ? 0.09 : 0.055, 16, 16]} />
                 <meshBasicMaterial
                   color={isNodeActive ? '#00F0FF' : node.color}
                   transparent
-                  opacity={isNodeActive ? 1.0 : targetState.constellationOpacity}
+                  opacity={isNodeActive ? 1.0 : targetWorld.constellationOpacity}
                 />
               </mesh>
 
@@ -408,7 +526,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
                 <meshBasicMaterial
                   color={node.color}
                   transparent
-                  opacity={isNodeActive ? 0.7 : targetState.constellationOpacity * 0.3}
+                  opacity={isNodeActive ? 0.7 : targetWorld.constellationOpacity * 0.3}
                   side={THREE.DoubleSide}
                 />
               </mesh>
@@ -418,7 +536,31 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
       </group>
 
       {/* =======================================================
-          3. PROJECT WORLD TOPOLOGY (PROJECTS NARRATIVE)
+          3. LIVING TECHNOLOGY GRAPH (SKILLS / RELATIONS)
+      ======================================================= */}
+      <group ref={techNetworkGroupRef}>
+        {/* Sub-network nodes branching out */}
+        {[
+          [-1.2, 1.4, -0.4],
+          [1.4, 1.6, 0.3],
+          [1.8, -1.4, -0.2],
+          [-1.5, -1.2, 0.4],
+          [0.8, 0.9, 0.6],
+          [-0.7, -0.8, -0.5],
+        ].map((pos, i) => (
+          <mesh key={i} position={pos as [number, number, number]}>
+            <sphereGeometry args={[0.035, 12, 12]} />
+            <meshBasicMaterial
+              color="#38BDF8"
+              transparent
+              opacity={targetWorld.techNetworkOpacity * 0.8}
+            />
+          </mesh>
+        ))}
+      </group>
+
+      {/* =======================================================
+          4. PROJECT WORLD TOPOLOGY (PROJECTS NARRATIVE)
       ======================================================= */}
       <group ref={projectTopologyGroupRef}>
         {/* Concentric Altitude Radar Arcs (AeroIndex) */}
@@ -427,7 +569,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#3B82F6"
             transparent
-            opacity={targetState.projectTopologyOpacity * 0.3}
+            opacity={targetWorld.projectTopologyOpacity * 0.35}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -436,7 +578,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#00F0FF"
             transparent
-            opacity={targetState.projectTopologyOpacity * 0.25}
+            opacity={targetWorld.projectTopologyOpacity * 0.25}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -447,7 +589,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#F59E0B"
             transparent
-            opacity={targetState.projectTopologyOpacity * 0.2}
+            opacity={targetWorld.projectTopologyOpacity * 0.25}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -458,14 +600,36 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           <meshBasicMaterial
             color="#E4E4E7"
             transparent
-            opacity={targetState.projectTopologyOpacity * 0.18}
+            opacity={targetWorld.projectTopologyOpacity * 0.2}
             side={THREE.DoubleSide}
           />
         </mesh>
       </group>
 
       {/* =======================================================
-          4. PERSISTENT STARFIELD (DYNAMIC INTENSITY PER SECTION)
+          5. FLOATING MEDIA PLANES (CREATIVE LAB ARCHIVE)
+      ======================================================= */}
+      <group ref={creativePlanesGroupRef}>
+        {[-1.4, 0, 1.4].map((x, idx) => (
+          <mesh
+            key={idx}
+            position={[x, idx === 1 ? 0.3 : -0.2, (idx - 1) * 0.3]}
+            rotation={[0, 0, (idx - 1) * 0.08]}
+          >
+            <planeGeometry args={[1.2, 0.75]} />
+            <meshBasicMaterial
+              color="#EC4899"
+              transparent
+              opacity={targetWorld.creativePlanesOpacity * 0.12}
+              wireframe={true}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+        ))}
+      </group>
+
+      {/* =======================================================
+          6. PERSISTENT STARFIELD (DYNAMIC INTENSITY PER SECTION)
       ======================================================= */}
       <points ref={starPointsRef}>
         <bufferGeometry>
@@ -482,7 +646,7 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
           size={isMobile ? 0.02 : 0.028}
           vertexColors
           transparent
-          opacity={targetState.starfieldOpacity}
+          opacity={targetWorld.starfieldOpacity}
           sizeAttenuation
           blending={THREE.AdditiveBlending}
         />

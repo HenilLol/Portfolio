@@ -115,40 +115,56 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
 
       // Stage 20–40%: Typography separation and letter-spacing dilation
       scrollTl.to(nameContainerRef.current, {
-        letterSpacing: '0.06em',
+        letterSpacing: '0.08em',
         y: -15,
         duration: 0.3,
         ease: 'power1.out',
       });
 
-      // Stage 40–60%: 3D spatial rotation & perspective translation
-      scrollTl.to(nameContainerRef.current, {
-        rotateX: 14,
-        scaleY: 0.94,
-        y: -40,
-        duration: 0.3,
-        ease: 'power2.inOut',
-      });
+      // Stage 40–90%: Physical letter separation, 3D rotation, and particle dispersion
+      const letters = heroSectionRef.current ? heroSectionRef.current.querySelectorAll('.hero-letter') : [];
+      letters.forEach((letter, i) => {
+        const scatterOffsets = [
+          { x: -100, y: -80, z: -80, rX: 35, rY: -50, rZ: -30 },
+          { x: -60, y: 60, z: 50, rX: -30, rY: 40, rZ: 25 },
+          { x: -25, y: -100, z: -50, rX: 45, rY: -25, rZ: -20 },
+          { x: 45, y: -70, z: 70, rX: -40, rY: 50, rZ: 35 },
+          { x: 100, y: 50, z: -60, rX: 30, rY: -40, rZ: -25 },
+          { x: -110, y: 40, z: 60, rX: -35, rY: 45, rZ: 30 },
+          { x: -50, y: -90, z: -70, rX: 40, rY: -50, rZ: -35 },
+          { x: 20, y: 80, z: 50, rX: -25, rY: 30, rZ: 20 },
+          { x: 70, y: -60, z: -50, rX: 50, rY: -35, rZ: -30 },
+          { x: 120, y: 70, z: 80, rX: -45, rY: 55, rZ: 40 },
+        ];
+        const offset = scatterOffsets[i % scatterOffsets.length];
 
-      // Stage 60–100%: Compression toward next scene
-      scrollTl.to(nameContainerRef.current, {
-        y: -80,
-        scale: 0.9,
-        opacity: 0.12,
-        duration: 0.4,
-        ease: 'power3.in',
+        scrollTl.to(
+          letter,
+          {
+            x: offset.x,
+            y: offset.y,
+            z: offset.z,
+            rotateX: offset.rX,
+            rotateY: offset.rY,
+            rotateZ: offset.rZ,
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power2.inOut',
+          },
+          0.2 + (i % 3) * 0.06
+        );
       });
 
       // Synchronized fade and displacement for supporting positioning statement & CTAs
       scrollTl.to(
         [positioningRef.current, ctaGroupRef.current],
         {
-          y: -50,
+          y: -60,
           opacity: 0,
           duration: 0.5,
           ease: 'power2.in',
         },
-        0.2
+        0.15
       );
     }, heroSectionRef);
 
