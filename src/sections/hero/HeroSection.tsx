@@ -1,10 +1,10 @@
 import React from 'react';
-import { HeroSignatureExperience } from '@/components/experience/HeroSignatureExperience';
+import { CinematicOpeningExperience } from '@/components/experience/CinematicOpeningExperience';
 
 export interface HeroSectionProps {
   introComplete?: boolean;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ introComplete = true }) => {
-  return <HeroSignatureExperience introComplete={introComplete} />;
+export const HeroSection: React.FC<HeroSectionProps> = () => {
+  return <CinematicOpeningExperience />;
 };
