@@ -20,15 +20,39 @@ const NAV_SECTION_IDS = [
 export const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundActive, setSoundActive] = useState(() => soundEngine.isEnabled());
+  const [inOpening, setInOpening] = useState(true);
   const location = useLocation();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   // Active section tracking via IntersectionObserver
   const activeSection = useScrollspy(NAV_SECTION_IDS);
 
+  // Hide header during the opening sequence on the homepage (below ~250vh it reveals)
+  React.useEffect(() => {
+    if (location.pathname !== '/') {
+      setInOpening(false);
+      return;
+    }
+
+    const onScroll = () => {
+      const threshold = window.innerHeight * 2.6;
+      setInOpening(window.scrollY < threshold);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [location.pathname]);
+
+  const isHidden = location.pathname === '/' && inOpening && !menuOpen;
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border/80 bg-background/90 backdrop-blur-md transition-colors">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 h-16 border-b border-border/80 bg-background/90 backdrop-blur-md transition-all duration-500 ${
+          isHidden ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+        }`}
+      >
         <Container size="wide" className="h-full flex items-center justify-between">
           {/* Left: Minimal Editorial Brand */}
           <Link

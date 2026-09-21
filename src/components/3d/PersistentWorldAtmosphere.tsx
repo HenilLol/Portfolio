@@ -105,17 +105,17 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
         groupPos: [isMobile ? 0 : 1.3, isMobile ? -0.2 : 0, 0] as [number, number, number],
         groupRot: [0.2, 0.4, 0] as [number, number, number],
         groupScale: isMobile ? 0.85 : 1.05,
-        planetOpacity: 1.0,
-        ringsOpacity: 0.35,
+        planetOpacity: 0.0,
+        ringsOpacity: 0.0,
         constellationOpacity: 0.0,
         techNetworkOpacity: 0.0,
         projectTopologyOpacity: 0.0,
         creativePlanesOpacity: 0.0,
-        starfieldOpacity: 0.75,
+        starfieldOpacity: 0.35,
       };
     }
 
-    // Stage 0.04 – 0.14: IDENTITY BREAK (Letters & celestial body fragment into field)
+    // Stage 0.04 – 0.14: IDENTITY BREAK (Letters fragment into field)
     if (p < 0.14) {
       const stageP = (p - 0.04) / 0.10;
       return {
@@ -124,13 +124,13 @@ export const PersistentWorldAtmosphere: React.FC<PersistentWorldAtmosphereProps>
         groupPos: [1.3 * (1 - stageP), 0.2 * stageP, -0.4 * stageP] as [number, number, number],
         groupRot: [0.2 + stageP * 0.4, 0.4 + stageP * 1.2, stageP * 0.2] as [number, number, number],
         groupScale: 1.05 + stageP * 0.15,
-        planetOpacity: 1.0 - stageP * 0.85, // Planet dissolves into particle dust
-        ringsOpacity: 0.35 * (1 - stageP) + 0.05,
+        planetOpacity: 0.0,
+        ringsOpacity: 0.0,
         constellationOpacity: stageP * 0.6,
         techNetworkOpacity: 0.0,
         projectTopologyOpacity: 0.0,
         creativePlanesOpacity: 0.0,
-        starfieldOpacity: 0.75,
+        starfieldOpacity: 0.45,
       };
     }
 
