@@ -6,17 +6,19 @@ import { EASING } from '@/animations/presets/motionTokens';
 export interface PageTransitionProps {
   children: React.ReactNode;
   className?: string;
+  withTopPadding?: boolean;
 }
 
 export const PageTransition: React.FC<PageTransitionProps> = ({
   children,
   className = '',
+  withTopPadding = true,
 }) => {
   const reducedMotion = useReducedMotion();
 
   if (reducedMotion) {
     return (
-      <main id="main-content" tabIndex={-1} className={`pt-16 min-h-screen focus:outline-none ${className}`}>
+      <main id="main-content" tabIndex={-1} className={`${withTopPadding ? 'pt-16 ' : ''}min-h-screen focus:outline-none ${className}`}>
         {children}
       </main>
     );
@@ -93,7 +95,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
         animate="animate"
         exit="exit"
         variants={containerVariants}
-        className={`pt-16 min-h-screen focus:outline-none ${className}`}
+        className={`${withTopPadding ? 'pt-16 ' : ''}min-h-screen focus:outline-none ${className}`}
       >
         {children}
       </motion.main>

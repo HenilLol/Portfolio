@@ -18,19 +18,34 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
   const { isMobile } = useViewport();
   const { scrollTo } = useLenisScroll();
 
-  // Scroll Timeline Listener for Opening Sequence (400vh track)
+  // Scroll Timeline Listener for Opening Sequence
   useEffect(() => {
     let animFrameId: number;
 
     const handleScroll = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      const containerHeight = containerRef.current.offsetHeight - window.innerHeight;
-      if (containerHeight <= 0) return;
+      const viewportHeight = window.innerHeight;
+      const trackHeight = containerRef.current.offsetHeight;
+      const pinnedTravel = trackHeight - viewportHeight;
+      if (pinnedTravel <= 0) return;
 
+      // Exact distance scrolled into the container from its top
       const currentScroll = -rect.top;
-      const rawProgress = currentScroll / containerHeight;
-      const clampedProgress = Math.max(0, Math.min(1, rawProgress));
+
+      let calculatedProgress: number;
+      if (currentScroll <= 0) {
+        calculatedProgress = 0;
+      } else if (currentScroll <= pinnedTravel) {
+        // Pinned cinematic timeline: 0.00 to 0.95 spans the full sticky travel
+        calculatedProgress = (currentScroll / pinnedTravel) * 0.95;
+      } else {
+        // Continuous handover: 0.95 to 1.00 spans the unpinning into the portfolio
+        const unpinScroll = currentScroll - pinnedTravel;
+        calculatedProgress = 0.95 + (unpinScroll / viewportHeight) * 0.05;
+      }
+
+      const clampedProgress = Math.max(0, Math.min(1, calculatedProgress));
       setProgress(clampedProgress);
 
       if (clampedProgress >= 0.98 && onComplete) {
@@ -59,11 +74,17 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
       className="relative w-full h-[400vh] bg-background text-foreground select-none"
     >
       {/* Sticky Full-Viewport Film Environment */}
-      <div className="sticky top-0 w-full h-screen h-[100dvh] overflow-hidden flex flex-col justify-between">
+      <div className="sticky top-0 w-full h-screen h-[100dvh] overflow-x-clip overflow-y-visible flex flex-col justify-between">
         {/* =========================================================
             3D WEBGL ENGINE: MASTER PARTICLE MATTER & CAMERA
         ========================================================= */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
+        <div
+          className="absolute top-0 left-0 right-0 h-[100vh] sm:h-[135vh] z-0 pointer-events-none"
+          style={{
+            WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 65%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 0%, black 65%, transparent 100%)',
+          }}
+        >
           <SceneCanvas
             cameraPosition={[0, 0, 8.5]}
             fov={isMobile ? 55 : 45}
@@ -75,7 +96,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
         </div>
 
         {/* Top Minimal State & Skip Header */}
-        <div className="relative z-20 w-full px-6 pt-6 sm:px-12 flex items-center justify-between pointer-events-none">
+        <div
+          className="relative z-20 w-full px-6 pt-6 sm:px-12 flex items-center justify-between pointer-events-none transition-opacity duration-300"
+          style={{
+            opacity: progress >= 0.88 ? Math.max(0, 1 - (progress - 0.88) / 0.06) : 1,
+          }}
+        >
           <div className="flex items-center gap-3">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
@@ -89,11 +115,13 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 ? 'PHYSICAL TYPOGRAPHY'
                 : progress < 0.68
                 ? 'IDENTITY BREAK'
-                : progress < 0.80
+                : progress < 0.78
                 ? 'SPATIAL IDENTITY'
-                : progress < 0.92
+                : progress < 0.88
                 ? 'TECH NETWORK'
-                : 'HENEOXY EMERGENCE'}
+                : progress < 0.96
+                ? 'HENEOXY EMERGENCE'
+                : 'PORTFOLIO HANDOVER'}
             </span>
           </div>
 
@@ -198,11 +226,11 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
           </AnimatePresence>
 
           {/* -------------------------------------------------------
-              SCENE 05: SPATIAL IDENTITY (0.68 – 0.80)
+              SCENE 05: SPATIAL IDENTITY (0.68 – 0.78)
               (4 Spatial territories in 3D, NO card grids)
           ------------------------------------------------------- */}
           <AnimatePresence>
-            {progress >= 0.68 && progress < 0.80 && (
+            {progress >= 0.68 && progress < 0.78 && (
               <motion.div
                 key="scene-spatial"
                 initial={{ opacity: 0, scale: 0.96 }}
@@ -265,10 +293,10 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
           </AnimatePresence>
 
           {/* -------------------------------------------------------
-              SCENE 06: TECHNOLOGY NETWORK (0.80 – 0.92)
+              SCENE 06: TECHNOLOGY NETWORK (0.78 – 0.88)
           ------------------------------------------------------- */}
           <AnimatePresence>
-            {progress >= 0.80 && progress < 0.92 && (
+            {progress >= 0.78 && progress < 0.88 && (
               <motion.div
                 key="scene-network"
                 initial={{ opacity: 0, y: 15 }}
@@ -294,14 +322,17 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
           </AnimatePresence>
 
           {/* -------------------------------------------------------
-              SCENE 07: HENEOXY EMERGENCE (0.92 – 1.00)
+              SCENE 07: HENEOXY EMERGENCE & HANDOVER (0.88 – 1.00)
           ------------------------------------------------------- */}
           <AnimatePresence>
-            {progress >= 0.92 && (
+            {progress >= 0.88 && (
               <motion.div
                 key="scene-heneoxy"
                 initial={{ opacity: 0, scale: 0.92 }}
-                animate={{ opacity: 1, scale: 1 }}
+                animate={{
+                  opacity: progress > 0.98 ? Math.max(0, 1 - (progress - 0.98) * 50) : 1,
+                  scale: 1,
+                }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 0.35 }}
                 className="text-center max-w-2xl space-y-3 pointer-events-none"
@@ -316,7 +347,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                   AI-POWERED PERSONAL COMPUTING ENVIRONMENT
                 </p>
                 <div className="pt-2 font-mono text-[10px] text-accent tracking-widest uppercase animate-pulse">
-                  CONTINUE TO ENTER UNIVERSE ↓
+                  {progress < 0.96 ? 'CONTINUE TO ENTER UNIVERSE ↓' : 'ENTERING PORTFOLIO SPACE ↓'}
                 </div>
               </motion.div>
             )}
@@ -324,7 +355,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
         </div>
 
         {/* Bottom Coordinate Indicator */}
-        <div className="relative z-20 w-full px-6 pb-6 sm:px-12 flex items-center justify-between pointer-events-none font-mono text-[10px] text-foreground-muted">
+        <div
+          className="relative z-20 w-full px-6 pb-6 sm:px-12 flex items-center justify-between pointer-events-none font-mono text-[10px] text-foreground-muted transition-opacity duration-300"
+          style={{
+            opacity: progress >= 0.88 ? Math.max(0, 1 - (progress - 0.88) / 0.06) : 1,
+          }}
+        >
           <span>COORDINATE: [0.00, 0.00, {(8.5 - progress * 4.5).toFixed(2)}]</span>
           <span className="hidden sm:inline">TIMELINE REVERSIBLE ↕</span>
         </div>

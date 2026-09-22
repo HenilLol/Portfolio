@@ -10,18 +10,20 @@ export const AboutSection: React.FC = () => {
   return (
     <Section
       id="about"
-      index={ABOUT_CONTENT.sectionIndex}
-      label="Who is Henil? // Identity Matrix"
       contained={false}
-      className="py-14 sm:py-28 lg:py-36 border-b border-border/60"
+      className="pt-8 sm:pt-12 lg:pt-16 pb-14 sm:pb-28 lg:pb-36 border-b border-border/60"
     >
       <Container size="wide" className="space-y-12 sm:space-y-24">
         {/* Section 02 Headline per Master Spec: WHO IS HENIL? */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-4 space-y-4">
-            <TechnicalLabel indicator indicatorColor="accent">
-              IDENTITY BLUEPRINT // SCENE-02
-            </TechnicalLabel>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] tracking-widest text-accent font-semibold">{ABOUT_CONTENT.sectionIndex}</span>
+              <span className="text-foreground-muted font-mono text-[10px]">/</span>
+              <TechnicalLabel indicator indicatorColor="accent">
+                IDENTITY BLUEPRINT // SCENE-02
+              </TechnicalLabel>
+            </div>
             <div className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase space-y-1">
               <div>DISCIPLINE: {ABOUT_CONTENT.telemetry.discipline}</div>
               <div>OPERATING: {ABOUT_CONTENT.telemetry.mindset}</div>

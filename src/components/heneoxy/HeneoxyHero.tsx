@@ -5,14 +5,18 @@ import { TechnicalLabel } from '@/components/ui/typography/TechnicalLabel';
 import { Badge } from '@/components/ui/Badge';
 import { HENEOXY_CONTENT } from '@/data/heneoxyContent';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
+import { HeneoxyHeroEnvironment } from './HeneoxyHeroEnvironment';
 
 export const HeneoxyHero: React.FC = () => {
   const { scrollTo } = useLenisScroll();
 
   return (
-    <section id="heneoxy-hero" className="space-y-8 sm:space-y-12">
+    <section id="heneoxy-hero" className="relative space-y-8 sm:space-y-12 overflow-hidden py-4 sm:py-6">
+      {/* Background Living Ambient Computing Environment Field */}
+      <HeneoxyHeroEnvironment />
+
       {/* Top Header Rail */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/40 font-mono text-xs uppercase tracking-widest">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/40 font-mono text-xs uppercase tracking-widest">
         <Link
           to="/#projects"
           className="inline-flex items-center gap-2 text-accent hover:text-foreground transition-colors min-h-[44px] sm:min-h-0"
@@ -27,53 +31,59 @@ export const HeneoxyHero: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Console Title Block */}
-      <div className="space-y-6 max-w-4xl">
-        <div className="flex flex-wrap items-center gap-3">
-          <TechnicalLabel indicator indicatorColor="accent">
-            FLAGSHIP EXPLORATION // 01
-          </TechnicalLabel>
-          <Badge variant="accent" className="text-[9px] uppercase tracking-wider">
-            {HENEOXY_CONTENT.identity.status}
-          </Badge>
-          <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest border border-border/60 px-2 py-0.5">
-            {HENEOXY_CONTENT.identity.telemetryMode}
-          </span>
+      {/* Main Console Title & Living System Grid */}
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-4 sm:py-8">
+        {/* Left: Main Console Title Block */}
+        <div className="lg:col-span-7 space-y-6">
+          <div className="flex flex-wrap items-center gap-3">
+            <TechnicalLabel indicator indicatorColor="accent">
+              FLAGSHIP EXPLORATION // 01
+            </TechnicalLabel>
+            <Badge variant="accent" className="text-[9px] uppercase tracking-wider">
+              {HENEOXY_CONTENT.identity.status}
+            </Badge>
+            <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest border border-border/60 px-2 py-0.5">
+              {HENEOXY_CONTENT.identity.telemetryMode}
+            </span>
+          </div>
+
+          <DisplayText
+            as="h1"
+            size="2xl"
+            className="text-foreground font-extrabold uppercase tracking-tightest leading-none text-4xl sm:text-7xl lg:text-8xl xl:text-9xl"
+          >
+            {HENEOXY_CONTENT.identity.name}
+          </DisplayText>
+
+          <p className="font-mono text-sm sm:text-lg text-accent uppercase tracking-widest font-medium">
+            {HENEOXY_CONTENT.identity.moniker}
+          </p>
+
+          <p className="text-foreground-secondary text-base sm:text-lg font-light leading-relaxed max-w-2xl">
+            {HENEOXY_CONTENT.identity.tagline}
+          </p>
+
+          {/* Action CTAs */}
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-2">
+            <button
+              type="button"
+              onClick={() => scrollTo('#thesis', { offset: -80, duration: 1.2 })}
+              className="px-6 py-3.5 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
+            >
+              EXPLORE SYSTEM ↓
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollTo('#architecture', { offset: -80, duration: 1.2 })}
+              className="px-6 py-3.5 border border-border bg-background-surface/60 hover:border-accent/60 text-foreground font-mono text-xs uppercase tracking-widest transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
+            >
+              VIEW ARCHITECTURE ↓
+            </button>
+          </div>
         </div>
 
-        <DisplayText
-          as="h1"
-          size="2xl"
-          className="text-foreground font-extrabold uppercase tracking-tightest leading-none text-4xl sm:text-7xl lg:text-9xl"
-        >
-          {HENEOXY_CONTENT.identity.name}
-        </DisplayText>
-
-        <p className="font-mono text-sm sm:text-lg text-accent uppercase tracking-widest font-medium">
-          {HENEOXY_CONTENT.identity.moniker}
-        </p>
-
-        <p className="text-foreground-secondary text-base sm:text-xl font-light leading-relaxed max-w-2xl">
-          {HENEOXY_CONTENT.identity.tagline}
-        </p>
-
-        {/* Action CTAs */}
-        <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4">
-          <button
-            type="button"
-            onClick={() => scrollTo('#thesis', { offset: -80, duration: 1.2 })}
-            className="px-6 py-3.5 border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent font-mono text-xs uppercase tracking-widest transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
-          >
-            EXPLORE SYSTEM ↓
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollTo('#architecture', { offset: -80, duration: 1.2 })}
-            className="px-6 py-3.5 border border-border bg-background-surface/60 hover:border-accent/60 text-foreground font-mono text-xs uppercase tracking-widest transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
-          >
-            VIEW ARCHITECTURE ↓
-          </button>
-        </div>
+        {/* Right: Ambient Living Environment Spatial Canvas */}
+        <div className="hidden lg:block lg:col-span-5 w-full min-h-[380px] pointer-events-none" />
       </div>
 
       {/* Hero Telemetry HUD Bar */}

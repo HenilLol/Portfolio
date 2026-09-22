@@ -423,9 +423,9 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
         pointSize: isMobile ? 0.026 : 0.034,
       };
     }
-    // 0.68 – 0.80: SPATIAL IDENTITY
-    if (p < 0.80) {
-      const s = (p - 0.68) / 0.12;
+    // 0.68 – 0.78: SPATIAL IDENTITY
+    if (p < 0.78) {
+      const s = (p - 0.68) / 0.10;
       return {
         pos: [-0.9 * s, 0.4 * s, 5.8 - s * 1.0] as [number, number, number], // Wide orbit at 4.8
         lookAt: [0, 0, 0] as [number, number, number],
@@ -433,9 +433,9 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
         pointSize: isMobile ? 0.030 : 0.040,
       };
     }
-    // 0.80 – 0.92: TECHNOLOGY NETWORK
-    if (p < 0.92) {
-      const s = (p - 0.80) / 0.12;
+    // 0.78 – 0.88: TECHNOLOGY NETWORK
+    if (p < 0.88) {
+      const s = (p - 0.78) / 0.10;
       return {
         pos: [-0.9 * (1 - s), -0.4 * s, 4.8 + s * 0.4] as [number, number, number], // 5.2
         lookAt: [0, 0, 0] as [number, number, number],
@@ -443,8 +443,8 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
         pointSize: isMobile ? 0.028 : 0.038,
       };
     }
-    // 0.92 – 1.00: HENEOXY EMERGENCE
-    const s = (p - 0.92) / 0.08;
+    // 0.88 – 1.00: HENEOXY EMERGENCE & PORTFOLIO HANDOVER
+    const s = (p - 0.88) / 0.12;
     return {
       pos: [0.6 * s, -0.2 * s, 5.2 - s * 1.2] as [number, number, number], // Forward dive to 4.0
       lookAt: [0, 0, 0] as [number, number, number],
@@ -510,22 +510,22 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       fromTarget = posPhysicalTypography;
       toTarget = posBreak;
       stageT = (p - 0.55) / 0.13;
-    } else if (p < 0.80) {
+    } else if (p < 0.78) {
       fromTarget = posBreak;
       toTarget = posSpatialIdentity;
-      stageT = (p - 0.68) / 0.12;
-    } else if (p < 0.92) {
+      stageT = (p - 0.68) / 0.10;
+    } else if (p < 0.88) {
       fromTarget = posSpatialIdentity;
       toTarget = posTechNetwork;
-      stageT = (p - 0.80) / 0.12;
-    } else if (p < 0.96) {
+      stageT = (p - 0.78) / 0.10;
+    } else if (p < 0.93) {
       fromTarget = posTechNetwork;
       toTarget = posHeneoxyCore;
-      stageT = (p - 0.92) / 0.04;
+      stageT = (p - 0.88) / 0.05;
     } else {
       fromTarget = posHeneoxyCore;
       toTarget = posHeneoxyOS;
-      stageT = (p - 0.96) / 0.04;
+      stageT = (p - 0.93) / 0.07;
     }
 
     // Hermite smoothstep curve
@@ -596,7 +596,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     }
 
     // Rotate HENEOXY OS rings in final scene
-    if (ringsGroupRef.current && p > 0.92) {
+    if (ringsGroupRef.current && p > 0.88) {
       ringsGroupRef.current.rotation.z += delta * 0.25;
     }
   });
@@ -650,7 +650,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
           <meshBasicMaterial
             color="#00F0FF"
             transparent
-            opacity={progress > 0.92 ? (progress - 0.92) * 12.5 * 0.45 : 0}
+            opacity={progress > 0.88 ? Math.min(0.45, (progress - 0.88) * 8.33 * 0.45) : 0}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -659,7 +659,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
           <meshBasicMaterial
             color="#38BDF8"
             transparent
-            opacity={progress > 0.92 ? (progress - 0.92) * 12.5 * 0.35 : 0}
+            opacity={progress > 0.88 ? Math.min(0.35, (progress - 0.88) * 8.33 * 0.35) : 0}
             side={THREE.DoubleSide}
           />
         </mesh>

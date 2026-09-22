@@ -56,7 +56,7 @@ export const PortfolioHome: React.FC = () => {
 
   return (
     <EnvironmentProvider currentSection={activeSection}>
-      <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <div className="min-h-screen bg-background text-foreground relative">
         {/* Scene 00: Dormant / Environmental Boot Initialization */}
         <IntroSequence key={introKey} onComplete={() => setIntroComplete(true)} />
 
@@ -67,7 +67,7 @@ export const PortfolioHome: React.FC = () => {
         <CustomCursor />
         <Header />
 
-        <PageTransition>
+        <PageTransition withTopPadding={false}>
           {/* Scene 01: Full-Viewport Hero with Kinetic Typography Physics & 5-Stage Scroll Choreography */}
           <HeroSection introComplete={introComplete} />
 

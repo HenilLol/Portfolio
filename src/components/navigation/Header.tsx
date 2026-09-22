@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
   // Active section tracking via IntersectionObserver
   const activeSection = useScrollspy(NAV_SECTION_IDS);
 
-  // Hide header during the opening sequence on the homepage (below ~250vh it reveals)
+  // Hide header during the opening sequence and unpinning handover on the homepage (reveals only after handover completes)
   React.useEffect(() => {
     if (location.pathname !== '/') {
       setInOpening(false);
@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
     }
 
     const onScroll = () => {
-      const threshold = window.innerHeight * 2.6;
+      const threshold = window.innerHeight * 3.85;
       setInOpening(window.scrollY < threshold);
     };
 
