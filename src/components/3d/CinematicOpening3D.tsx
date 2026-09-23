@@ -7,6 +7,8 @@ import { useViewport } from '@/hooks/useViewport';
 export interface CinematicOpening3DProps {
   progress: number; // 0.0 to 1.0 continuous normalized opening timeline
   pointerSensitivity?: number;
+  /** Actual viewport pixel width for responsive letter spacing */
+  viewportWidth?: number;
 }
 
 // Sample points along a 3D line segment with slight volumetric jitter
@@ -144,6 +146,7 @@ const HENEOXY_ANGLES = [
 export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
   progress,
   pointerSensitivity = 0.35,
+  viewportWidth,
 }) => {
   const pointsRef = useRef<THREE.Points>(null);
   const linesRef = useRef<THREE.LineSegments>(null);
@@ -186,7 +189,12 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     const letterPointsCount = Math.floor((particleCount * 0.7) / 10);
     const firstName = ['H', 'E', 'N', 'I', 'L'];
     const lastName = ['P', 'A', 'T', 'E', 'L'];
-    const letterSpacing = isMobile ? 0.44 : 0.60;
+    // Responsive letter spacing: scale down progressively for narrower screens
+    // vw=320 -> 0.32, vw=375 -> 0.36, vw=430 -> 0.40, vw=768+ -> 0.60
+    const vw = viewportWidth ?? (typeof window !== 'undefined' ? window.innerWidth : 1280);
+    const letterSpacing = isMobile
+      ? Math.max(0.30, Math.min(0.44, (vw / 768) * 0.60))
+      : 0.60;
 
     let pIdx = 0;
 
@@ -364,7 +372,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       colorsBase: colors,
       lineIndices: new Uint16Array(indices),
     };
-  }, [particleCount, isMobile]);
+  }, [particleCount, isMobile, viewportWidth]);
 
   // Current typed array buffers for points and lines
   const currentPositions = useMemo(() => new Float32Array(particleCount * 3), [particleCount]);
