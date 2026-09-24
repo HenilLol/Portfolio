@@ -1,14 +1,17 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useViewport } from '@/hooks/useViewport';
+import { CinematicParticlePointsMaterial } from './shaders/particlePointsMaterial';
 
 export interface CinematicOpening3DProps {
   progress: number; // 0.0 to 1.0 continuous normalized opening timeline
   pointerSensitivity?: number;
   /** Actual viewport pixel width for responsive letter spacing */
   viewportWidth?: number;
+  /** Explicit fallback flag to force standard PointsMaterial (useful for testing or fallback profiles) */
+  useFallbackShader?: boolean;
 }
 
 // Sample points along a 3D line segment with slight volumetric jitter
@@ -147,18 +150,117 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
   progress,
   pointerSensitivity = 0.35,
   viewportWidth,
+  useFallbackShader: propFallback = false,
 }) => {
   const pointsRef = useRef<THREE.Points>(null);
   const linesRef = useRef<THREE.LineSegments>(null);
   const ringsGroupRef = useRef<THREE.Group>(null);
   const masterGroupRef = useRef<THREE.Group>(null);
 
+  // Check URL query param ?fallback=true ONLY in development for deterministic audit and testing
+  const isUrlFallback =
+    Boolean(import.meta.env.DEV) &&
+    typeof window !== 'undefined' &&
+    window.location.search.includes('fallback=true');
+  const useFallbackShader = propFallback || isUrlFallback;
+
+  const [shaderFailed, setShaderFailed] = React.useState<boolean>(false);
+  const isMountedRef = useRef(true);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const reducedMotion = useReducedMotion();
   const { isMobile, hasTouch } = useViewport();
-  const { camera, pointer } = useThree();
+  const { camera, pointer, gl } = useThree();
+
+  // Listen to Three.js WebGLRenderer shader compilation/link errors
+  useEffect(() => {
+    if (!gl || !gl.debug) return;
+    const prevOnShaderError = gl.debug.onShaderError;
+
+    // Self-chaining and recursion-safe shader error handler
+    const shaderErrorHandler: NonNullable<THREE.WebGLRenderer['debug']['onShaderError']> = (
+      glCtx,
+      program,
+      vShader,
+      fShader
+    ) => {
+      console.warn('[CinematicOpening3D] WebGL shader compilation error detected by renderer. Activating fallback PointsMaterial.');
+      if (typeof prevOnShaderError === 'function' && prevOnShaderError !== shaderErrorHandler) {
+        prevOnShaderError(glCtx, program, vShader, fShader);
+      }
+      if (isMountedRef.current) {
+        setShaderFailed((prev) => (prev ? prev : true));
+      }
+    };
+
+    gl.debug.onShaderError = shaderErrorHandler;
+
+    return () => {
+      if (gl && gl.debug && gl.debug.onShaderError === shaderErrorHandler) {
+        gl.debug.onShaderError = prevOnShaderError;
+      }
+    };
+  }, [gl]);
 
   // 2400 particles desktop / 900 mobile for rich physical density
   const particleCount = useMemo(() => (isMobile ? 900 : 2400), [isMobile]);
+
+  // Active particle material with lifecycle management & safe fallback
+  const activeMaterial = useMemo(() => {
+    if (shaderFailed || useFallbackShader) {
+      return new THREE.PointsMaterial({
+        size: isMobile ? 0.032 : 0.042,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.92,
+        sizeAttenuation: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+    }
+
+    return new CinematicParticlePointsMaterial({
+      size: isMobile ? 0.032 : 0.042,
+      opacity: 0.92,
+      coreSharpness: 16.0,
+      coreLuminance: 0.45,
+      auraIntensity: 0.65,
+    });
+  }, [isMobile, shaderFailed, useFallbackShader]);
+
+  // Clean up GPU resources on unmount or when material changes (with double-disposal prevention)
+  useEffect(() => {
+    let isDisposed = false;
+    return () => {
+      if (!isDisposed) {
+        isDisposed = true;
+        activeMaterial.dispose();
+      }
+    };
+  }, [activeMaterial]);
+
+  // Expose diagnostic telemetry for verification audits (development only)
+  useEffect(() => {
+    if (Boolean(import.meta.env.DEV) && typeof window !== 'undefined') {
+      (window as any).__CINEMATIC_3D__ = {
+        gl,
+        points: pointsRef.current,
+        activeMaterial,
+        shaderFailed,
+        useFallbackShader,
+      };
+    }
+    return () => {
+      if (typeof window !== 'undefined' && (window as any).__CINEMATIC_3D__?.points === pointsRef.current) {
+        delete (window as any).__CINEMATIC_3D__;
+      }
+    };
+  }, [gl, activeMaterial, shaderFailed, useFallbackShader]);
 
   // Generate All Deterministic Target Buffers once
   const {
@@ -474,6 +576,12 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     const time = state.clock.getElapsedTime();
     const lerpSpeed = Math.min(delta * 4.2, 0.18);
 
+    // Synchronize particle point size with camera trajectory (1.18x adjustment for circular area equivalence if custom shader active)
+    if (activeMaterial) {
+      const sizeMultiplier = (shaderFailed || useFallbackShader) ? 1.0 : 1.18;
+      activeMaterial.size = cameraTarget.pointSize * sizeMultiplier;
+    }
+
     // Smooth camera translation
     if (!reducedMotion) {
       camera.position.x = THREE.MathUtils.lerp(camera.position.x, cameraTarget.pos[0], lerpSpeed);
@@ -628,15 +736,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
             args={[colorsBase, 3]}
           />
         </bufferGeometry>
-        <pointsMaterial
-          size={cameraTarget.pointSize}
-          vertexColors
-          transparent
-          opacity={0.92}
-          sizeAttenuation
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-        />
+        <primitive object={activeMaterial} attach="material" />
       </points>
 
       {/* 2. DYNAMIC CONNECTING LINE SKELETON */}
