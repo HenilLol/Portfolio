@@ -35,7 +35,10 @@ export const Header: React.FC = () => {
     }
 
     const onScroll = () => {
-      const threshold = window.innerHeight * 3.85;
+      const hero = document.getElementById('hero');
+      const threshold = hero && hero.offsetHeight > 0
+        ? hero.offsetHeight - window.innerHeight * 0.15
+        : window.innerHeight * 9.85;
       setInOpening(window.scrollY < threshold);
     };
 
