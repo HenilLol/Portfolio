@@ -14,96 +14,247 @@ export interface CinematicOpening3DProps {
   useFallbackShader?: boolean;
 }
 
-// Sample points along a 3D line segment with slight volumetric jitter
-function sampleLine3D(
-  p1: [number, number, number],
-  p2: [number, number, number],
-  count: number,
-  jitter = 0.015
-): [number, number, number][] {
-  const points: [number, number, number][] = [];
-  for (let i = 0; i < count; i++) {
-    const t = count === 1 ? 0.5 : i / (count - 1);
-    points.push([
-      p1[0] + (p2[0] - p1[0]) * t + (Math.random() - 0.5) * jitter,
-      p1[1] + (p2[1] - p1[1]) * t + (Math.random() - 0.5) * jitter,
-      p1[2] + (p2[2] - p1[2]) * t + (Math.random() - 0.5) * jitter,
-    ]);
-  }
-  return points;
+interface StrokeDefinition {
+  type: 'line' | 'arc' | 'bezier';
+  length: number;
+  sample: (t: number) => [number, number];
 }
 
-// Generate volumetric 3D letter strokes in local coordinates [-0.22, 0.22] x [-0.32, 0.32] x [-0.06, 0.06]
+// 2D Line stroke definition with exact length calculation
+function createLineStroke(x1: number, y1: number, x2: number, y2: number): StrokeDefinition {
+  const len = Math.hypot(x2 - x1, y2 - y1);
+  return {
+    type: 'line',
+    length: len,
+    sample: (t: number) => [x1 + (x2 - x1) * t, y1 + (y2 - y1) * t],
+  };
+}
+
+// 2D Elliptical Arc stroke definition with smooth angular interpolation
+function createArcStroke(
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  thetaStart: number,
+  thetaEnd: number
+): StrokeDefinition {
+  const len = ((rx + ry) / 2) * Math.abs(thetaEnd - thetaStart);
+  return {
+    type: 'arc',
+    length: len,
+    sample: (t: number) => {
+      const theta = thetaStart + (thetaEnd - thetaStart) * t;
+      return [cx + rx * Math.cos(theta), cy + ry * Math.sin(theta)];
+    },
+  };
+}
+
+// 2D Cubic Bezier curve stroke definition with arc-length approximation
+function createCubicBezierStroke(
+  p0: [number, number],
+  p1: [number, number],
+  p2: [number, number],
+  p3: [number, number]
+): StrokeDefinition {
+  let len = 0;
+  let prev = p0;
+  for (let i = 1; i <= 10; i++) {
+    const t = i / 10;
+    const it = 1 - t;
+    const cur: [number, number] = [
+      it * it * it * p0[0] + 3 * it * it * t * p1[0] + 3 * it * t * t * p2[0] + t * t * t * p3[0],
+      it * it * it * p0[1] + 3 * it * it * t * p1[1] + 3 * it * t * t * p2[1] + t * t * t * p3[1],
+    ];
+    len += Math.hypot(cur[0] - prev[0], cur[1] - prev[1]);
+    prev = cur;
+  }
+  return {
+    type: 'bezier',
+    length: len,
+    sample: (t: number) => {
+      const it = 1 - t;
+      return [
+        it * it * it * p0[0] + 3 * it * it * t * p1[0] + 3 * it * t * t * p2[0] + t * t * t * p3[0],
+        it * it * it * p0[1] + 3 * it * it * t * p1[1] + 3 * it * t * t * p2[1] + t * t * t * p3[1],
+      ];
+    },
+  };
+}
+
+// 2D Quadratic Bezier curve stroke definition
+function createQuadraticBezierStroke(
+  p0: [number, number],
+  p1: [number, number],
+  p2: [number, number]
+): StrokeDefinition {
+  let len = 0;
+  let prev = p0;
+  for (let i = 1; i <= 8; i++) {
+    const t = i / 8;
+    const it = 1 - t;
+    const cur: [number, number] = [
+      it * it * p0[0] + 2 * it * t * p1[0] + t * t * p2[0],
+      it * it * p0[1] + 2 * it * t * p1[1] + t * t * p2[1],
+    ];
+    len += Math.hypot(cur[0] - prev[0], cur[1] - prev[1]);
+    prev = cur;
+  }
+  return {
+    type: 'bezier',
+    length: len,
+    sample: (t: number) => {
+      const it = 1 - t;
+      return [
+        it * it * p0[0] + 2 * it * t * p1[0] + t * t * p2[0],
+        it * it * p0[1] + 2 * it * t * p1[1] + t * t * p2[1],
+      ];
+    },
+  };
+}
+
+// Architectural glyph stroke topologies for full alphabet
+function getLetterStrokes(char: string, w: number, h: number): StrokeDefinition[] {
+  switch (char.toUpperCase()) {
+    case 'H':
+      return [
+        createLineStroke(-w, -h, -w, h),
+        createLineStroke(w, -h, w, h),
+        createLineStroke(-w, 0, w, 0),
+      ];
+    case 'E':
+      return [
+        createLineStroke(-w, -h, -w, h),
+        createLineStroke(-w, h, w, h),
+        createLineStroke(-w, 0.02, w * 0.72, 0.02),
+        createLineStroke(-w, -h, w, -h),
+      ];
+    case 'N':
+      return [
+        createLineStroke(-w, -h, -w, h),
+        createLineStroke(-w, h, w, -h),
+        createLineStroke(w, -h, w, h),
+      ];
+    case 'I':
+      return [
+        createLineStroke(0, -h, 0, h),
+        createLineStroke(-w * 0.6, h, w * 0.6, h),
+        createLineStroke(-w * 0.6, -h, w * 0.6, -h),
+      ];
+    case 'L':
+      return [
+        createLineStroke(-w, -h, -w, h),
+        createLineStroke(-w, -h, w, -h),
+      ];
+    case 'P':
+      return [
+        // Left vertical structural spine
+        createLineStroke(-w, -h, -w, h),
+        // Continuous smooth architectural cubic Bezier curved bowl from top spine to mid spine
+        createCubicBezierStroke(
+          [-w, h],
+          [w * 1.667, h],
+          [w * 1.667, 0.02],
+          [-w, 0.02]
+        ),
+      ];
+    case 'A':
+      return [
+        createLineStroke(-w, -h, 0, h),
+        createLineStroke(0, h, w, -h),
+        createLineStroke(-w * 0.6, -0.06, w * 0.6, -0.06),
+      ];
+    case 'T':
+      return [
+        createLineStroke(0, -h, 0, h),
+        createLineStroke(-w, h, w, h),
+      ];
+    case 'C':
+      return [
+        createArcStroke(0, 0, w, h, Math.PI * 0.75, -Math.PI * 0.75),
+      ];
+    case 'D':
+      return [
+        createLineStroke(-w, -h, -w, h),
+        createArcStroke(-w, 0, 2 * w, h, Math.PI / 2, -Math.PI / 2),
+      ];
+    case 'O':
+      return [
+        createArcStroke(0, 0, w, h, 0, Math.PI * 2),
+      ];
+    case 'R':
+      return [
+        createLineStroke(-w, -h, -w, h),
+        createCubicBezierStroke([-w, h], [w * 1.667, h], [w * 1.667, 0.02], [-w, 0.02]),
+        createLineStroke(-w * 0.15, 0.02, w, -h),
+      ];
+    case 'S':
+      return [
+        createQuadraticBezierStroke([w * 0.9, h * 0.8], [-w * 0.9, h * 0.9], [0, 0.02]),
+        createQuadraticBezierStroke([0, 0.02], [w * 0.9, -h * 0.9], [-w * 0.9, -h * 0.8]),
+      ];
+    default:
+      return [createLineStroke(0, -h, 0, h)];
+  }
+}
+
+// Generate volumetric 3D letter strokes in local coordinates with arc-length aware point distribution
 function generateLetterStrokes3D(char: string, totalPoints: number): [number, number, number][] {
   const w = 0.19;
   const h = 0.28;
   const d = 0.05;
-  const segments: [[number, number, number], [number, number, number]][] = [];
+  const jitter = 0.015;
 
-  // Front & back face segments + cross-filaments for volumetric depth
-  const addStroke = (x1: number, y1: number, x2: number, y2: number) => {
-    segments.push([[x1, y1, -d], [x2, y2, -d]]);
-    segments.push([[x1, y1, d], [x2, y2, d]]);
-    segments.push([[x1, y1, -d], [x1, y1, d]]);
-    segments.push([[x2, y2, -d], [x2, y2, d]]);
-    // Diagonal cross-tie for density
-    segments.push([[x1, y1, -d], [x2, y2, d]]);
-  };
+  const strokes = getLetterStrokes(char, w, h);
+  const totalLength = strokes.reduce((sum, s) => sum + s.length, 0);
 
-  switch (char) {
-    case 'H':
-      addStroke(-w, -h, -w, h);
-      addStroke(w, -h, w, h);
-      addStroke(-w, 0, w, 0);
-      break;
-    case 'E':
-      addStroke(-w, -h, -w, h);
-      addStroke(-w, h, w, h);
-      addStroke(-w, 0, w * 0.7, 0);
-      addStroke(-w, -h, w, -h);
-      break;
-    case 'N':
-      addStroke(-w, -h, -w, h);
-      addStroke(-w, h, w, -h);
-      addStroke(w, -h, w, h);
-      break;
-    case 'I':
-      addStroke(0, -h, 0, h);
-      addStroke(-w * 0.6, h, w * 0.6, h);
-      addStroke(-w * 0.6, -h, w * 0.6, -h);
-      break;
-    case 'L':
-      addStroke(-w, -h, -w, h);
-      addStroke(-w, -h, w, -h);
-      break;
-    case 'P':
-      addStroke(-w, -h, -w, h);
-      addStroke(-w, h, w, h);
-      addStroke(w, h, w, 0);
-      addStroke(w, 0, -w, 0);
-      break;
-    case 'A':
-      addStroke(-w, -h, 0, h);
-      addStroke(0, h, w, -h);
-      addStroke(-w * 0.6, -0.06, w * 0.6, -0.06);
-      break;
-    case 'T':
-      addStroke(0, -h, 0, h);
-      addStroke(-w, h, w, h);
-      break;
-    default:
-      addStroke(0, -h, 0, h);
+  // Allocate points proportionally to stroke arc-length (prevents sparse stems or clumped crossbars)
+  const allocations = strokes.map((s) =>
+    Math.max(3, Math.round((s.length / totalLength) * totalPoints))
+  );
+
+  // Reconcile total point budget deterministically
+  let currentSum = allocations.reduce((a, b) => a + b, 0);
+  let diff = totalPoints - currentSum;
+  let allocIdx = 0;
+  while (diff !== 0) {
+    if (diff > 0) {
+      allocations[allocIdx % allocations.length]++;
+      diff--;
+    } else {
+      if (allocations[allocIdx % allocations.length] > 2) {
+        allocations[allocIdx % allocations.length]--;
+        diff++;
+      }
+    }
+    allocIdx++;
   }
 
-  const pointsPerSeg = Math.max(2, Math.floor(totalPoints / segments.length));
   const result: [number, number, number][] = [];
-  segments.forEach((seg) => {
-    result.push(...sampleLine3D(seg[0], seg[1], pointsPerSeg));
+
+  strokes.forEach((stroke, sIdx) => {
+    const count = allocations[sIdx];
+    for (let i = 0; i < count; i++) {
+      const t = count === 1 ? 0.5 : i / (count - 1);
+      const [x, y] = stroke.sample(t);
+
+      // 5-Layer Volumetric depth distribution: front (-d), back (+d), mid (0), and diagonal cross-filaments
+      const layerMode = i % 5;
+      let zBase = 0;
+      if (layerMode === 0) zBase = -d;
+      else if (layerMode === 1) zBase = d;
+      else if (layerMode === 2) zBase = 0;
+      else if (layerMode === 3) zBase = -d + 2 * d * t;
+      else zBase = d - 2 * d * t;
+
+      result.push([
+        x + (Math.random() - 0.5) * jitter,
+        y + (Math.random() - 0.5) * jitter,
+        zBase + (Math.random() - 0.5) * jitter,
+      ]);
+    }
   });
 
-  while (result.length < totalPoints) {
-    result.push(result[result.length - 1] || [0, 0, 0]);
-  }
   return result.slice(0, totalPoints);
 }
 
