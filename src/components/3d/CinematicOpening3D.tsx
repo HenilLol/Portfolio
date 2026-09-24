@@ -636,88 +636,73 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
   const currentPositions = useMemo(() => new Float32Array(particleCount * 3), [particleCount]);
   const linePositions = useMemo(() => new Float32Array(lineIndices.length * 3), [lineIndices.length]);
 
-  // Camera trajectory parameters driven continuously by opening progress
+  // Smooth quintic interpolation (C1 & C2 smoothstep with zero 1st and 2nd derivatives at endpoints)
+  const quinticSmoothstep = (t: number): number => {
+    const ct = Math.max(0, Math.min(1, t));
+    return ct * ct * ct * (ct * (ct * 6 - 15) + 10);
+  };
+
+  // Camera trajectory waypoints driven continuously by opening progress
   const cameraTarget = useMemo(() => {
     const p = Math.max(0, Math.min(1, progress));
+    const ptSize = (desk: number, mob: number) => (isMobile ? mob : desk);
 
-    // 0.00 – 0.08: DORMANT
-    if (p < 0.08) {
-      return {
-        pos: [0, 0, 8.5] as [number, number, number],
-        lookAt: [0, 0, 0] as [number, number, number],
-        lineOpacity: 0.05,
-        pointSize: isMobile ? 0.026 : 0.034,
-      };
+    interface Waypoint {
+      p: number;
+      pos: [number, number, number];
+      lookAt: [number, number, number];
+      lineOpacity: number;
+      pointSize: number;
     }
-    // 0.08 – 0.20: PARTICLE FIELD
-    if (p < 0.20) {
-      const s = (p - 0.08) / 0.12;
-      return {
-        pos: [0, 0, 8.5 - s * 1.7] as [number, number, number], // 8.5 -> 6.8
-        lookAt: [0, 0, 0] as [number, number, number],
-        lineOpacity: 0.10 + s * 0.10,
-        pointSize: isMobile ? 0.028 : 0.036,
-      };
+
+    // Continuous C1/C2 waypoints with matching endpoint coordinates across all stage boundaries
+    const WAYPOINTS: Waypoint[] = [
+      { p: 0.00, pos: [0, 0, 8.5], lookAt: [0, 0, 0], lineOpacity: 0.05, pointSize: ptSize(0.034, 0.026) },
+      { p: 0.08, pos: [0, 0, 8.5], lookAt: [0, 0, 0], lineOpacity: 0.05, pointSize: ptSize(0.034, 0.026) },
+      { p: 0.20, pos: [0, 0, 6.8], lookAt: [0, 0, 0], lineOpacity: 0.20, pointSize: ptSize(0.040, 0.030) },
+      { p: 0.42, pos: [0, 0, 4.8], lookAt: [0, 0, 0], lineOpacity: 0.35, pointSize: ptSize(0.042, 0.032) },
+      { p: 0.55, pos: [0.20, 0.08, 4.55], lookAt: [0, 0, 0], lineOpacity: 0.35, pointSize: ptSize(0.042, 0.032) },
+      { p: 0.68, pos: [0, 0, 5.8], lookAt: [0, 0, 0], lineOpacity: 0.55, pointSize: ptSize(0.036, 0.028) },
+      { p: 0.78, pos: [-0.80, 0.30, 4.9], lookAt: [0, 0, 0], lineOpacity: 0.75, pointSize: ptSize(0.040, 0.030) },
+      { p: 0.88, pos: [0.40, -0.20, 5.2], lookAt: [0, 0, 0], lineOpacity: 0.85, pointSize: ptSize(0.040, 0.030) },
+      { p: 1.00, pos: [0.60, -0.15, 4.2], lookAt: [0, 0, 0], lineOpacity: 0.70, pointSize: ptSize(0.042, 0.032) },
+    ];
+
+    let i = 0;
+    while (i < WAYPOINTS.length - 1 && p > WAYPOINTS[i + 1].p) {
+      i++;
     }
-    // 0.20 – 0.42: HENIL CONSTRUCTION
-    if (p < 0.42) {
-      const s = (p - 0.20) / 0.22;
-      return {
-        pos: [0, 0, 6.8 - s * 2.0] as [number, number, number], // 6.8 -> 4.8
-        lookAt: [0, 0, 0] as [number, number, number],
-        lineOpacity: 0.20 + s * 0.15,
-        pointSize: isMobile ? 0.030 : 0.040,
-      };
+
+    if (i >= WAYPOINTS.length - 1) {
+      return WAYPOINTS[WAYPOINTS.length - 1];
     }
-    // 0.42 – 0.55: PHYSICAL HENIL PATEL
-    if (p < 0.55) {
-      const s = (p - 0.42) / 0.13;
-      return {
-        pos: [0.3 * s, 0.1 * s, 4.8 - s * 0.3] as [number, number, number], // 4.8 -> 4.5
-        lookAt: [0, 0, 0] as [number, number, number],
-        lineOpacity: 0.35,
-        pointSize: isMobile ? 0.032 : 0.042,
-      };
-    }
-    // 0.55 – 0.68: IDENTITY BREAK
-    if (p < 0.68) {
-      const s = (p - 0.55) / 0.13;
-      return {
-        pos: [0.3 * (1 - s), -0.2 * s, 4.5 + s * 1.3] as [number, number, number], // Pull back to 5.8
-        lookAt: [0, 0, 0] as [number, number, number],
-        lineOpacity: 0.35 * (1 - s),
-        pointSize: isMobile ? 0.026 : 0.034,
-      };
-    }
-    // 0.68 – 0.78: SPATIAL IDENTITY
-    if (p < 0.78) {
-      const s = (p - 0.68) / 0.10;
-      return {
-        pos: [-0.9 * s, 0.4 * s, 5.8 - s * 1.0] as [number, number, number], // Wide orbit at 4.8
-        lookAt: [0, 0, 0] as [number, number, number],
-        lineOpacity: 0.75,
-        pointSize: isMobile ? 0.030 : 0.040,
-      };
-    }
-    // 0.78 – 0.88: TECHNOLOGY NETWORK
-    if (p < 0.88) {
-      const s = (p - 0.78) / 0.10;
-      return {
-        pos: [-0.9 * (1 - s), -0.4 * s, 4.8 + s * 0.4] as [number, number, number], // 5.2
-        lookAt: [0, 0, 0] as [number, number, number],
-        lineOpacity: 0.85,
-        pointSize: isMobile ? 0.028 : 0.038,
-      };
-    }
-    // 0.88 – 1.00: HENEOXY EMERGENCE & PORTFOLIO HANDOVER
-    const s = (p - 0.88) / 0.12;
+
+    const wA = WAYPOINTS[i];
+    const wB = WAYPOINTS[i + 1];
+    const range = wB.p - wA.p;
+    const t = range === 0 ? 0 : (p - wA.p) / range;
+    const st = quinticSmoothstep(t);
+
+    const lerp = (a: number, b: number) => a + (b - a) * st;
+
     return {
-      pos: [0.6 * s, -0.2 * s, 5.2 - s * 1.2] as [number, number, number], // Forward dive to 4.0
-      lookAt: [0, 0, 0] as [number, number, number],
-      lineOpacity: 0.70,
-      pointSize: isMobile ? 0.032 : 0.042,
+      pos: [
+        lerp(wA.pos[0], wB.pos[0]),
+        lerp(wA.pos[1], wB.pos[1]),
+        lerp(wA.pos[2], wB.pos[2]),
+      ] as [number, number, number],
+      lookAt: [
+        lerp(wA.lookAt[0], wB.lookAt[0]),
+        lerp(wA.lookAt[1], wB.lookAt[1]),
+        lerp(wA.lookAt[2], wB.lookAt[2]),
+      ] as [number, number, number],
+      lineOpacity: lerp(wA.lineOpacity, wB.lineOpacity),
+      pointSize: lerp(wA.pointSize, wB.pointSize),
     };
   }, [progress, isMobile]);
+
+  // Total letter points for selective typography stabilization
+  const letterTotalPoints = useMemo(() => Math.floor((particleCount * 0.7) / 10) * 10, [particleCount]);
 
   // Frame tick: continuous deterministic matter kinematics
   useFrame((state, delta) => {
@@ -757,57 +742,71 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       );
     }
 
-    // Determine fromTarget and toTarget based on openingProgress
+    // Determine fromTarget, toTarget, and stageT based on normalized progress
     let fromTarget = posDormant;
     let toTarget = posField;
     let stageT = 0;
+    let stageId = 'DORMANT';
 
     if (p < 0.08) {
       fromTarget = posDormant;
       toTarget = posField;
       stageT = 0;
+      stageId = 'DORMANT';
     } else if (p < 0.20) {
       fromTarget = posDormant;
       toTarget = posField;
       stageT = (p - 0.08) / 0.12;
-    } else if (p < 0.42) {
+      stageId = 'FIELD';
+    } else if (p < 0.31) {
       fromTarget = posField;
       toTarget = posHenilConstruction;
-      stageT = (p - 0.20) / 0.22;
-    } else if (p < 0.55) {
+      stageT = (p - 0.20) / 0.11;
+      stageId = 'CONSTRUCTION_1';
+    } else if (p < 0.42) {
       fromTarget = posHenilConstruction;
       toTarget = posPhysicalTypography;
-      stageT = (p - 0.42) / 0.13;
+      stageT = (p - 0.31) / 0.11;
+      stageId = 'CONSTRUCTION_2';
+    } else if (p < 0.55) {
+      // 0.42 - 0.55: Physical Formation Hold (spatially static and fully formed)
+      fromTarget = posPhysicalTypography;
+      toTarget = posPhysicalTypography;
+      stageT = 0;
+      stageId = 'HOLD';
     } else if (p < 0.68) {
       fromTarget = posPhysicalTypography;
       toTarget = posBreak;
       stageT = (p - 0.55) / 0.13;
+      stageId = 'BREAK';
     } else if (p < 0.78) {
       fromTarget = posBreak;
       toTarget = posSpatialIdentity;
       stageT = (p - 0.68) / 0.10;
+      stageId = 'SPATIAL';
     } else if (p < 0.88) {
       fromTarget = posSpatialIdentity;
       toTarget = posTechNetwork;
       stageT = (p - 0.78) / 0.10;
+      stageId = 'TECH';
     } else if (p < 0.93) {
       fromTarget = posTechNetwork;
       toTarget = posHeneoxyCore;
       stageT = (p - 0.88) / 0.05;
+      stageId = 'CORE';
     } else {
       fromTarget = posHeneoxyCore;
       toTarget = posHeneoxyOS;
       stageT = (p - 0.93) / 0.07;
+      stageId = 'OS';
     }
 
-    // Hermite smoothstep curve
-    const smoothT = stageT * stageT * (3 - 2 * stageT);
+    // Quintic smoothstep for C1/C2 boundary continuity
+    const smoothT = quinticSmoothstep(stageT);
+    const env = Math.sin(smoothT * Math.PI);
 
     const positionsAttr = pointsRef.current.geometry.attributes.position as THREE.BufferAttribute;
     const posArr = positionsAttr.array as Float32Array;
-
-    const noiseFreq = p >= 0.55 && p < 0.68 ? 4.0 : p >= 0.92 && p < 0.96 ? 6.0 : 1.2;
-    const noiseAmp = p >= 0.55 && p < 0.68 ? 0.08 : p >= 0.92 && p < 0.96 ? 0.04 : 0.015;
 
     for (let i = 0; i < particleCount; i++) {
       const idx3 = i * 3;
@@ -819,34 +818,85 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       const y2 = toTarget[idx3 + 1];
       const z2 = toTarget[idx3 + 2];
 
-      const targetX = x1 + (x2 - x1) * smoothT;
-      const targetY = y1 + (y2 - y1) * smoothT;
-      const targetZ = z1 + (z2 - z1) * smoothT;
+      let targetX = x1 + (x2 - x1) * smoothT;
+      let targetY = y1 + (y2 - y1) * smoothT;
+      let targetZ = z1 + (z2 - z1) * smoothT;
 
-      // Subtle organic breathing oscillation
-      const subtleWobble = Math.sin(time * noiseFreq + i * 0.1) * noiseAmp;
+      // Deterministic organic curved kinematics (strictly 0 at stage boundaries t=0 and t=1)
+      if (env > 0.0001) {
+        if (stageId === 'BREAK') {
+          // Identity Break: Organic deterministic vortex expansion
+          const goldenAngle = i * 2.39996323;
+          const curlSign = i % 2 === 0 ? 1 : -1;
+          const rDist = Math.hypot(x1, y1) + 0.3;
+          const tangX = (-y1 / rDist) * curlSign;
+          const tangY = (x1 / rDist) * curlSign;
+          targetX += tangX * 0.38 * env;
+          targetY += tangY * 0.38 * env;
+          targetZ += Math.sin(goldenAngle * 2) * 0.22 * env;
+        } else if (stageId === 'SPATIAL') {
+          // Spatial Identity: Gravitational cluster swirl convergence
+          const clusterIdx = i % 5;
+          const swirlDir = clusterIdx % 2 === 0 ? 1 : -1;
+          const swirlAngle = (1 - smoothT) * 1.8 * swirlDir + (i % 7) * 0.3;
+          targetX += -Math.sin(swirlAngle) * 0.24 * env;
+          targetY += Math.cos(swirlAngle) * 0.24 * env;
+          targetZ += Math.sin(swirlAngle * 2) * 0.16 * env;
+        } else if (stageId === 'TECH') {
+          // Tech Network: Relational orbital alignment
+          const phase = (i % 8) * 0.785398;
+          targetX += Math.sin(smoothT * Math.PI + phase) * 0.12 * env;
+          targetY += Math.cos(smoothT * Math.PI + phase) * 0.12 * env;
+          targetZ += Math.sin(smoothT * Math.PI * 2 + phase) * 0.08 * env;
+        } else if (stageId === 'CORE') {
+          // Heneoxy Core: Singularity spiral convergence
+          const spiralAngle = smoothT * Math.PI * 4 + i * 0.05;
+          targetX += -Math.sin(spiralAngle) * 0.15 * env;
+          targetY += Math.cos(spiralAngle) * 0.15 * env;
+          targetZ += Math.sin(spiralAngle * 2) * 0.08 * env;
+        } else if (stageId === 'OS') {
+          // Heneoxy OS: Radial bloom
+          targetX += Math.cos(i * 0.5) * 0.08 * env;
+          targetY += Math.sin(i * 0.5) * 0.08 * env;
+          targetZ += Math.cos(i * 0.3) * 0.05 * env;
+        }
+      }
+
+      // Subtle organic breathing oscillation (suppressed for letter particles during hold for razor-sharp legibility)
+      const isLetter = i < letterTotalPoints;
+      const noiseAmp = reducedMotion
+        ? 0
+        : stageId === 'HOLD' && isLetter
+          ? 0
+          : stageId === 'BREAK'
+            ? 0.06
+            : stageId === 'CORE'
+              ? 0.03
+              : 0.012;
+      const noiseFreq = stageId === 'BREAK' ? 3.5 : stageId === 'CORE' ? 5.0 : 1.2;
+      const subtleWobble = noiseAmp > 0 ? Math.sin(time * noiseFreq + i * 0.1) * noiseAmp : 0;
 
       // Cursor spring repulsion in physical typography & break stages
       let mouseRepelX = 0;
       let mouseRepelY = 0;
       let mouseRepelZ = 0;
-      if (!isMobile && !hasTouch && p > 0.15 && p < 0.75) {
+      if (!isMobile && !hasTouch && !reducedMotion && p > 0.15 && p < 0.75) {
         const dx = targetX - pointer.x * 3.5;
         const dy = targetY - pointer.y * 2.5;
         const distSq = dx * dx + dy * dy;
-        const maxDist = p >= 0.42 && p <= 0.55 ? 1.2 : 0.9;
+        const maxDist = stageId === 'HOLD' ? 1.2 : 0.9;
         if (distSq < maxDist && distSq > 0.001) {
-          const force = (maxDist - distSq) * (p >= 0.42 && p <= 0.55 ? 0.28 : 0.18);
+          const force = (maxDist - distSq) * (stageId === 'HOLD' ? 0.25 : 0.16);
           const dist = Math.sqrt(distSq);
           mouseRepelX = (dx / dist) * force;
           mouseRepelY = (dy / dist) * force;
-          mouseRepelZ = (1.0 - dist / maxDist) * 0.15;
+          mouseRepelZ = (1.0 - dist / maxDist) * 0.12;
         }
       }
 
       posArr[idx3] = targetX + mouseRepelX + subtleWobble;
       posArr[idx3 + 1] = targetY + mouseRepelY + subtleWobble;
-      posArr[idx3 + 2] = targetZ + mouseRepelZ + (p >= 0.92 && p < 0.96 ? Math.cos(time * 8 + i) * 0.04 : 0);
+      posArr[idx3 + 2] = targetZ + mouseRepelZ + (stageId === 'CORE' && !reducedMotion ? Math.cos(time * 8 + i) * 0.03 : 0);
     }
 
     positionsAttr.needsUpdate = true;
