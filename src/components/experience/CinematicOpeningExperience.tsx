@@ -68,10 +68,10 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
 
       const clampedRaw = Math.max(0, Math.min(1, calculatedProgress));
 
-      // HENIL PATEL 2-SECOND CINEMATIC HOLD (mobile only, skip for reduced-motion)
+      // HENIL PATEL 2-SECOND CINEMATIC HOLD (all devices: desktop, tablet, mobile; skip for reduced-motion)
       let effectiveProgress = clampedRaw;
 
-      if (isMobile && !reducedMotion) {
+      if (!reducedMotion) {
         const prev = displayProgressRef.current;
 
         if (

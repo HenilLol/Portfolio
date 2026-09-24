@@ -196,12 +196,17 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       ? Math.max(0.30, Math.min(0.44, (vw / 768) * 0.60))
       : 0.60;
 
+    // Responsive vertical centering:
+    // Move particle formation upward so it sits in the visual middle of the viewport
+    // (~45-50% on desktop, ~42-48% on mobile) with generous clearance from the lower editorial annotation text.
+    const typographyCenterY = isMobile ? 0.36 : 0.62;
+
     let pIdx = 0;
 
-    // Sample HENIL (Row 1: Y = +0.40)
+    // Sample HENIL (Row 1)
     firstName.forEach((char, lIdx) => {
       const xOffset = (lIdx - 2) * letterSpacing;
-      const yOffset = isMobile ? 0.38 : 0.40;
+      const yOffset = typographyCenterY + (isMobile ? 0.38 : 0.40);
       const strokes = generateLetterStrokes3D(char, letterPointsCount);
       strokes.forEach(([x, y, z]) => {
         if (pIdx < particleCount) {
@@ -220,10 +225,10 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       });
     });
 
-    // Sample PATEL (Row 2: Y = -0.40)
+    // Sample PATEL (Row 2)
     lastName.forEach((char, lIdx) => {
       const xOffset = (lIdx - 2) * letterSpacing;
-      const yOffset = isMobile ? -0.38 : -0.40;
+      const yOffset = typographyCenterY - (isMobile ? 0.38 : 0.40);
       const strokes = generateLetterStrokes3D(char, letterPointsCount);
       strokes.forEach(([x, y, z]) => {
         if (pIdx < particleCount) {
@@ -247,7 +252,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       const angle = Math.random() * Math.PI * 2;
       const r = 1.4 + Math.random() * 2.6;
       pPhysicalTypography[pIdx * 3] = Math.cos(angle) * r;
-      pPhysicalTypography[pIdx * 3 + 1] = Math.sin(angle) * (r * 0.5);
+      pPhysicalTypography[pIdx * 3 + 1] = typographyCenterY + Math.sin(angle) * (r * 0.5);
       pPhysicalTypography[pIdx * 3 + 2] = -0.2 - Math.random() * 2.0;
 
       pHenilConstruction[pIdx * 3] = pPhysicalTypography[pIdx * 3];
