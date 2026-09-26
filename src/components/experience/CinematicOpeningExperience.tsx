@@ -12,21 +12,21 @@ export interface CinematicOpeningExperienceProps {
 
 // Progress threshold at which HENIL PATEL is fully formed and we apply the hold
 const HENIL_PATEL_HOLD_ENTRY = 0.42;
-const HENIL_PATEL_HOLD_EXIT = 0.52;
-const HENIL_PATEL_HOLD_DURATION_MS = 2000;
+const HENIL_PATEL_HOLD_EXIT = 0.54;
+const HENIL_PATEL_HOLD_DURATION_MS = 1000;
 
 export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProps> = ({
   onComplete,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // displayProgress is what gets rendered � it lerps toward rawProgress
+  // displayProgress is what gets rendered — it lerps toward rawProgress
   const [displayProgress, setDisplayProgress] = useState<number>(0);
 
   // Internal refs (no re-render overhead)
   const displayProgressRef = useRef<number>(0);
 
-  // HENIL PATEL hold state � stored in refs to avoid stale closure issues
+  // HENIL PATEL hold state — stored in refs to avoid stale closure issues
   const holdActiveRef = useRef<boolean>(false);
   const holdStartTimeRef = useRef<number | null>(null);
   const holdTriggeredRef = useRef<boolean>(false);
@@ -102,7 +102,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
       }
 
       // Cinematic progress smoothing: lerp displayProgress toward effectiveProgress
-      // Factor 0.07 at ~60fps gives ~300ms smooth lag; reducedMotion snaps immediately
+      // Factor 0.07 at ~60fps gives ~300ms smooth momentum; reducedMotion snaps immediately
       const lerpFactor = reducedMotion ? 1.0 : 0.07;
       const newDisplay =
         displayProgressRef.current +
@@ -132,18 +132,25 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
     <div
       ref={containerRef}
       id="hero"
-      className="relative w-full h-[1000vh] bg-background text-foreground select-none"
+      className="relative w-full h-[1450vh] text-foreground select-none"
     >
       {/* Sticky Full-Viewport Film Environment */}
       <div className="sticky top-0 w-full h-screen h-[100dvh] overflow-x-clip overflow-y-visible flex flex-col justify-between">
-        {/* 3D WEBGL ENGINE */}
+        {/* Background Film Backdrop Layer (fades out synchronously at 0.94-0.99 with WebGL canvas to seamlessly reveal celestial atmosphere) */}
         <div
-          className="absolute top-0 left-0 right-0 h-[100vh] sm:h-[135vh] z-0 pointer-events-none"
+          className="absolute inset-0 w-full h-full bg-background pointer-events-none z-0"
           style={{
-            WebkitMaskImage:
-              "linear-gradient(to bottom, black 0%, black 65%, transparent 100%)",
-            maskImage:
-              "linear-gradient(to bottom, black 0%, black 65%, transparent 100%)",
+            opacity: progress >= 0.94 ? Math.max(0, 1 - (progress - 0.94) / 0.05) : 1,
+            transition: "opacity 0.1s ease-out",
+          }}
+        />
+
+        {/* 3D WEBGL ENGINE (Full 100dvh viewport with smooth handover alpha fadeout) */}
+        <div
+          className="absolute inset-0 w-full h-full z-0 pointer-events-none"
+          style={{
+            opacity: progress >= 0.94 ? Math.max(0, 1 - (progress - 0.94) / 0.05) : 1,
+            transition: "opacity 0.1s ease-out",
           }}
         >
           <SceneCanvas
@@ -164,27 +171,27 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
           className="relative z-20 w-full px-6 pt-6 sm:px-12 flex items-center justify-between pointer-events-none transition-opacity duration-300"
           style={{
             opacity:
-              progress >= 0.88
-                ? Math.max(0, 1 - (progress - 0.88) / 0.06)
+              progress >= 0.90
+                ? Math.max(0, 1 - (progress - 0.90) / 0.05)
                 : 1,
           }}
         >
           <div className="flex items-center gap-3">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
-              {progress < 0.08
+              {progress < 0.06
                 ? "DORMANT"
-                : progress < 0.2
+                : progress < 0.20
                 ? "PARTICLE FIELD"
                 : progress < 0.42
                 ? "CONSTRUCTING"
-                : progress < 0.55
+                : progress < 0.54
                 ? "PHYSICAL TYPOGRAPHY"
                 : progress < 0.68
                 ? "IDENTITY BREAK"
-                : progress < 0.78
+                : progress < 0.80
                 ? "SPATIAL IDENTITY"
-                : progress < 0.88
+                : progress < 0.90
                 ? "TECH NETWORK"
                 : progress < 0.96
                 ? "HENEOXY EMERGENCE"
@@ -206,7 +213,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
         <div className="relative z-10 w-full h-full flex flex-col justify-center items-center px-6 sm:px-12 pointer-events-none">
           {/* SCENE 00: DORMANT */}
           <AnimatePresence>
-            {progress < 0.08 && (
+            {progress < 0.06 && (
               <motion.div
                 key="scene-dormant"
                 initial={{ opacity: 0 }}
@@ -224,7 +231,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
 
           {/* SCENE 01: PARTICLE FIELD */}
           <AnimatePresence>
-            {progress >= 0.08 && progress < 0.2 && (
+            {progress >= 0.06 && progress < 0.20 && (
               <motion.div
                 key="scene-field"
                 initial={{ opacity: 0 }}
@@ -242,7 +249,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
 
           {/* SCENE 02 & 03: PHYSICAL HENIL PATEL */}
           <AnimatePresence>
-            {progress >= 0.35 && progress < 0.55 && (
+            {progress >= 0.35 && progress < 0.54 && (
               <motion.div
                 key="scene-typography"
                 initial={{ opacity: 0, y: 15 }}
@@ -263,7 +270,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
 
           {/* SCENE 04: IDENTITY BREAK */}
           <AnimatePresence>
-            {progress >= 0.55 && progress < 0.68 && (
+            {progress >= 0.54 && progress < 0.68 && (
               <motion.div
                 key="scene-break"
                 initial={{ opacity: 0 }}
@@ -279,70 +286,11 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
             )}
           </AnimatePresence>
 
-          {/* SCENE 05: SPATIAL IDENTITY */}
-          <AnimatePresence>
-            {progress >= 0.68 && progress < 0.78 && (
-              <motion.div
-                key="scene-spatial"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.04 }}
-                transition={{ duration: 0.4 }}
-                className="w-full max-w-5xl h-[70vh] flex flex-col justify-between pointer-events-none"
-              >
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <span className="font-mono text-xs font-bold text-[#00F0FF] tracking-wider uppercase block">
-                      ENGINEERING
-                    </span>
-                    <p className="font-sans text-xs text-foreground-secondary italic">
-                      "I build things."
-                    </p>
-                  </div>
-                  <div className="space-y-1 text-right">
-                    <span className="font-mono text-xs font-bold text-[#38BDF8] tracking-wider uppercase block">
-                      AI &amp; COGNITION
-                    </span>
-                    <p className="font-sans text-xs text-foreground-secondary italic">
-                      "I explore what they can become."
-                    </p>
-                  </div>
-                </div>
-
-                <div className="text-center my-auto">
-                  <span className="font-mono text-[10px] tracking-widest uppercase text-accent font-semibold block">
-                    SPATIAL TAXONOMY // CORE AXIS
-                  </span>
-                  <span className="font-editorial text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
-                    Four Spatial Pillars
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-end">
-                  <div className="space-y-1">
-                    <span className="font-mono text-xs font-bold text-[#EC4899] tracking-wider uppercase block">
-                      CREATIVE
-                    </span>
-                    <p className="font-sans text-xs text-foreground-secondary italic">
-                      "I care how they feel."
-                    </p>
-                  </div>
-                  <div className="space-y-1 text-right">
-                    <span className="font-mono text-xs font-bold text-[#818CF8] tracking-wider uppercase block">
-                      SYSTEMS
-                    </span>
-                    <p className="font-sans text-xs text-foreground-secondary italic">
-                      "I connect the pieces."
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* SCENE 05: SPATIAL IDENTITY (Text is rendered precisely inside 3D nodes via Html in CinematicOpening3D) */}
 
           {/* SCENE 06: TECHNOLOGY NETWORK */}
           <AnimatePresence>
-            {progress >= 0.78 && progress < 0.88 && (
+            {progress >= 0.80 && progress < 0.90 && (
               <motion.div
                 key="scene-network"
                 initial={{ opacity: 0, y: 15 }}
@@ -369,7 +317,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
 
           {/* SCENE 07: HENEOXY EMERGENCE & HANDOVER */}
           <AnimatePresence>
-            {progress >= 0.88 && (
+            {progress >= 0.90 && (
               <motion.div
                 key="scene-heneoxy"
                 initial={{ opacity: 0, scale: 0.92 }}
@@ -402,8 +350,6 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
             )}
           </AnimatePresence>
         </div>
-
-        {/* HUD text (COORDINATE / TIMELINE REVERSIBLE) has been intentionally removed */}
       </div>
     </div>
   );

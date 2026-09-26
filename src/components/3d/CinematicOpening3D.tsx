@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useViewport } from '@/hooks/useViewport';
@@ -50,29 +51,45 @@ function createArcStroke(
   };
 }
 
-// 2D Cubic Bezier curve stroke definition with arc-length approximation
+// 2D Cubic Bezier curve stroke definition with true arc-length reparameterization
 function createCubicBezierStroke(
   p0: [number, number],
   p1: [number, number],
   p2: [number, number],
-  p3: [number, number]
+  p3: [number, number],
+  subdivisions: number = 32
 ): StrokeDefinition {
-  let len = 0;
+  const table: number[] = [0];
   let prev = p0;
-  for (let i = 1; i <= 10; i++) {
-    const t = i / 10;
+  let totalLen = 0;
+  for (let i = 1; i <= subdivisions; i++) {
+    const t = i / subdivisions;
     const it = 1 - t;
     const cur: [number, number] = [
       it * it * it * p0[0] + 3 * it * it * t * p1[0] + 3 * it * t * t * p2[0] + t * t * t * p3[0],
       it * it * it * p0[1] + 3 * it * it * t * p1[1] + 3 * it * t * t * p2[1] + t * t * t * p3[1],
     ];
-    len += Math.hypot(cur[0] - prev[0], cur[1] - prev[1]);
+    totalLen += Math.hypot(cur[0] - prev[0], cur[1] - prev[1]);
+    table.push(totalLen);
     prev = cur;
   }
   return {
     type: 'bezier',
-    length: len,
-    sample: (t: number) => {
+    length: totalLen,
+    sample: (u: number) => {
+      const clampedU = Math.max(0, Math.min(1, u));
+      const targetLen = clampedU * totalLen;
+      let low = 0;
+      let high = subdivisions;
+      while (low < high) {
+        const mid = (low + high) >> 1;
+        if (table[mid] < targetLen) low = mid + 1;
+        else high = mid;
+      }
+      const idx = Math.max(1, low);
+      const segLen = table[idx] - table[idx - 1];
+      const frac = segLen > 0.000001 ? (targetLen - table[idx - 1]) / segLen : 0;
+      const t = (idx - 1 + frac) / subdivisions;
       const it = 1 - t;
       return [
         it * it * it * p0[0] + 3 * it * it * t * p1[0] + 3 * it * t * t * p2[0] + t * t * t * p3[0],
@@ -82,28 +99,44 @@ function createCubicBezierStroke(
   };
 }
 
-// 2D Quadratic Bezier curve stroke definition
+// 2D Quadratic Bezier curve stroke definition with true arc-length reparameterization
 function createQuadraticBezierStroke(
   p0: [number, number],
   p1: [number, number],
-  p2: [number, number]
+  p2: [number, number],
+  subdivisions: number = 24
 ): StrokeDefinition {
-  let len = 0;
+  const table: number[] = [0];
   let prev = p0;
-  for (let i = 1; i <= 8; i++) {
-    const t = i / 8;
+  let totalLen = 0;
+  for (let i = 1; i <= subdivisions; i++) {
+    const t = i / subdivisions;
     const it = 1 - t;
     const cur: [number, number] = [
       it * it * p0[0] + 2 * it * t * p1[0] + t * t * p2[0],
       it * it * p0[1] + 2 * it * t * p1[1] + t * t * p2[1],
     ];
-    len += Math.hypot(cur[0] - prev[0], cur[1] - prev[1]);
+    totalLen += Math.hypot(cur[0] - prev[0], cur[1] - prev[1]);
+    table.push(totalLen);
     prev = cur;
   }
   return {
     type: 'bezier',
-    length: len,
-    sample: (t: number) => {
+    length: totalLen,
+    sample: (u: number) => {
+      const clampedU = Math.max(0, Math.min(1, u));
+      const targetLen = clampedU * totalLen;
+      let low = 0;
+      let high = subdivisions;
+      while (low < high) {
+        const mid = (low + high) >> 1;
+        if (table[mid] < targetLen) low = mid + 1;
+        else high = mid;
+      }
+      const idx = Math.max(1, low);
+      const segLen = table[idx] - table[idx - 1];
+      const frac = segLen > 0.000001 ? (targetLen - table[idx - 1]) / segLen : 0;
+      const t = (idx - 1 + frac) / subdivisions;
       const it = 1 - t;
       return [
         it * it * p0[0] + 2 * it * t * p1[0] + t * t * p2[0],
@@ -126,7 +159,7 @@ function getLetterStrokes(char: string, w: number, h: number): StrokeDefinition[
       return [
         createLineStroke(-w, -h, -w, h),
         createLineStroke(-w, h, w, h),
-        createLineStroke(-w, 0.02, w * 0.72, 0.02),
+        createLineStroke(-w, 0.02, w * 0.80, 0.02),
         createLineStroke(-w, -h, w, -h),
       ];
     case 'N':
@@ -136,10 +169,11 @@ function getLetterStrokes(char: string, w: number, h: number): StrokeDefinition[
         createLineStroke(w, -h, w, h),
       ];
     case 'I':
+      // Narrow glyph with balanced top/bottom serifs
       return [
         createLineStroke(0, -h, 0, h),
-        createLineStroke(-w * 0.6, h, w * 0.6, h),
-        createLineStroke(-w * 0.6, -h, w * 0.6, -h),
+        createLineStroke(-0.09, h, 0.09, h),
+        createLineStroke(-0.09, -h, 0.09, -h),
       ];
     case 'L':
       return [
@@ -153,8 +187,8 @@ function getLetterStrokes(char: string, w: number, h: number): StrokeDefinition[
         // Continuous smooth architectural cubic Bezier curved bowl from top spine to mid spine
         createCubicBezierStroke(
           [-w, h],
-          [w * 1.667, h],
-          [w * 1.667, 0.02],
+          [w * 1.35, h],
+          [w * 1.35, 0.02],
           [-w, 0.02]
         ),
       ];
@@ -162,12 +196,12 @@ function getLetterStrokes(char: string, w: number, h: number): StrokeDefinition[
       return [
         createLineStroke(-w, -h, 0, h),
         createLineStroke(0, h, w, -h),
-        createLineStroke(-w * 0.6, -0.06, w * 0.6, -0.06),
+        createLineStroke(-w * 0.55, -0.06, w * 0.55, -0.06),
       ];
     case 'T':
       return [
+        createLineStroke(-w * 1.1, h, w * 1.1, h),
         createLineStroke(0, -h, 0, h),
-        createLineStroke(-w, h, w, h),
       ];
     case 'C':
       return [
@@ -185,7 +219,7 @@ function getLetterStrokes(char: string, w: number, h: number): StrokeDefinition[
     case 'R':
       return [
         createLineStroke(-w, -h, -w, h),
-        createCubicBezierStroke([-w, h], [w * 1.667, h], [w * 1.667, 0.02], [-w, 0.02]),
+        createCubicBezierStroke([-w, h], [w * 1.35, h], [w * 1.35, 0.02], [-w, 0.02]),
         createLineStroke(-w * 0.15, 0.02, w, -h),
       ];
     case 'S':
@@ -198,72 +232,29 @@ function getLetterStrokes(char: string, w: number, h: number): StrokeDefinition[
   }
 }
 
-// Generate volumetric 3D letter strokes in local coordinates with arc-length aware point distribution
-function generateLetterStrokes3D(char: string, totalPoints: number): [number, number, number][] {
-  const w = 0.19;
-  const h = 0.28;
-  const d = 0.05;
-  const jitter = 0.015;
-
-  const strokes = getLetterStrokes(char, w, h);
-  const totalLength = strokes.reduce((sum, s) => sum + s.length, 0);
-
-  // Allocate points proportionally to stroke arc-length (prevents sparse stems or clumped crossbars)
-  const allocations = strokes.map((s) =>
-    Math.max(3, Math.round((s.length / totalLength) * totalPoints))
-  );
-
-  // Reconcile total point budget deterministically
-  let currentSum = allocations.reduce((a, b) => a + b, 0);
-  let diff = totalPoints - currentSum;
-  let allocIdx = 0;
-  while (diff !== 0) {
-    if (diff > 0) {
-      allocations[allocIdx % allocations.length]++;
-      diff--;
-    } else {
-      if (allocations[allocIdx % allocations.length] > 2) {
-        allocations[allocIdx % allocations.length]--;
-        diff++;
-      }
-    }
-    allocIdx++;
-  }
-
-  const result: [number, number, number][] = [];
-
-  strokes.forEach((stroke, sIdx) => {
-    const count = allocations[sIdx];
-    for (let i = 0; i < count; i++) {
-      const t = count === 1 ? 0.5 : i / (count - 1);
-      const [x, y] = stroke.sample(t);
-
-      // 5-Layer Volumetric depth distribution: front (-d), back (+d), mid (0), and diagonal cross-filaments
-      const layerMode = i % 5;
-      let zBase = 0;
-      if (layerMode === 0) zBase = -d;
-      else if (layerMode === 1) zBase = d;
-      else if (layerMode === 2) zBase = 0;
-      else if (layerMode === 3) zBase = -d + 2 * d * t;
-      else zBase = d - 2 * d * t;
-
-      result.push([
-        x + (Math.random() - 0.5) * jitter,
-        y + (Math.random() - 0.5) * jitter,
-        zBase + (Math.random() - 0.5) * jitter,
-      ]);
-    }
-  });
-
-  return result.slice(0, totalPoints);
+export interface SpatialNodeConfig {
+  id: string;
+  name: string;
+  pos: [number, number, number];
+  r: number;
+  color: string;
 }
 
-// 4 Cardinal Dimensions configuration
-const DIMENSION_CLUSTERS = [
-  { id: 'engineering', pos: [-2.2, 1.5, 0.2] as [number, number, number], color: '#00F0FF' },
-  { id: 'ai', pos: [2.3, 1.3, -0.3] as [number, number, number], color: '#38BDF8' },
-  { id: 'systems', pos: [2.1, -1.6, 0.2] as [number, number, number], color: '#818CF8' },
-  { id: 'creative', pos: [-2.3, -1.4, -0.2] as [number, number, number], color: '#EC4899' },
+// 5 Spatial Identity Constellation Nodes (Center + 4 Cardinal Anchors)
+const SPATIAL_CONSTELLATION_NODES: SpatialNodeConfig[] = [
+  { id: 'center', name: 'SPATIAL IDENTITY', pos: [0.0, 0.0, 0.0], r: 0.88, color: '#00F0FF' },
+  { id: 'engineering', name: 'ENGINEERING', pos: [-2.25, 1.25, 0.0], r: 0.66, color: '#00F0FF' },
+  { id: 'ai', name: 'AI & COGNITION', pos: [2.25, 1.25, 0.0], r: 0.66, color: '#38BDF8' },
+  { id: 'creative', name: 'CREATIVE', pos: [-2.25, -1.25, 0.0], r: 0.66, color: '#EC4899' },
+  { id: 'systems', name: 'SYSTEMS', pos: [2.25, -1.25, 0.0], r: 0.66, color: '#818CF8' },
+];
+
+const SPATIAL_CONSTELLATION_NODES_MOBILE: SpatialNodeConfig[] = [
+  { id: 'center', name: 'SPATIAL IDENTITY', pos: [0.0, 0.0, 0.0], r: 0.46, color: '#00F0FF' },
+  { id: 'engineering', name: 'ENGINEERING', pos: [-0.62, 1.45, 0.0], r: 0.34, color: '#00F0FF' },
+  { id: 'ai', name: 'AI & COGNITION', pos: [0.62, 1.45, 0.0], r: 0.34, color: '#38BDF8' },
+  { id: 'creative', name: 'CREATIVE', pos: [-0.62, -1.45, 0.0], r: 0.34, color: '#EC4899' },
+  { id: 'systems', name: 'SYSTEMS', pos: [0.62, -1.45, 0.0], r: 0.34, color: '#818CF8' },
 ];
 
 // 16 Relational Technology nodes
@@ -360,15 +351,16 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
 
   // 2400 particles desktop / 900 mobile for rich physical density
   const particleCount = useMemo(() => (isMobile ? 900 : 2400), [isMobile]);
+  const totalTypographyPoints = useMemo(() => (isMobile ? 760 : 2000), [isMobile]);
 
   // Active particle material with lifecycle management & safe fallback
   const activeMaterial = useMemo(() => {
     if (shaderFailed || useFallbackShader) {
       return new THREE.PointsMaterial({
-        size: isMobile ? 0.032 : 0.042,
+        size: isMobile ? 0.036 : 0.046,
         vertexColors: true,
         transparent: true,
-        opacity: 0.92,
+        opacity: 0.96,
         sizeAttenuation: true,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
@@ -376,11 +368,11 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     }
 
     return new CinematicParticlePointsMaterial({
-      size: isMobile ? 0.032 : 0.042,
-      opacity: 0.92,
-      coreSharpness: 16.0,
-      coreLuminance: 0.45,
-      auraIntensity: 0.65,
+      size: isMobile ? 0.036 : 0.046,
+      opacity: 0.96,
+      coreSharpness: 14.0,
+      coreLuminance: 0.55,
+      auraIntensity: 0.75,
     });
   }, [isMobile, shaderFailed, useFallbackShader]);
 
@@ -413,6 +405,50 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     };
   }, [gl, activeMaterial, shaderFailed, useFallbackShader]);
 
+  // Responsive Spatial Identity Constellation Nodes (Center + 4 Cardinal Anchors)
+  const spatialNodes = useMemo<SpatialNodeConfig[]>(() => {
+    return isMobile ? SPATIAL_CONSTELLATION_NODES_MOBILE : SPATIAL_CONSTELLATION_NODES;
+  }, [isMobile]);
+
+  // Constellation connecting backbone lines running between node perimeters at z = -0.10
+  const spatialLinePositions = useMemo(() => {
+    const pairs = [
+      [0, 1], // Center -> Engineering
+      [0, 2], // Center -> AI & Cognition
+      [0, 3], // Center -> Creative
+      [0, 4], // Center -> Systems
+      [1, 2], // Engineering -> AI & Cognition
+      [2, 4], // AI & Cognition -> Systems
+      [4, 3], // Systems -> Creative
+      [3, 1], // Creative -> Engineering
+    ];
+    const pos = new Float32Array(pairs.length * 2 * 3);
+    pairs.forEach(([iA, iB], idx) => {
+      const nA = spatialNodes[iA];
+      const nB = spatialNodes[iB];
+      const dx = nB.pos[0] - nA.pos[0];
+      const dy = nB.pos[1] - nA.pos[1];
+      const dist = Math.hypot(dx, dy) || 1;
+      const ux = dx / dist;
+      const uy = dy / dist;
+      // Perimeter anchors so lines never enter circle interiors or cross text
+      const sx = nA.pos[0] + ux * nA.r;
+      const sy = nA.pos[1] + uy * nA.r;
+      const ex = nB.pos[0] - ux * nB.r;
+      const ey = nB.pos[1] - uy * nB.r;
+      const z = -0.10;
+
+      const pIdx = idx * 6;
+      pos[pIdx] = sx;
+      pos[pIdx + 1] = sy;
+      pos[pIdx + 2] = z;
+      pos[pIdx + 3] = ex;
+      pos[pIdx + 4] = ey;
+      pos[pIdx + 5] = z;
+    });
+    return pos;
+  }, [spatialNodes]);
+
   // Generate All Deterministic Target Buffers once
   const {
     posDormant,
@@ -438,75 +474,145 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     const pHeneoxyOS = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
 
-    // Letter sampling setup: 10 letters (HENIL + PATEL)
-    const letterPointsCount = Math.floor((particleCount * 0.7) / 10);
-    const firstName = ['H', 'E', 'N', 'I', 'L'];
-    const lastName = ['P', 'A', 'T', 'E', 'L'];
-    // Responsive letter spacing: scale down progressively for narrower screens
-    // vw=320 -> 0.32, vw=375 -> 0.36, vw=430 -> 0.40, vw=768+ -> 0.60
     const vw = viewportWidth ?? (typeof window !== 'undefined' ? window.innerWidth : 1280);
-    const letterSpacing = isMobile
-      ? Math.max(0.30, Math.min(0.44, (vw / 768) * 0.60))
-      : 0.60;
+    const scale = isMobile ? Math.max(0.62, Math.min(0.85, (vw / 768) * 0.95)) : 1.0;
+    const rowOffset = (isMobile ? 0.36 : 0.38) * scale;
+    const typographyCenterY = 0.0;
 
-    // Responsive vertical centering:
-    // Move particle formation upward so it sits in the visual middle of the viewport
-    // (~45-50% on desktop, ~42-48% on mobile) with generous clearance from the lower editorial annotation text.
-    const typographyCenterY = isMobile ? 0.36 : 0.62;
+    const w = 0.17;
+    const h = 0.28;
+
+    // 10 Glyphs layout with balanced optical kerning
+    const glyphLayout = [
+      // Row 1: HENIL
+      { char: 'H', gx: -1.00 * scale, gy: typographyCenterY + rowOffset, isI: false },
+      { char: 'E', gx: -0.50 * scale, gy: typographyCenterY + rowOffset, isI: false },
+      { char: 'N', gx: 0.00 * scale, gy: typographyCenterY + rowOffset, isI: false },
+      { char: 'I', gx: 0.50 * scale, gy: typographyCenterY + rowOffset, isI: true },
+      { char: 'L', gx: 1.00 * scale, gy: typographyCenterY + rowOffset, isI: false },
+      // Row 2: PATEL
+      { char: 'P', gx: -1.06 * scale, gy: typographyCenterY - rowOffset, isI: false },
+      { char: 'A', gx: -0.53 * scale, gy: typographyCenterY - rowOffset, isI: false },
+      { char: 'T', gx: 0.00 * scale, gy: typographyCenterY - rowOffset, isI: false },
+      { char: 'E', gx: 0.53 * scale, gy: typographyCenterY - rowOffset, isI: false },
+      { char: 'L', gx: 1.06 * scale, gy: typographyCenterY - rowOffset, isI: false },
+    ];
+
+    interface FlatStroke {
+      gIdx: number;
+      char: string;
+      gx: number;
+      gy: number;
+      stroke: StrokeDefinition;
+      length: number;
+    }
+
+    const flatStrokes: FlatStroke[] = [];
+    glyphLayout.forEach((g, gIdx) => {
+      const cw = g.isI ? 0.09 : w;
+      const strokes = getLetterStrokes(g.char, cw, h);
+      strokes.forEach((s) => {
+        flatStrokes.push({
+          gIdx,
+          char: g.char,
+          gx: g.gx,
+          gy: g.gy,
+          stroke: s,
+          length: s.length,
+        });
+      });
+    });
+
+    const totalArcLength = flatStrokes.reduce((sum, s) => sum + s.length, 0);
+
+    // Global arc-length-weighted allocation with guaranteed minimum 6 points per stroke
+    const allocations = flatStrokes.map((s) =>
+      Math.max(6, Math.round((s.length / totalArcLength) * totalTypographyPoints))
+    );
+
+    // Reconcile total typography points deterministically
+    let currentSum = allocations.reduce((a, b) => a + b, 0);
+    let diff = totalTypographyPoints - currentSum;
+    let allocIdx = 0;
+    while (diff !== 0) {
+      if (diff > 0) {
+        allocations[allocIdx % allocations.length]++;
+        diff--;
+      } else {
+        if (allocations[allocIdx % allocations.length] > 6) {
+          allocations[allocIdx % allocations.length]--;
+          diff++;
+        }
+      }
+      allocIdx++;
+    }
 
     let pIdx = 0;
 
-    // Sample HENIL (Row 1)
-    firstName.forEach((char, lIdx) => {
-      const xOffset = (lIdx - 2) * letterSpacing;
-      const yOffset = typographyCenterY + (isMobile ? 0.38 : 0.40);
-      const strokes = generateLetterStrokes3D(char, letterPointsCount);
-      strokes.forEach(([x, y, z]) => {
-        if (pIdx < particleCount) {
-          pPhysicalTypography[pIdx * 3] = xOffset + x;
-          pPhysicalTypography[pIdx * 3 + 1] = yOffset + y;
-          pPhysicalTypography[pIdx * 3 + 2] = z;
+    // Sample all typography strokes uniformly along arc length
+    flatStrokes.forEach((item, flatIdx) => {
+      const count = allocations[flatIdx];
+      for (let i = 0; i < count; i++) {
+        if (pIdx >= particleCount) break;
 
-          // Progressive construction target: letter by letter emergence
-          const letterT = lIdx / 5;
-          pHenilConstruction[pIdx * 3] = xOffset + x * (0.3 + 0.7 * (1 - letterT));
-          pHenilConstruction[pIdx * 3 + 1] = yOffset + y * (0.3 + 0.7 * (1 - letterT));
-          pHenilConstruction[pIdx * 3 + 2] = z + (Math.random() - 0.5) * 0.3;
+        const u = count === 1 ? 0.5 : i / (count - 1);
+        const [lx, ly] = item.stroke.sample(u);
 
-          pIdx++;
-        }
-      });
+        // Planar precision coordinates with microscopic physical jitter
+        const xFinal = item.gx + lx * scale + (Math.random() - 0.5) * 0.002;
+        const yFinal = item.gy + ly * scale + (Math.random() - 0.5) * 0.002;
+        const zFinal = (Math.random() - 0.5) * 0.012;
+
+        pPhysicalTypography[pIdx * 3] = xFinal;
+        pPhysicalTypography[pIdx * 3 + 1] = yFinal;
+        pPhysicalTypography[pIdx * 3 + 2] = zFinal;
+
+        // Symmetrical orbital construction target
+        const angle = item.gIdx * 1.25 + (pIdx % 16) * (Math.PI / 8);
+        const spiralR = 0.28 + (pIdx % 5) * 0.05;
+        pHenilConstruction[pIdx * 3] = xFinal + Math.cos(angle) * spiralR;
+        pHenilConstruction[pIdx * 3 + 1] = yFinal + Math.sin(angle) * spiralR;
+        pHenilConstruction[pIdx * 3 + 2] = zFinal + Math.sin(angle * 2) * 0.04;
+
+        pIdx++;
+      }
     });
 
-    // Sample PATEL (Row 2)
-    lastName.forEach((char, lIdx) => {
-      const xOffset = (lIdx - 2) * letterSpacing;
-      const yOffset = typographyCenterY - (isMobile ? 0.38 : 0.40);
-      const strokes = generateLetterStrokes3D(char, letterPointsCount);
-      strokes.forEach(([x, y, z]) => {
-        if (pIdx < particleCount) {
-          pPhysicalTypography[pIdx * 3] = xOffset + x;
-          pPhysicalTypography[pIdx * 3 + 1] = yOffset + y;
-          pPhysicalTypography[pIdx * 3 + 2] = z;
+    const letterTotalPointsCalculated = pIdx;
 
-          // Progressive construction target
-          const letterT = lIdx / 5;
-          pHenilConstruction[pIdx * 3] = xOffset + x * (0.3 + 0.7 * (1 - letterT));
-          pHenilConstruction[pIdx * 3 + 1] = yOffset + y * (0.3 + 0.7 * (1 - letterT));
-          pHenilConstruction[pIdx * 3 + 2] = z + (Math.random() - 0.5) * 0.3;
+    // Dedicated Foreground Particle Layer: Luminous stardust passing directly in front of the typography (z in [0.50, 1.38])
+    const foregroundCount = isMobile ? 14 : 36;
+    const foregroundEnd = letterTotalPointsCalculated + foregroundCount;
 
-          pIdx++;
-        }
-      });
-    });
+    for (let fgIdx = 0; fgIdx < foregroundCount && pIdx < particleCount; fgIdx++) {
+      const u = (fgIdx + 0.5) / foregroundCount;
+      const xFg = (-1.20 + u * 2.40) * scale;
+      const yBase = fgIdx % 2 === 0 ? typographyCenterY + rowOffset : typographyCenterY - rowOffset;
+      const yFg = yBase + Math.sin(fgIdx * 1.7) * (0.16 * scale);
+      const zFg = 0.50 + ((fgIdx % 5) * 0.22); // Explicit foreground depth between camera (z=4.7) and text (z=0)
 
-    // Remaining points are ambient coordinate filaments around the typography
+      pPhysicalTypography[pIdx * 3] = xFg;
+      pPhysicalTypography[pIdx * 3 + 1] = yFg;
+      pPhysicalTypography[pIdx * 3 + 2] = zFg;
+
+      // Symmetrical orbital approach
+      const angle = fgIdx * 0.85 + (pIdx % 8) * (Math.PI / 4);
+      const spiralR = 0.35 + (pIdx % 4) * 0.08;
+      pHenilConstruction[pIdx * 3] = xFg + Math.cos(angle) * spiralR;
+      pHenilConstruction[pIdx * 3 + 1] = yFg + Math.sin(angle) * spiralR;
+      pHenilConstruction[pIdx * 3 + 2] = zFg + Math.sin(angle * 2) * 0.06;
+
+      pIdx++;
+    }
+
+    // Remaining points are ambient background coordinate filaments in outer exclusion zone (r >= 2.2, z <= -0.8)
     while (pIdx < particleCount) {
       const angle = Math.random() * Math.PI * 2;
-      const r = 1.4 + Math.random() * 2.6;
+      const r = 2.2 + Math.random() * 2.8;
+      const zAmb = -0.8 - Math.random() * 2.8;
       pPhysicalTypography[pIdx * 3] = Math.cos(angle) * r;
-      pPhysicalTypography[pIdx * 3 + 1] = typographyCenterY + Math.sin(angle) * (r * 0.5);
-      pPhysicalTypography[pIdx * 3 + 2] = -0.2 - Math.random() * 2.0;
+      pPhysicalTypography[pIdx * 3 + 1] = typographyCenterY + Math.sin(angle) * (r * 0.55);
+      pPhysicalTypography[pIdx * 3 + 2] = zAmb;
 
       pHenilConstruction[pIdx * 3] = pPhysicalTypography[pIdx * 3];
       pHenilConstruction[pIdx * 3 + 1] = pPhysicalTypography[pIdx * 3 + 1];
@@ -541,18 +647,25 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       pBreak[idx3 + 1] = bDist * Math.sin(bPhi) * Math.sin(bTheta);
       pBreak[idx3 + 2] = bDist * Math.cos(bPhi);
 
-      // 5. SPATIAL IDENTITY (4 dimension clusters + central HENIL core)
-      const clusterIdx = i % 5;
-      const sTheta = Math.random() * Math.PI * 2;
-      const sPhi = Math.acos(Math.random() * 2 - 1);
-      const sRadius = 0.08 + Math.random() * 0.35;
-      let center = [0, 0, 0];
-      if (clusterIdx > 0) {
-        center = DIMENSION_CLUSTERS[clusterIdx - 1].pos;
-      }
-      pSpatialIdentity[idx3] = center[0] + sRadius * Math.sin(sPhi) * Math.cos(sTheta);
-      pSpatialIdentity[idx3 + 1] = center[1] + sRadius * Math.sin(sPhi) * Math.sin(sTheta);
-      pSpatialIdentity[idx3 + 2] = center[2] + sRadius * Math.cos(sPhi);
+      // 5. SPATIAL IDENTITY: 5 distinct circular particle nodes with strict text exclusion zone
+      const nodeIdx = i % 5;
+      const node = spatialNodes[nodeIdx];
+      const nodeParticleIdx = Math.floor(i / 5);
+      const totalInNode = Math.floor(particleCount / 5);
+
+      // Deterministic uniform angle distribution around circle perimeter
+      const circleAngle = (nodeParticleIdx / totalInNode) * Math.PI * 2 + ((i * 17) % 11) * 0.015;
+
+      // Controlled halo ring: r in [0.94 * R, 1.12 * R] (strictly outside text exclusion zone 0.90 * R)
+      const rJitter = (((i * 37) % 100) / 100 - 0.5) * 0.14;
+      const finalR = node.r * (1.0 + rJitter);
+
+      // Planar depth: z in [-0.03, 0.03] (strictly behind text)
+      const zJitter = (((i * 53) % 100) / 100 - 0.5) * 0.05;
+
+      pSpatialIdentity[idx3] = node.pos[0] + Math.cos(circleAngle) * finalR;
+      pSpatialIdentity[idx3 + 1] = node.pos[1] + Math.sin(circleAngle) * finalR;
+      pSpatialIdentity[idx3 + 2] = node.pos[2] + zJitter;
 
       // 6. TECH NETWORK (16 computational hubs)
       const hub = TECH_NODES[i % TECH_NODES.length];
@@ -586,35 +699,59 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
         pHeneoxyOS[idx3 + 2] = (Math.random() - 0.5) * 0.18;
       }
 
-      // Base Colors: Gradient from Pure White to Electric Cyan, Sky Blue, and Indigo
-      const dice = Math.random();
-      if (dice > 0.6) {
-        colors[idx3] = 0.0;
-        colors[idx3 + 1] = 0.94; // Cyan #00F0FF
-        colors[idx3 + 2] = 1.0;
-      } else if (dice > 0.3) {
-        colors[idx3] = 0.22;
-        colors[idx3 + 1] = 0.74; // Sky Blue #38BDF8
-        colors[idx3 + 2] = 0.97;
+      // Luminous hierarchy: Typography vs Foreground Stardust vs Ambient Background
+      if (i < letterTotalPointsCalculated) {
+        // Typography particles (Brilliant Diamond White & Electric Cyan)
+        const dice = Math.random();
+        if (dice > 0.30) {
+          colors[idx3] = 1.0;
+          colors[idx3 + 1] = 1.0;
+          colors[idx3 + 2] = 1.0;
+        } else if (dice > 0.10) {
+          colors[idx3] = 0.15;
+          colors[idx3 + 1] = 0.95;
+          colors[idx3 + 2] = 1.0;
+        } else {
+          colors[idx3] = 0.35;
+          colors[idx3 + 1] = 0.85;
+          colors[idx3 + 2] = 1.0;
+        }
+      } else if (i < foregroundEnd) {
+        // Foreground stardust crossing over letters (Luminous crystalline diamond-cyan)
+        const dice = Math.random();
+        if (dice > 0.40) {
+          colors[idx3] = 0.85;
+          colors[idx3 + 1] = 0.98;
+          colors[idx3 + 2] = 1.0;
+        } else {
+          colors[idx3] = 0.20;
+          colors[idx3 + 1] = 0.95;
+          colors[idx3 + 2] = 1.0;
+        }
       } else {
-        colors[idx3] = 0.96;
-        colors[idx3 + 1] = 0.98; // White
-        colors[idx3 + 2] = 1.0;
+        // Ambient background particles: deep subtle ethereal palette
+        const dice = Math.random();
+        if (dice > 0.5) {
+          colors[idx3] = 0.15;
+          colors[idx3 + 1] = 0.35;
+          colors[idx3 + 2] = 0.75;
+        } else {
+          colors[idx3] = 0.05;
+          colors[idx3 + 1] = 0.45;
+          colors[idx3 + 2] = 0.65;
+        }
       }
     }
 
-    // Dynamic line connection indices
+    // Dynamic line connection indices: connect strictly among ambient background nodes
     const indices: number[] = [];
-    for (let c = 0; c < 4; c++) {
-      indices.push(0, (c + 1) * Math.floor(particleCount / 5));
-      indices.push(
-        (c + 1) * Math.floor(particleCount / 5),
-        (((c + 1) % 4) + 1) * Math.floor(particleCount / 5)
-      );
-    }
+    const ambientStart = foregroundEnd;
+    const ambientCount = Math.max(1, particleCount - ambientStart);
     for (let t = 0; t < TECH_NODES.length; t++) {
       const next = (t + 1) % TECH_NODES.length;
-      indices.push(t * 35, next * 35);
+      const p1 = ambientStart + ((t * 19) % ambientCount);
+      const p2 = ambientStart + ((next * 19) % ambientCount);
+      indices.push(p1, p2);
     }
 
     return {
@@ -629,8 +766,10 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       posHeneoxyOS: pHeneoxyOS,
       colorsBase: colors,
       lineIndices: new Uint16Array(indices),
+      letterTotalPointsCalculated,
+      foregroundCount,
     };
-  }, [particleCount, isMobile, viewportWidth]);
+  }, [particleCount, isMobile, viewportWidth, totalTypographyPoints, spatialNodes]);
 
   // Current typed array buffers for points and lines
   const currentPositions = useMemo(() => new Float32Array(particleCount * 3), [particleCount]);
@@ -657,15 +796,15 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
 
     // Continuous C1/C2 waypoints with matching endpoint coordinates across all stage boundaries
     const WAYPOINTS: Waypoint[] = [
-      { p: 0.00, pos: [0, 0, 8.5], lookAt: [0, 0, 0], lineOpacity: 0.05, pointSize: ptSize(0.034, 0.026) },
-      { p: 0.08, pos: [0, 0, 8.5], lookAt: [0, 0, 0], lineOpacity: 0.05, pointSize: ptSize(0.034, 0.026) },
-      { p: 0.20, pos: [0, 0, 6.8], lookAt: [0, 0, 0], lineOpacity: 0.20, pointSize: ptSize(0.040, 0.030) },
-      { p: 0.42, pos: [0, 0, 4.8], lookAt: [0, 0, 0], lineOpacity: 0.35, pointSize: ptSize(0.042, 0.032) },
-      { p: 0.55, pos: [0.20, 0.08, 4.55], lookAt: [0, 0, 0], lineOpacity: 0.35, pointSize: ptSize(0.042, 0.032) },
-      { p: 0.68, pos: [0, 0, 5.8], lookAt: [0, 0, 0], lineOpacity: 0.55, pointSize: ptSize(0.036, 0.028) },
-      { p: 0.78, pos: [-0.80, 0.30, 4.9], lookAt: [0, 0, 0], lineOpacity: 0.75, pointSize: ptSize(0.040, 0.030) },
-      { p: 0.88, pos: [0.40, -0.20, 5.2], lookAt: [0, 0, 0], lineOpacity: 0.85, pointSize: ptSize(0.040, 0.030) },
-      { p: 1.00, pos: [0.60, -0.15, 4.2], lookAt: [0, 0, 0], lineOpacity: 0.70, pointSize: ptSize(0.042, 0.032) },
+      { p: 0.00, pos: [0, 0, 8.5], lookAt: [0, 0, 0], lineOpacity: 0.0, pointSize: ptSize(0.034, 0.026) },
+      { p: 0.06, pos: [0, 0, 8.5], lookAt: [0, 0, 0], lineOpacity: 0.0, pointSize: ptSize(0.034, 0.026) },
+      { p: 0.20, pos: [0, 0, 6.8], lookAt: [0, 0, 0], lineOpacity: 0.0, pointSize: ptSize(0.038, 0.028) },
+      { p: 0.42, pos: [0, 0, 4.8], lookAt: [0, 0, 0], lineOpacity: 0.0, pointSize: ptSize(0.046, 0.036) },
+      { p: 0.54, pos: [0.10, 0.04, 4.65], lookAt: [0, 0, 0], lineOpacity: 0.0, pointSize: ptSize(0.046, 0.036) },
+      { p: 0.68, pos: [0, 0, 5.8], lookAt: [0, 0, 0], lineOpacity: 0.35, pointSize: ptSize(0.038, 0.030) },
+      { p: 0.80, pos: [0, 0, 5.6], lookAt: [0, 0, 0], lineOpacity: 0.70, pointSize: ptSize(0.042, 0.032) },
+      { p: 0.90, pos: [0.35, -0.15, 5.1], lookAt: [0, 0, 0], lineOpacity: 0.85, pointSize: ptSize(0.042, 0.032) },
+      { p: 1.00, pos: [0.50, -0.10, 4.3], lookAt: [0, 0, 0], lineOpacity: 0.50, pointSize: ptSize(0.044, 0.034) },
     ];
 
     let i = 0;
@@ -702,7 +841,8 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
   }, [progress, isMobile]);
 
   // Total letter points for selective typography stabilization
-  const letterTotalPoints = useMemo(() => Math.floor((particleCount * 0.7) / 10) * 10, [particleCount]);
+  const letterTotalPoints = totalTypographyPoints;
+  const foregroundCount = isMobile ? 14 : 36;
 
   // Frame tick: continuous deterministic matter kinematics
   useFrame((state, delta) => {
@@ -748,7 +888,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     let stageT = 0;
     let stageId = 'DORMANT';
 
-    if (p < 0.08) {
+    if (p < 0.06) {
       fromTarget = posDormant;
       toTarget = posField;
       stageT = 0;
@@ -756,7 +896,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     } else if (p < 0.20) {
       fromTarget = posDormant;
       toTarget = posField;
-      stageT = (p - 0.08) / 0.12;
+      stageT = (p - 0.06) / 0.14;
       stageId = 'FIELD';
     } else if (p < 0.31) {
       fromTarget = posField;
@@ -768,8 +908,8 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
       toTarget = posPhysicalTypography;
       stageT = (p - 0.31) / 0.11;
       stageId = 'CONSTRUCTION_2';
-    } else if (p < 0.55) {
-      // 0.42 - 0.55: Physical Formation Hold (spatially static and fully formed)
+    } else if (p < 0.54) {
+      // 0.42 - 0.54: Physical Formation Hold (spatially static and fully formed)
       fromTarget = posPhysicalTypography;
       toTarget = posPhysicalTypography;
       stageT = 0;
@@ -777,27 +917,27 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     } else if (p < 0.68) {
       fromTarget = posPhysicalTypography;
       toTarget = posBreak;
-      stageT = (p - 0.55) / 0.13;
+      stageT = (p - 0.54) / 0.14;
       stageId = 'BREAK';
-    } else if (p < 0.78) {
+    } else if (p < 0.80) {
       fromTarget = posBreak;
       toTarget = posSpatialIdentity;
-      stageT = (p - 0.68) / 0.10;
+      stageT = (p - 0.68) / 0.12;
       stageId = 'SPATIAL';
-    } else if (p < 0.88) {
+    } else if (p < 0.90) {
       fromTarget = posSpatialIdentity;
       toTarget = posTechNetwork;
-      stageT = (p - 0.78) / 0.10;
+      stageT = (p - 0.80) / 0.10;
       stageId = 'TECH';
-    } else if (p < 0.93) {
+    } else if (p < 0.96) {
       fromTarget = posTechNetwork;
       toTarget = posHeneoxyCore;
-      stageT = (p - 0.88) / 0.05;
+      stageT = (p - 0.90) / 0.06;
       stageId = 'CORE';
     } else {
       fromTarget = posHeneoxyCore;
       toTarget = posHeneoxyOS;
-      stageT = (p - 0.93) / 0.07;
+      stageT = (p - 0.96) / 0.04;
       stageId = 'OS';
     }
 
@@ -862,17 +1002,34 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
         }
       }
 
-      // Subtle organic breathing oscillation (suppressed for letter particles during hold for razor-sharp legibility)
+      // Dedicated Foreground Stardust smooth cinematic drift across the formed letters
       const isLetter = i < letterTotalPoints;
+      const isForeground = i >= letterTotalPoints && i < letterTotalPoints + foregroundCount;
+
+      if (isForeground && (stageId === 'HOLD' || stageId === 'CONSTRUCTION_2')) {
+        const fgIdx = i - letterTotalPoints;
+        const driftSpeed = 0.35;
+        const phase = fgIdx * 0.55;
+        const driftX = reducedMotion ? 0 : Math.sin(time * driftSpeed + phase) * 0.24;
+        const driftY = reducedMotion ? 0 : Math.cos(time * (driftSpeed * 0.8) + phase) * 0.12;
+        const driftZ = reducedMotion ? 0 : Math.sin(time * (driftSpeed * 1.2) + phase) * 0.08;
+        targetX += driftX;
+        targetY += driftY;
+        targetZ += driftZ;
+      }
+
+      // Subtle organic breathing oscillation (strictly 0 for letter particles during hold)
       const noiseAmp = reducedMotion
         ? 0
         : stageId === 'HOLD' && isLetter
           ? 0
-          : stageId === 'BREAK'
-            ? 0.06
-            : stageId === 'CORE'
-              ? 0.03
-              : 0.012;
+          : stageId === 'HOLD' && isForeground
+            ? 0.008
+            : stageId === 'BREAK'
+              ? 0.05
+              : stageId === 'CORE'
+                ? 0.025
+                : 0.010;
       const noiseFreq = stageId === 'BREAK' ? 3.5 : stageId === 'CORE' ? 5.0 : 1.2;
       const subtleWobble = noiseAmp > 0 ? Math.sin(time * noiseFreq + i * 0.1) * noiseAmp : 0;
 
@@ -918,7 +1075,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     }
 
     // Rotate HENEOXY OS rings in final scene
-    if (ringsGroupRef.current && p > 0.88) {
+    if (ringsGroupRef.current && p > 0.90) {
       ringsGroupRef.current.rotation.z += delta * 0.25;
     }
   });
@@ -964,7 +1121,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
           <meshBasicMaterial
             color="#00F0FF"
             transparent
-            opacity={progress > 0.88 ? Math.min(0.45, (progress - 0.88) * 8.33 * 0.45) : 0}
+            opacity={progress > 0.90 ? Math.min(0.45, (progress - 0.90) * 10 * 0.45) : 0}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -973,10 +1130,159 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
           <meshBasicMaterial
             color="#38BDF8"
             transparent
-            opacity={progress > 0.88 ? Math.min(0.35, (progress - 0.88) * 8.33 * 0.35) : 0}
+            opacity={progress > 0.90 ? Math.min(0.35, (progress - 0.90) * 10 * 0.35) : 0}
             side={THREE.DoubleSide}
           />
         </mesh>
+      </group>
+
+      {/* 4. SPATIAL IDENTITY 5-NODE HOLOGRAPHIC CONSTELLATION SYSTEM */}
+      <group visible={progress >= 0.65 && progress <= 0.82}>
+        {/* Constellation Connecting Backbone Lines (Perimeter to Perimeter at Z = -0.10) */}
+        <lineSegments>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              args={[spatialLinePositions, 3]}
+            />
+          </bufferGeometry>
+          <lineBasicMaterial
+            color="#00F0FF"
+            transparent
+            opacity={
+              progress < 0.68
+                ? Math.max(0, (progress - 0.65) / 0.03) * 0.40
+                : progress < 0.79
+                ? 0.40
+                : Math.max(0, 0.40 * (1 - (progress - 0.79) / 0.03))
+            }
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </lineSegments>
+
+        {/* 5 Distinct Holographic Reticle Rings, Radial Cardinal Ticks & Centered Labels */}
+        {spatialNodes.map((node) => {
+          const spatialOpacity =
+            progress < 0.68
+              ? Math.max(0, (progress - 0.65) / 0.03) * 0.65
+              : progress < 0.79
+              ? 0.65
+              : Math.max(0, 0.65 * (1 - (progress - 0.79) / 0.03));
+
+          const textOpacity =
+            progress < 0.68
+              ? Math.max(0, (progress - 0.65) / 0.03)
+              : progress < 0.79
+              ? 1.0
+              : Math.max(0, 1.0 * (1 - (progress - 0.79) / 0.03));
+
+          return (
+            <group key={node.id} position={node.pos}>
+              {/* Primary Outer Circular Halo Ring */}
+              <mesh>
+                <ringGeometry args={[node.r - 0.006, node.r + 0.006, 64]} />
+                <meshBasicMaterial
+                  color={node.color}
+                  transparent
+                  opacity={spatialOpacity}
+                  side={THREE.DoubleSide}
+                />
+              </mesh>
+
+              {/* Secondary Subtle Inner Guide Ring */}
+              <mesh>
+                <ringGeometry args={[node.r * 0.84 - 0.004, node.r * 0.84 + 0.004, 48]} />
+                <meshBasicMaterial
+                  color="#38BDF8"
+                  transparent
+                  opacity={spatialOpacity * 0.35}
+                  side={THREE.DoubleSide}
+                />
+              </mesh>
+
+              {/* Cardinal Precision Reticle Ticks */}
+              <mesh position={[0, node.r, 0]}>
+                <planeGeometry args={[0.010, 0.05]} />
+                <meshBasicMaterial color={node.color} transparent opacity={spatialOpacity * 0.75} side={THREE.DoubleSide} />
+              </mesh>
+              <mesh position={[0, -node.r, 0]}>
+                <planeGeometry args={[0.010, 0.05]} />
+                <meshBasicMaterial color={node.color} transparent opacity={spatialOpacity * 0.75} side={THREE.DoubleSide} />
+              </mesh>
+              <mesh position={[node.r, 0, 0]}>
+                <planeGeometry args={[0.05, 0.010]} />
+                <meshBasicMaterial color={node.color} transparent opacity={spatialOpacity * 0.75} side={THREE.DoubleSide} />
+              </mesh>
+              <mesh position={[-node.r, 0, 0]}>
+                <planeGeometry args={[0.05, 0.010]} />
+                <meshBasicMaterial color={node.color} transparent opacity={spatialOpacity * 0.75} side={THREE.DoubleSide} />
+              </mesh>
+
+              {/* Perfectly Centered Dynamic Holographic Label */}
+              <Html
+                center
+                style={{
+                  opacity: textOpacity,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                  transition: 'opacity 0.15s ease-out',
+                }}
+              >
+                {node.id === 'center' && (
+                  <div className="text-center space-y-1 w-64 select-none pointer-events-none">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-widest uppercase text-accent font-semibold block whitespace-nowrap">
+                      SPATIAL TAXONOMY // CORE AXIS
+                    </span>
+                    <span className="font-editorial text-lg sm:text-xl font-bold uppercase tracking-tight text-foreground block whitespace-nowrap">
+                      Four Spatial Pillars
+                    </span>
+                  </div>
+                )}
+                {node.id === 'engineering' && (
+                  <div className="space-y-1 text-center w-36 sm:w-44 select-none pointer-events-none">
+                    <span className="font-mono text-xs sm:text-sm font-bold text-[#00F0FF] tracking-wider uppercase block whitespace-nowrap">
+                      ENGINEERING
+                    </span>
+                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                      "I build things."
+                    </p>
+                  </div>
+                )}
+                {node.id === 'ai' && (
+                  <div className="space-y-1 text-center w-36 sm:w-48 select-none pointer-events-none">
+                    <span className="font-mono text-xs sm:text-sm font-bold text-[#38BDF8] tracking-wider uppercase block whitespace-nowrap">
+                      AI &amp; COGNITION
+                    </span>
+                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                      "I explore what they can become."
+                    </p>
+                  </div>
+                )}
+                {node.id === 'creative' && (
+                  <div className="space-y-1 text-center w-36 sm:w-44 select-none pointer-events-none">
+                    <span className="font-mono text-xs sm:text-sm font-bold text-[#EC4899] tracking-wider uppercase block whitespace-nowrap">
+                      CREATIVE
+                    </span>
+                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                      "I care how they feel."
+                    </p>
+                  </div>
+                )}
+                {node.id === 'systems' && (
+                  <div className="space-y-1 text-center w-36 sm:w-44 select-none pointer-events-none">
+                    <span className="font-mono text-xs sm:text-sm font-bold text-[#818CF8] tracking-wider uppercase block whitespace-nowrap">
+                      SYSTEMS
+                    </span>
+                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                      "I connect the pieces."
+                    </p>
+                  </div>
+                )}
+              </Html>
+            </group>
+          );
+        })}
       </group>
     </group>
   );
