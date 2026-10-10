@@ -66,10 +66,12 @@ export class CinematicParticlePointsMaterial extends THREE.PointsMaterial {
         // dist in [0.40, 0.50] smoothly maps from 1.0 (inside circle) to 0.0 (at circumference)
         float edgeAlpha = 1.0 - smoothstep(0.40, 0.50, dist);
 
-        // Soft luminous core & ethereal stardust falloff
+        // Soft luminous core & ethereal stardust falloff — HDR lift so bloom has fuel
         float core = exp(-dist * dist * ${this._coreSharpness.toFixed(1)});
         float aura = pow(clamp(1.0 - dist * 2.0, 0.0, 1.0), 1.4);
         float falloff = mix(aura * ${this._auraIntensity.toFixed(2)}, 1.0, core);
+        // HDR overdrive: push bright cores past 1.0 so the bloom pass ignites them
+        falloff *= 1.0 + core * 0.85;
 
         diffuseColor.a *= edgeAlpha * falloff;
         diffuseColor.rgb += diffuseColor.rgb * (core * ${this._coreLuminance.toFixed(2)});
