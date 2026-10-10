@@ -58,7 +58,7 @@ export const SkillsSection: React.FC = () => {
             <TechnicalLabel indicator indicatorColor="accent">
               LIVING TECHNICAL TOPOLOGY // NON-STATIC ARCHITECTURE
             </TechnicalLabel>
-            <DisplayText as="h2" size="lg" className="text-foreground uppercase font-bold tracking-tight">
+            <DisplayText as="h2" size="2xl" className="text-foreground uppercase font-bold tracking-tight">
               Technology Map & Tools
             </DisplayText>
             <p className="text-foreground-secondary text-sm sm:text-base leading-relaxed">

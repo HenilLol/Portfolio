@@ -132,7 +132,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
     <div
       ref={containerRef}
       id="hero"
-      className="relative w-full h-[980vh] text-foreground select-none"
+      className={`relative w-full text-foreground select-none ${isMobile ? 'h-[720vh]' : 'h-[980vh]'}`}
     >
       {/* Sticky Full-Viewport Film Environment */}
       <div className="sticky top-0 w-full h-screen h-[100dvh] overflow-x-clip overflow-y-visible flex flex-col justify-between">

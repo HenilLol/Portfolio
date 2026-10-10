@@ -34,7 +34,7 @@ export const AboutSection: React.FC = () => {
           <div className="lg:col-span-8 space-y-4">
             <DisplayText
               as="h2"
-              size="xl"
+              size="2xl"
               className="leading-none text-foreground font-extrabold uppercase tracking-tightest"
             >
               WHO IS HENIL?

@@ -59,7 +59,7 @@ export const Header: React.FC = () => {
       const hero = document.getElementById('hero');
       const threshold = hero && hero.offsetHeight > 0
         ? hero.offsetHeight - window.innerHeight * 0.15
-        : window.innerHeight * 9.85;
+        : window.innerHeight * 7.2;
       setInOpening(window.scrollY < threshold);
     };
 

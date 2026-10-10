@@ -24,13 +24,13 @@ export const Section: React.FC<SectionProps> = ({
   const content = (
     <>
       {(index || label) && (
-        <div className="flex items-center justify-between pb-6 mb-8 border-b border-border/40 font-mono text-[11px] tracking-widest uppercase text-foreground-secondary">
+        <div className="group/index flex items-center justify-between pb-5 mb-12 sm:mb-16 border-b border-border/40 font-mono text-[11px] tracking-widest uppercase text-foreground-secondary transition-colors duration-300 hover:border-accent/50">
           <div className="flex items-center gap-3">
             {index && <span className="text-accent font-semibold">{index}</span>}
             {index && label && <span className="text-foreground-muted">/</span>}
             {label && <span className="text-foreground">{label}</span>}
           </div>
-          <span className="text-foreground-muted hidden sm:inline-block">SYS // {id || 'NODE'}</span>
+          <span className="text-foreground-muted hidden sm:inline-block transition-colors duration-300 group-hover/index:text-accent">SYS // {id || 'NODE'}</span>
         </div>
       )}
       {children}

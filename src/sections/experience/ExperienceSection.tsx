@@ -21,7 +21,7 @@ export const ExperienceSection: React.FC = () => {
             <TechnicalLabel indicator indicatorColor="accent">
               DEVELOPMENT TIMELINE // SCENE-08
             </TechnicalLabel>
-            <DisplayText as="h2" size="lg" className="text-foreground uppercase font-bold tracking-tight">
+            <DisplayText as="h2" size="2xl" className="text-foreground uppercase font-bold tracking-tight">
               Journey & Evolution
             </DisplayText>
             <p className="text-foreground-secondary text-sm sm:text-base leading-relaxed">
