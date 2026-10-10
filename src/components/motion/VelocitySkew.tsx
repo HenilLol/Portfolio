@@ -5,27 +5,31 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 export interface VelocitySkewProps {
   children: React.ReactNode;
   className?: string;
-  /** Max skew in degrees at peak scroll velocity (default 3.5) */
+  /** Max skew in degrees at peak scroll velocity (default 1.1) */
   maxSkew?: number;
-  /** Max vertical squish in px at peak velocity (default 6) */
-  maxSquish?: number;
   /** Velocity at which skew saturates (default 0.05 px/ms ≈ fast flick) */
   saturationVelocity?: number;
 }
 
 /**
- * Scroll-velocity skew: leans and squashes its children proportional to
- * scroll speed, easing back to rest when scrolling stops. Pure rAF loop —
- * no re-renders, transforms applied directly to the DOM node.
+ * Scroll-velocity skew: leans its children proportional to scroll speed,
+ * easing back to rest when scrolling stops. Pure rAF loop — no re-renders,
+ * transform applied directly to the DOM node.
  *
- * Read Lenis's live velocity from the running instance (natively exposed
- * as `velocity`), falling back to a wheel/touch-derived estimate.
+ * Design notes (learned from shipping this on an 11k-px page):
+ * - ONLY skewY is applied. A scaleY squish on a tall element scales around
+ *   the element's own center, which visibly drags on-screen text up/down by
+ *   many pixels mid-scroll — reads as broken/laggy scrolling.
+ * - transform-origin is recomputed each frame to pin the skew pivot to the
+ *   center of the visible viewport, so on-screen text never slides away
+ *   from the cursor while skewing.
+ * - `will-change: transform` is only applied WHILE scrolling; at rest the
+ *   layer is demoted so the compositor doesn't hold a giant GPU layer.
  */
 export const VelocitySkew: React.FC<VelocitySkewProps> = ({
   children,
   className,
-  maxSkew = 3.5,
-  maxSquish = 6,
+  maxSkew = 1.1,
   saturationVelocity = 0.05,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -46,6 +50,7 @@ export const VelocitySkew: React.FC<VelocitySkewProps> = ({
     let lastY = window.scrollY;
     let lastT = performance.now();
     let smoothedVelocity = 0;
+    let resting = true;
 
     const loop = (t: number) => {
       const dt = Math.max(1, t - lastT);
@@ -64,22 +69,33 @@ export const VelocitySkew: React.FC<VelocitySkewProps> = ({
       // Ease-out curve: subtle at low speeds, punchy at flicks
       const power = t01 * t01 * (3 - 2 * t01); // smoothstep
       const skew = maxSkew * power * Math.sign(clamped) * -1; // lean INTO the motion
-      const squish = maxSquish * power;
 
       if (Math.abs(smoothedVelocity) < 0.0004) {
-        node.style.transform = '';
+        if (!resting) {
+          node.style.transform = '';
+          node.style.transformOrigin = '';
+          node.style.willChange = '';
+          resting = true;
+        }
       } else {
-        node.style.transform = `skewY(${skew.toFixed(3)}deg) scaleY(${(1 - squish / 400).toFixed(4)})`;
+        // Pin the skew pivot to the center of the VISIBLE viewport so
+        // on-screen text never slides away from the cursor.
+        const rect = node.getBoundingClientRect();
+        const pivotYInView = window.innerHeight / 2 - rect.top;
+        node.style.transformOrigin = `50% ${Math.round(pivotYInView)}px`;
+        node.style.willChange = 'transform';
+        node.style.transform = `skewY(${skew.toFixed(3)}deg)`;
+        resting = false;
       }
       raf = requestAnimationFrame(loop);
     };
 
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [enabled, maxSkew, maxSquish, saturationVelocity]);
+  }, [enabled, maxSkew, saturationVelocity]);
 
   return (
-    <div ref={ref} className={cn('will-change-transform', className)}>
+    <div ref={ref} className={cn(className)}>
       {children}
     </div>
   );
