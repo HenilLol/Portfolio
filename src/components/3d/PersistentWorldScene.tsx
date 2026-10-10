@@ -9,7 +9,13 @@ export interface PersistentWorldSceneProps {
   className?: string;
 }
 
-export const PersistentWorldScene: React.FC<PersistentWorldSceneProps> = ({
+/**
+ * The persistent background scene is expensive to reconcile (a full R3F canvas
+ * with a 25k-char atmosphere system). It only depends on discrete inputs
+ * (section id, dimension id) — memoize so high-frequency parent re-renders
+ * (scroll velocity updates at 60Hz) never cascade into the WebGL tree.
+ */
+const PersistentWorldSceneInner: React.FC<PersistentWorldSceneProps> = ({
   currentSection = 'hero',
   activeDimension = null,
   pointerSensitivity = 0.35,
@@ -30,5 +36,7 @@ export const PersistentWorldScene: React.FC<PersistentWorldSceneProps> = ({
     </SceneCanvas>
   );
 };
+
+export const PersistentWorldScene = React.memo(PersistentWorldSceneInner);
 
 export default PersistentWorldScene;

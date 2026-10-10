@@ -80,3 +80,17 @@
     to { transform: translateX(-50%); }
   }
 }
+
+/* Global reduced-motion compliance: kill all CSS-driven animation for users
+   who opted out at the OS level. JS-driven effects gate on useReducedMotion
+   individually; this covers every utility/keyframe animation site-wide. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1403,7 +1403,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     </group>
 
     {/* CINEMATIC POST-PROCESSING: bloom plasma + glitch aberration choreographed to stages */}
-    <StageFX progress={progress} stageEnvelope={liveStageRef.current.envelope} stageId={liveStage.id} />
+    <StageFX progress={progress} stageTelemetryRef={liveStageRef} stageId={liveStage.id} />
     </>
   );
 };
