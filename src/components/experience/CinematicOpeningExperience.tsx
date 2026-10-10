@@ -32,6 +32,27 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
   const holdTriggeredRef = useRef<boolean>(false);
 
   const { isMobile, width: viewportWidth } = useViewport();
+  // Window-measured sticky height: viewport units (vh/dvh) resolve inconsistently across
+  // display-scaling factors and browser zoom on Windows — the full-screen cinematic
+  // stage can collapse into a short band at the top of the window. A JS-measured pixel
+  // height (updated on resize) is immune to every vh/dvh quirk.
+  const [stageHeight, setStageHeight] = useState<number>(() =>
+    typeof window !== "undefined" ? window.innerHeight : 800
+  );
+
+  useEffect(() => {
+    const measure = () => setStageHeight(window.innerHeight);
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("orientationchange", measure);
+    // visualViewport covers pinch-zoom / dynamic browser chrome on mobile
+    window.visualViewport?.addEventListener("resize", measure);
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("orientationchange", measure);
+      window.visualViewport?.removeEventListener("resize", measure);
+    };
+  }, []);
   const { scrollTo } = useLenisScroll();
   const reducedMotion = useReducedMotion();
 
@@ -132,10 +153,14 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
     <div
       ref={containerRef}
       id="hero"
-      className="relative w-full h-[1450vh] text-foreground select-none"
+      className={`relative w-full text-foreground select-none ${isMobile ? 'h-[720vh]' : 'h-[980vh]'}`}
     >
-      {/* Sticky Full-Viewport Film Environment */}
-      <div className="sticky top-0 w-full h-screen h-[100dvh] overflow-x-clip overflow-y-visible flex flex-col justify-between">
+      {/* Sticky Full-Viewport Film Environment — height pinned to the measured
+          window so display-scaling / zoom quirks can never shrink the stage */}
+      <div
+        className="sticky top-0 w-full overflow-x-clip overflow-y-visible flex flex-col justify-between"
+        style={{ height: `${stageHeight}px` }}
+      >
         {/* Background Film Backdrop Layer (fades out synchronously at 0.94-0.99 with WebGL canvas to seamlessly reveal celestial atmosphere) */}
         <div
           className="absolute inset-0 w-full h-full bg-background pointer-events-none z-0"
@@ -178,7 +203,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
         >
           <div className="flex items-center gap-3">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
+            <span className="font-mono text-[11px] tracking-widest uppercase text-foreground-muted">
               {progress < 0.06
                 ? "DORMANT"
                 : progress < 0.20
@@ -202,7 +227,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
           <button
             type="button"
             onClick={handleSkipExperience}
-            className="pointer-events-auto font-mono text-[10px] text-foreground-muted hover:text-accent tracking-widest uppercase transition-colors px-2 py-1 rounded border border-transparent hover:border-border/60"
+            className="pointer-events-auto font-mono text-[11px] text-foreground-muted hover:text-accent tracking-widest uppercase transition-colors px-2 py-1 rounded border border-transparent hover:border-border/60"
             aria-label="Skip cinematic opening sequence"
           >
             SKIP EXPERIENCE
@@ -217,12 +242,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
               <motion.div
                 key="scene-dormant"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.6 }}
+                animate={{ opacity: 0.95 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
                 className="text-center space-y-2 pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted animate-pulse">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-foreground-muted animate-pulse">
                   INITIALIZING
                 </span>
               </motion.div>
@@ -235,12 +260,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
               <motion.div
                 key="scene-field"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
+                animate={{ opacity: 0.9 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 className="text-center space-y-1 pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-foreground-muted">
                   MATTER CONVERGING
                 </span>
               </motion.div>
@@ -261,7 +286,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 <p className="font-mono text-xs sm:text-sm tracking-widest uppercase text-accent font-medium">
                   COMPUTER ENGINEERING · AI · SYSTEMS · CREATIVE
                 </p>
-                <span className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase block animate-pulse">
+                <span className="font-mono text-[11px] text-foreground-muted tracking-widest uppercase block animate-pulse">
                   MOVE CURSOR TO INTERACT WITH MATTER · SCROLL TO FRACTURE
                 </span>
               </motion.div>
@@ -274,12 +299,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
               <motion.div
                 key="scene-break"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.7 }}
+                animate={{ opacity: 0.95 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 className="text-center pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-foreground-muted">
                   STRUCTURAL INSTABILITY // PARTICLES DISPERSING
                 </span>
               </motion.div>
@@ -299,13 +324,13 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 transition={{ duration: 0.35 }}
                 className="text-center max-w-xl space-y-3 pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-accent font-semibold">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-accent font-semibold">
                   TOPOLOGICAL BRIDGE
                 </span>
                 <h2 className="font-sans text-2xl sm:text-4xl font-extrabold uppercase tracking-tight text-foreground">
                   Technology Network
                 </h2>
-                <div className="flex flex-wrap justify-center gap-2 pt-1 font-mono text-[10px] text-foreground-secondary uppercase tracking-wider">
+                <div className="flex flex-wrap justify-center gap-2 pt-1 font-mono text-[11px] text-foreground-secondary uppercase tracking-wider">
                   <span>● AI / LLM / AGENTS</span>
                   <span>● DISTRIBUTED SYSTEMS</span>
                   <span>● SPATIAL WEBGL</span>
@@ -332,7 +357,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 transition={{ duration: 0.35 }}
                 className="text-center max-w-2xl space-y-3 pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-accent font-bold block">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-accent font-bold block">
                   FLAGSHIP WORLD // EMERGENCE
                 </span>
                 <h2 className="font-sans text-5xl sm:text-7xl font-extrabold uppercase tracking-tightest leading-none text-foreground drop-shadow-[0_0_35px_rgba(0,240,255,0.35)]">
@@ -341,7 +366,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 <p className="font-mono text-xs tracking-widest uppercase text-foreground-secondary">
                   AI-POWERED PERSONAL COMPUTING ENVIRONMENT
                 </p>
-                <div className="pt-2 font-mono text-[10px] text-accent tracking-widest uppercase animate-pulse">
+                <div className="pt-2 font-mono text-[11px] text-accent tracking-widest uppercase animate-pulse">
                   {progress < 0.96
                     ? "CONTINUE TO ENTER UNIVERSE"
                     : "ENTERING PORTFOLIO SPACE"}

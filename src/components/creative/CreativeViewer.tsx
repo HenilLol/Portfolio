@@ -107,7 +107,7 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
             </div>
 
             <div className="flex items-center gap-4">
-              <span className="hidden sm:inline-block text-[10px] text-foreground-muted">
+              <span className="hidden sm:inline-block text-[11px] text-foreground-muted">
                 [ESC] TO EXIT
               </span>
               <Button
@@ -115,7 +115,7 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
                 size="sm"
                 onClick={handleClose}
                 aria-label="Close Study Viewer"
-                className="font-mono text-[10px] tracking-widest uppercase px-3 py-1 min-h-[38px] flex items-center"
+                className="font-mono text-[11px] tracking-widest uppercase px-3 py-1 min-h-[38px] flex items-center"
               >
                 ✕ CLOSE
               </Button>
@@ -188,7 +188,7 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
                       {work.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-1 bg-background-elevated border border-border/40 font-mono text-[10px] text-foreground uppercase tracking-widest"
+                          className="px-2 py-1 bg-background-elevated border border-border/40 font-mono text-[11px] text-foreground uppercase tracking-widest"
                         >
                           #{tag}
                         </span>
@@ -201,7 +201,7 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
               {/* Right: Technical Parameters Matrix */}
               <div className="lg:col-span-4 space-y-6">
                 <div className="p-5 bg-background-elevated/40 border border-border/60 space-y-3 font-mono text-xs">
-                  <div className="font-mono text-[10px] text-accent tracking-widest uppercase pb-2 border-b border-border/40">
+                  <div className="font-mono text-[11px] text-accent tracking-widest uppercase pb-2 border-b border-border/40">
                     Capture / Spec Telemetry
                   </div>
 
@@ -214,7 +214,7 @@ export const CreativeViewer: React.FC<CreativeViewerProps> = ({ work, onClose })
 
                   {work.tools && work.tools.length > 0 && (
                     <div className="pt-2">
-                      <span className="text-[10px] text-foreground-muted uppercase block mb-1">
+                      <span className="text-[11px] text-foreground-muted uppercase block mb-1">
                         Utilized Software
                       </span>
                       <div className="flex flex-wrap gap-1">

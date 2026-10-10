@@ -27,6 +27,27 @@ export const Header: React.FC = () => {
   // Active section tracking via IntersectionObserver
   const activeSection = useScrollspy(NAV_SECTION_IDS);
 
+  // Resume the ambient drone for persisted-enabled users on their first interaction
+  // (browsers only allow AudioContext after a user gesture)
+  const droneResumeRef = useRef(false);
+  React.useEffect(() => {
+    const resume = () => {
+      if (droneResumeRef.current) return;
+      droneResumeRef.current = true;
+      if (soundEngine.isEnabled()) {
+        soundEngine.startAmbientDrone();
+      }
+      window.removeEventListener('pointerdown', resume);
+      window.removeEventListener('keydown', resume);
+    };
+    window.addEventListener('pointerdown', resume, { once: false });
+    window.addEventListener('keydown', resume, { once: false });
+    return () => {
+      window.removeEventListener('pointerdown', resume);
+      window.removeEventListener('keydown', resume);
+    };
+  }, []);
+
   // Hide header during the opening sequence and unpinning handover on the homepage (reveals only after handover completes)
   React.useEffect(() => {
     if (location.pathname !== '/') {
@@ -38,7 +59,7 @@ export const Header: React.FC = () => {
       const hero = document.getElementById('hero');
       const threshold = hero && hero.offsetHeight > 0
         ? hero.offsetHeight - window.innerHeight * 0.15
-        : window.innerHeight * 9.85;
+        : window.innerHeight * 7.2;
       setInOpening(window.scrollY < threshold);
     };
 
@@ -65,7 +86,7 @@ export const Header: React.FC = () => {
           >
             <span>HENIL</span>
             <span className="text-foreground-muted font-mono text-xs font-normal">/</span>
-            <span className="font-mono text-[10px] text-foreground-secondary tracking-widest uppercase group-hover:text-accent transition-colors">
+            <span className="font-mono text-[11px] text-foreground-secondary tracking-widest uppercase group-hover:text-accent transition-colors">
               STUDIO
             </span>
           </Link>
@@ -73,7 +94,7 @@ export const Header: React.FC = () => {
           {/* Center (Desktop only): Minimal Technical Telemetry */}
           <div
             aria-hidden="true"
-            className="hidden md:flex items-center gap-4 font-mono text-[10px] tracking-widest text-foreground-muted uppercase select-none"
+            className="hidden md:flex items-center gap-4 font-mono text-[11px] tracking-widest text-foreground-muted uppercase select-none"
           >
             <span className="text-accent">SYS // ACTIVE</span>
             <span className="text-border">/</span>
@@ -91,7 +112,7 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={() => setSoundActive(soundEngine.toggle())}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded border border-border/80 hover:border-accent font-mono text-[9px] uppercase tracking-widest text-foreground-muted hover:text-accent transition-colors cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded border border-border/80 hover:border-accent font-mono text-[10px] uppercase tracking-widest text-foreground-muted hover:text-accent transition-colors cursor-pointer"
               title="Toggle Experience Sound"
               aria-label={soundActive ? 'Mute Sound' : 'Enable Sound'}
             >

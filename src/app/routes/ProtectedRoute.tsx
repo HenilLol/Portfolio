@@ -28,7 +28,7 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ childr
       return (
         <div className="min-h-screen flex items-center justify-center bg-background p-6">
           <div className="max-w-md w-full border border-red-500/30 bg-background-surface p-8 text-center space-y-6">
-            <div className="font-mono text-[10px] tracking-widest text-red-400 uppercase">
+            <div className="font-mono text-[11px] tracking-widest text-red-400 uppercase">
               SECURITY PROTOCOL // ACCESS FORBIDDEN
             </div>
             <h2 className="font-editorial text-2xl font-bold uppercase tracking-tight text-foreground">

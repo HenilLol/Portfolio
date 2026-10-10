@@ -31,7 +31,7 @@ export const ProjectNavigator: React.FC<ProjectNavigatorProps> = ({
       )}
     >
       <div className="flex items-center gap-2 sm:gap-4 min-w-max">
-        <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest mr-2 hidden md:inline-block">
+        <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest mr-2 hidden md:inline-block">
           NAV RAIL //
         </span>
 

@@ -218,7 +218,7 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
           <Container size="wide" className="w-full relative z-10">
             <motion.div
               variants={telemetryVariants}
-              className="flex items-center justify-between pb-6 border-b border-border/40 font-mono text-[10px] tracking-widest uppercase text-foreground-muted"
+              className="flex items-center justify-between pb-6 border-b border-border/40 font-mono text-[11px] tracking-widest uppercase text-foreground-muted"
             >
               <div className="flex items-center gap-2 text-accent">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
@@ -274,17 +274,17 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
 
                         {/* Telemetry Tag & Description */}
                         <div className="flex items-center gap-4 sm:gap-6 pl-8 sm:pl-0">
-                          <span className="hidden md:inline-block font-mono text-[10px] uppercase tracking-wider text-foreground-muted">
+                          <span className="hidden md:inline-block font-mono text-[11px] uppercase tracking-wider text-foreground-muted">
                             {item.description}
                           </span>
 
                           {active ? (
-                            <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-accent uppercase border border-accent/60 bg-accent/10 px-2 py-0.5">
+                            <span className="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-widest text-accent uppercase border border-accent/60 bg-accent/10 px-2 py-0.5">
                               <span className="w-1 h-1 rounded-full bg-accent" />
                               IN VIEW
                             </span>
                           ) : (
-                            <span className="font-mono text-[10px] tracking-widest text-foreground-muted/60 group-hover:text-accent uppercase transition-colors">
+                            <span className="font-mono text-[11px] tracking-widest text-foreground-muted/60 group-hover:text-accent uppercase transition-colors">
                               {item.metadata} →
                             </span>
                           )}
@@ -301,7 +301,7 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
           <Container size="wide" className="w-full relative z-10">
             <motion.div
               variants={telemetryVariants}
-              className="pt-6 border-t border-border/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-widest text-foreground-muted"
+              className="pt-6 border-t border-border/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-widest text-foreground-muted"
             >
               <div className="flex items-center gap-3">
                 <span className="text-foreground">HENIL PATEL</span>

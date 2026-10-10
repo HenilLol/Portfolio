@@ -172,7 +172,7 @@ export const IntroSequence: React.FC<IntroSequenceProps> = ({ onComplete }) => {
       }}
     >
       {/* Top Header Marker: ENVIRONMENT // DORMANT */}
-      <div ref={markerRef} className="flex items-center justify-between font-mono text-[10px] tracking-widest text-foreground-muted uppercase">
+      <div ref={markerRef} className="flex items-center justify-between font-mono text-[11px] tracking-widest text-foreground-muted uppercase">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
           <span className="text-foreground">ENVIRONMENT // DORMANT</span>

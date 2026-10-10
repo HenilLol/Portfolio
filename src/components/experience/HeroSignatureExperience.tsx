@@ -208,7 +208,7 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
               <TechnicalLabel indicator indicatorColor="accent">
                 {HERO_CONTENT.narrative.eyebrow}
               </TechnicalLabel>
-              <span className="font-mono text-[10px] tracking-widest text-foreground-muted hidden sm:inline-block uppercase">
+              <span className="font-mono text-[11px] tracking-widest text-foreground-muted hidden sm:inline-block uppercase">
                 SPEC // V2.0 ACTIVE
               </span>
             </div>
@@ -290,7 +290,7 @@ export const HeroSignatureExperience: React.FC<HeroSignatureExperienceProps> = (
       <Container size="wide" className="relative z-10 pt-8 sm:pt-12">
         <div
           ref={metadataRef}
-          className={`border-t border-border/70 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 font-mono text-[10px] tracking-widest text-foreground-muted uppercase ${
+          className={`border-t border-border/70 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 font-mono text-[11px] tracking-widest text-foreground-muted uppercase ${
             reducedMotion ? 'opacity-100' : 'opacity-0'
           }`}
         >

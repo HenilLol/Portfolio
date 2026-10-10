@@ -44,7 +44,7 @@ export const CreativeProcess: React.FC = () => {
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-border/20 text-[10px] font-mono uppercase tracking-widest text-foreground-muted">
+              <div className="pt-3 border-t border-border/20 text-[11px] font-mono uppercase tracking-widest text-foreground-muted">
                 <span className="text-foreground-secondary">FOCUS:</span> {step.focus}
               </div>
             </Card>

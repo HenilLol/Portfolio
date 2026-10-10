@@ -51,7 +51,7 @@ export const CreativeToolsMatrix: React.FC = () => {
                 <div className="self-start md:self-auto">
                   <Badge
                     variant={tool.status === 'CORE PRACTICE' ? 'accent' : 'outline'}
-                    className="text-[10px] uppercase font-mono tracking-widest"
+                    className="text-[11px] uppercase font-mono tracking-widest"
                   >
                     {tool.status}
                   </Badge>

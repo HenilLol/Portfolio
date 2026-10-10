@@ -26,7 +26,7 @@ export const CreativeHero: React.FC = () => {
           <span className="text-border">/</span>
           <span className="text-foreground-secondary">{CREATIVE_LAB_IDENTITY.mode}</span>
         </div>
-        <div className="flex items-center gap-4 text-[10px] sm:text-xs">
+        <div className="flex items-center gap-4 text-[11px] sm:text-xs">
           <span className="hidden sm:inline-block">LOC // {CREATIVE_LAB_IDENTITY.location}</span>
           <span className="text-border hidden sm:inline-block">/</span>
           <span className="text-accent">EXPERIMENT ARCHIVE</span>
@@ -73,7 +73,7 @@ export const CreativeHero: React.FC = () => {
         {/* Right Column: Telemetry & Primary Action */}
         <div className="lg:col-span-4 space-y-6">
           <div className="p-4 sm:p-6 bg-background-surface border border-border/80 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-border/40 font-mono text-[10px] uppercase tracking-widest">
+            <div className="flex items-center justify-between pb-3 border-b border-border/40 font-mono text-[11px] uppercase tracking-widest">
               <span className="text-accent">ARCHIVE STATUS</span>
               <span className="text-foreground-muted">ARCHIVE // INDEXED</span>
             </div>

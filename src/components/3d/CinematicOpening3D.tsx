@@ -1,10 +1,11 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useViewport } from '@/hooks/useViewport';
 import { CinematicParticlePointsMaterial } from './shaders/particlePointsMaterial';
+import { StageFX } from './StageFX';
 
 export interface CinematicOpening3DProps {
   progress: number; // 0.0 to 1.0 continuous normalized opening timeline
@@ -14,6 +15,73 @@ export interface CinematicOpening3DProps {
   /** Explicit fallback flag to force standard PointsMaterial (useful for testing or fallback profiles) */
   useFallbackShader?: boolean;
 }
+
+/**
+ * Stage color choreography: each narrative stage owns a signature palette.
+ * Particles morph from colorsBase toward the active stage palette using the
+ * same quintic easing as geometry, so hue-shifts ride the motion.
+ */
+const STAGE_PALETTES: Record<string, [number, number, number][]> = {
+  // DORMANT: deep space whisper — indigo + faint cyan on near-black
+  DORMANT: [
+    [0.12, 0.18, 0.45],
+    [0.06, 0.34, 0.52],
+    [0.03, 0.12, 0.28],
+  ],
+  // FIELD: full electric cyan plasma convergence — electric aqua ignition
+  FIELD: [
+    [0.25, 1.0, 1.0],
+    [0.10, 0.85, 1.0],
+    [0.55, 1.0, 1.0],
+  ],
+  // CONSTRUCTION: cyan-to-white with electric edges as letters assemble
+  CONSTRUCTION_1: [
+    [0.20, 0.90, 1.0],
+    [0.85, 0.98, 1.0],
+    [0.55, 0.95, 1.0],
+  ],
+  CONSTRUCTION_2: [
+    [0.90, 0.98, 1.0],
+    [0.20, 0.92, 1.0],
+    [0.60, 1.0, 0.98],
+  ],
+  // HOLD: brilliant diamond-white typography with cyan sparks
+  HOLD: [
+    [1.0, 1.0, 1.0],
+    [0.15, 0.95, 1.0],
+    [0.35, 0.85, 1.0],
+  ],
+  // BREAK: identity fracture — searing magenta / ember orange / electric violet
+  BREAK: [
+    [1.0, 0.12, 0.55],
+    [1.0, 0.45, 0.10],
+    [0.60, 0.20, 1.0],
+  ],
+  // SPATIAL: constellation cool — indigo nodes with cyan spokes
+  SPATIAL: [
+    [0.51, 0.55, 0.97],
+    [0.10, 0.94, 1.0],
+    [0.35, 0.40, 0.95],
+  ],
+  // TECH: topological network — sky blue + teal lattice
+  TECH: [
+    [0.22, 0.74, 0.97],
+    [0.06, 0.94, 0.90],
+    [0.55, 0.85, 1.0],
+  ],
+  // CORE: singularity — white-gold spiral with cyan crown
+  CORE: [
+    [1.0, 0.92, 0.55],
+    [0.15, 0.95, 1.0],
+    [1.0, 1.0, 0.85],
+  ],
+  // OS: HENEOXY emergence — cyan core with violet crown beacons
+  OS: [
+    [0.10, 0.94, 1.0],
+    [0.56, 0.40, 1.0],
+    [0.85, 0.95, 1.0],
+  ],
+};
 
 interface StrokeDefinition {
   type: 'line' | 'arc' | 'bezier';
@@ -298,6 +366,13 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
   const linesRef = useRef<THREE.LineSegments>(null);
   const ringsGroupRef = useRef<THREE.Group>(null);
   const masterGroupRef = useRef<THREE.Group>(null);
+
+  // Live stage telemetry for the StageFX post-processing stack (updated per-frame in useFrame)
+  const [liveStage, setLiveStage] = useState<{ id: string; envelope: number }>({
+    id: 'DORMANT',
+    envelope: 0,
+  });
+  const liveStageRef = useRef<{ id: string; envelope: number }>({ id: 'DORMANT', envelope: 0 });
 
   // Check URL query param ?fallback=true ONLY in development for deterministic audit and testing
   const isUrlFallback =
@@ -945,8 +1020,48 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
     const smoothT = quinticSmoothstep(stageT);
     const env = Math.sin(smoothT * Math.PI);
 
+    // Publish live stage telemetry for the StageFX post-processing stack
+    // (ref-first to avoid re-renders; state sync only when the stage actually changes)
+    liveStageRef.current = { id: stageId, envelope: env };
+    if (liveStage.id !== stageId) {
+      setLiveStage({ id: stageId, envelope: env });
+    } else if (Math.abs(liveStage.envelope - env) > 0.08) {
+      setLiveStage({ id: stageId, envelope: env });
+    }
+
     const positionsAttr = pointsRef.current.geometry.attributes.position as THREE.BufferAttribute;
     const posArr = positionsAttr.array as Float32Array;
+
+    // Stage-driven color morphing: blend vertex colors toward the active stage palette.
+    // Morph weight = stage envelope (sin ease) * palette strength, so colors shift with motion.
+    const palette = STAGE_PALETTES[stageId] ?? STAGE_PALETTES.DORMANT;
+    const colorAttr = pointsRef.current.geometry.attributes.color as THREE.BufferAttribute | undefined;
+    if (colorAttr && env > 0.0001) {
+      const colArr = colorAttr.array as Float32Array;
+      // Per-particle palette index stays stable (i % 3) so the morph is deterministic
+      for (let ci = 0; ci < particleCount; ci++) {
+        const c3 = ci * 3;
+        const pIdx = ci % 3;
+        const mixW = env * 0.85; // never fully override — keeps luminance hierarchy
+        colArr[c3] = colorsBase[c3] * (1 - mixW) + palette[pIdx][0] * mixW;
+        colArr[c3 + 1] = colorsBase[c3 + 1] * (1 - mixW) + palette[pIdx][1] * mixW;
+        colArr[c3 + 2] = colorsBase[c3 + 2] * (1 - mixW) + palette[pIdx][2] * mixW;
+      }
+      colorAttr.needsUpdate = true;
+    } else if (colorAttr && env <= 0.0001 && stageId === 'HOLD') {
+      // On stage boundaries, ease back toward the base palette so typography
+      // returns to its brilliant diamond-white signature
+      const colArr = colorAttr.array as Float32Array;
+      const base = STAGE_PALETTES.HOLD;
+      for (let ci = 0; ci < particleCount; ci++) {
+        const c3 = ci * 3;
+        const pIdx = ci % 3;
+        colArr[c3] = THREE.MathUtils.lerp(colArr[c3], base[pIdx][0], lerpSpeed);
+        colArr[c3 + 1] = THREE.MathUtils.lerp(colArr[c3 + 1], base[pIdx][1], lerpSpeed);
+        colArr[c3 + 2] = THREE.MathUtils.lerp(colArr[c3 + 2], base[pIdx][2], lerpSpeed);
+      }
+      colorAttr.needsUpdate = true;
+    }
 
     for (let i = 0; i < particleCount; i++) {
       const idx3 = i * 3;
@@ -1081,6 +1196,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
   });
 
   return (
+    <>
     <group ref={masterGroupRef}>
       {/* 1. MASTER 2,400-PARTICLE CONTINUOUS PHYSICAL MATTER */}
       <points ref={pointsRef}>
@@ -1231,7 +1347,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
               >
                 {node.id === 'center' && (
                   <div className="text-center space-y-1 w-64 select-none pointer-events-none">
-                    <span className="font-mono text-[9px] sm:text-[10px] tracking-widest uppercase text-accent font-semibold block whitespace-nowrap">
+                    <span className="font-mono text-[9px] sm:text-[11px] tracking-widest uppercase text-accent font-semibold block whitespace-nowrap">
                       SPATIAL TAXONOMY // CORE AXIS
                     </span>
                     <span className="font-editorial text-lg sm:text-xl font-bold uppercase tracking-tight text-foreground block whitespace-nowrap">
@@ -1244,7 +1360,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
                     <span className="font-mono text-xs sm:text-sm font-bold text-[#00F0FF] tracking-wider uppercase block whitespace-nowrap">
                       ENGINEERING
                     </span>
-                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                    <p className="font-sans text-[11px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
                       "I build things."
                     </p>
                   </div>
@@ -1254,7 +1370,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
                     <span className="font-mono text-xs sm:text-sm font-bold text-[#38BDF8] tracking-wider uppercase block whitespace-nowrap">
                       AI &amp; COGNITION
                     </span>
-                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                    <p className="font-sans text-[11px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
                       "I explore what they can become."
                     </p>
                   </div>
@@ -1264,7 +1380,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
                     <span className="font-mono text-xs sm:text-sm font-bold text-[#EC4899] tracking-wider uppercase block whitespace-nowrap">
                       CREATIVE
                     </span>
-                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                    <p className="font-sans text-[11px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
                       "I care how they feel."
                     </p>
                   </div>
@@ -1274,7 +1390,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
                     <span className="font-mono text-xs sm:text-sm font-bold text-[#818CF8] tracking-wider uppercase block whitespace-nowrap">
                       SYSTEMS
                     </span>
-                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                    <p className="font-sans text-[11px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
                       "I connect the pieces."
                     </p>
                   </div>
@@ -1285,6 +1401,10 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
         })}
       </group>
     </group>
+
+    {/* CINEMATIC POST-PROCESSING: bloom plasma + glitch aberration choreographed to stages */}
+    <StageFX progress={progress} stageTelemetryRef={liveStageRef} stageId={liveStage.id} />
+    </>
   );
 };
 

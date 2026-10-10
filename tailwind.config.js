@@ -17,7 +17,7 @@ export default {
         foreground: {
           DEFAULT: '#F4F4F6',
           secondary: '#8F9098',
-          muted: '#55555C',
+          muted: '#8A8A96',
         },
         accent: {
           DEFAULT: '#00F0FF',

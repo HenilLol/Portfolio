@@ -141,7 +141,7 @@ export const SpatialJourneyMap: React.FC = () => {
       />
 
       {/* Top Telemetry Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/40 font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/40 font-mono text-[11px] tracking-widest uppercase text-foreground-muted">
         <div className="flex items-center gap-3">
           <TechnicalLabel indicator indicatorColor="accent">
             JOURNEY ARCHIVE // 2024 → 2026
@@ -256,7 +256,7 @@ export const SpatialJourneyMap: React.FC = () => {
           <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-accent" />
 
           {/* Header Metadata */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/40 font-mono text-[10px] tracking-widest text-foreground-muted uppercase">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/40 font-mono text-[11px] tracking-widest text-foreground-muted uppercase">
             <div className="flex items-center gap-3">
               <span className="text-accent font-semibold">{currentMilestone.period}</span>
               <span className="text-border">/</span>
@@ -296,7 +296,7 @@ export const SpatialJourneyMap: React.FC = () => {
           </div>
 
           {/* Applied Technologies */}
-          <div className="pt-2 flex flex-wrap items-center gap-2 font-mono text-[10px]">
+          <div className="pt-2 flex flex-wrap items-center gap-2 font-mono text-[11px]">
             <span className="text-foreground-muted uppercase tracking-widest mr-2">APPLIED TOOLS:</span>
             {currentMilestone.technologies.map((tech) => (
               <span
@@ -320,7 +320,7 @@ export const SpatialJourneyMap: React.FC = () => {
               key={milestone.id}
               type="button"
               onClick={() => setSelectedId(milestone.id)}
-              className={`px-3 py-2 border font-mono text-[10px] uppercase tracking-wider whitespace-nowrap transition-colors cursor-pointer flex-shrink-0 ${
+              className={`px-3 py-2 border font-mono text-[11px] uppercase tracking-wider whitespace-nowrap transition-colors cursor-pointer flex-shrink-0 ${
                 isSelected
                   ? 'border-accent bg-accent/15 text-accent font-bold'
                   : 'border-border/60 bg-background/50 text-foreground-muted hover:border-border hover:text-foreground'

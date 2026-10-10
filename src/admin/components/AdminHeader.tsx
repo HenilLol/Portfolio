@@ -17,7 +17,7 @@ export const AdminHeader: React.FC<{
           <h1 className="font-editorial text-2xl font-bold uppercase tracking-tight text-foreground">
             {title}
           </h1>
-          <span className="font-mono text-[10px] px-2 py-0.5 border border-accent/40 text-accent uppercase">
+          <span className="font-mono text-[11px] px-2 py-0.5 border border-accent/40 text-accent uppercase">
             Admin CMS
           </span>
         </div>

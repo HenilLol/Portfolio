@@ -25,7 +25,7 @@ export const ContactConnectionMatrix: React.FC = () => {
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2 font-mono text-[10px] tracking-widest text-foreground-muted uppercase">
+                <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-foreground-muted uppercase">
                   <span className="text-accent">// {channel.specIndex}</span>
                   <span>{channel.label}</span>
                 </div>
@@ -45,7 +45,7 @@ export const ContactConnectionMatrix: React.FC = () => {
 
                 <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest shrink-0">
                   {isPending && (
-                    <span className="text-foreground-muted text-[10px]">
+                    <span className="text-foreground-muted text-[11px]">
                       [NOT CONFIGURED]
                     </span>
                   )}
@@ -87,7 +87,7 @@ export const ContactConnectionMatrix: React.FC = () => {
       </div>
 
       {/* Telemetry Footer with No Exact Coordinates */}
-      <div className="p-4 bg-background-surface border border-border/60 flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] sm:text-xs tracking-widest uppercase text-foreground-muted">
+      <div className="p-4 bg-background-surface border border-border/60 flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] sm:text-xs tracking-widest uppercase text-foreground-muted">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           <span>{CONTACT_CONTENT.location}</span>

@@ -104,7 +104,7 @@ export const AdminConfirmModal: React.FC<AdminConfirmModalProps> = ({
         className="w-full max-w-md border border-border-subtle bg-background-surface p-4 sm:p-6 shadow-2xl space-y-4 focus:outline-none"
       >
         <div className="space-y-1">
-          <span className="font-mono text-[10px] tracking-widest text-accent uppercase block">
+          <span className="font-mono text-[11px] tracking-widest text-accent uppercase block">
             Confirmation Protocol
           </span>
           <h3

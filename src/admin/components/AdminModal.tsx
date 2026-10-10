@@ -105,7 +105,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         <div className="flex items-center justify-between pb-4 border-b border-border-subtle">
           <div>
             {subtitle && (
-              <span className="font-mono text-[10px] tracking-widest text-accent uppercase block">
+              <span className="font-mono text-[11px] tracking-widest text-accent uppercase block">
                 {subtitle}
               </span>
             )}

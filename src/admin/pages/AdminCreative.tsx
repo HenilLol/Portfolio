@@ -365,23 +365,23 @@ export const AdminCreative: React.FC = () => {
               >
                 <div className="space-y-1 max-w-xl">
                   <div className="flex items-center gap-2.5 flex-wrap">
-                    <span className="font-mono text-[10px] px-1.5 py-0.2 border border-border-subtle text-foreground-muted">
+                    <span className="font-mono text-[11px] px-1.5 py-0.2 border border-border-subtle text-foreground-muted">
                       #{work.order}
                     </span>
                     <h4 className="font-editorial text-base font-semibold text-foreground uppercase tracking-tight">
                       {work.title}
                     </h4>
                     {work.category && (
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 border border-accent/40 text-accent uppercase font-bold">
+                      <span className="text-[11px] font-mono px-1.5 py-0.5 border border-accent/40 text-accent uppercase font-bold">
                         {work.category}
                       </span>
                     )}
                     {work.status && (
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 bg-white/5 text-foreground-secondary uppercase">
+                      <span className="text-[11px] font-mono px-1.5 py-0.5 bg-white/5 text-foreground-secondary uppercase">
                         {work.status}
                       </span>
                     )}
-                    <Badge variant={work.published !== false ? 'accent' : 'outline'} className="text-[10px]">
+                    <Badge variant={work.published !== false ? 'accent' : 'outline'} className="text-[11px]">
                       {work.published !== false ? 'Published' : 'Draft'}
                     </Badge>
                   </div>

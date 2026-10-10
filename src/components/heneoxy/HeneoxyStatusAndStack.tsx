@@ -23,7 +23,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
               Strict separation between completed foundations, ongoing engineering, and theoretical research.
             </p>
           </div>
-          <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+          <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
             NON-FABRICATED STATUS LOG
           </span>
         </div>
@@ -31,7 +31,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Implemented */}
           <Card className="p-4 sm:p-6 border-accent/40 bg-background-surface/50 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[10px] uppercase tracking-wider">
+            <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[11px] uppercase tracking-wider">
               <span className="text-accent font-bold">01 // IMPLEMENTED</span>
               <Badge variant="accent" className="text-[8px] uppercase">COMPLETED</Badge>
             </div>
@@ -47,7 +47,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
 
           {/* In Development */}
           <Card className="p-4 sm:p-6 border-blue-500/40 bg-background-surface/50 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[10px] uppercase tracking-wider">
+            <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[11px] uppercase tracking-wider">
               <span className="text-blue-400 font-bold">02 // IN DEVELOPMENT</span>
               <Badge variant="default" className="text-[8px] uppercase">ACTIVE</Badge>
             </div>
@@ -63,7 +63,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
 
           {/* Research */}
           <Card className="p-4 sm:p-6 border-purple-500/40 bg-background-surface/50 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[10px] uppercase tracking-wider">
+            <div className="flex items-center justify-between pb-3 border-b border-border/30 font-mono text-[11px] uppercase tracking-wider">
               <span className="text-purple-400 font-bold">03 // RESEARCH HORIZON</span>
               <Badge variant="outline" className="text-[8px] uppercase">EXPLORATION</Badge>
             </div>
@@ -90,7 +90,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
               Technology Stack by Tier
             </h3>
           </div>
-          <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+          <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
             FOUR RUNTIME TIERS
           </span>
         </div>
@@ -98,7 +98,7 @@ export const HeneoxyStatusAndStack: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {technologyStack.map((tier) => (
             <Card key={tier.category} className="p-4 sm:p-6 border-border/70 bg-background-surface/40 space-y-4">
-              <span className="font-mono text-[10px] text-accent uppercase tracking-widest block pb-2 border-b border-border/30 font-semibold">
+              <span className="font-mono text-[11px] text-accent uppercase tracking-widest block pb-2 border-b border-border/30 font-semibold">
                 {tier.category}
               </span>
 

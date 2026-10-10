@@ -41,7 +41,7 @@ export const EngineeringCreativeBridge: React.FC = () => {
               key={pillar.title}
               className="p-4 sm:p-6 bg-background-surface border-border/80 hover:border-accent/40 transition-colors"
             >
-              <div className="font-mono text-[10px] text-accent tracking-widest uppercase mb-2">
+              <div className="font-mono text-[11px] text-accent tracking-widest uppercase mb-2">
                 PRINCIPLE // 0{idx + 1}
               </div>
               <h3 className="font-editorial text-sm sm:text-base font-semibold text-foreground uppercase tracking-wide mb-2">

@@ -61,7 +61,7 @@ export const AdminLogin: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center p-6 bg-background">
       <Card className="w-full max-w-md p-8 border border-border-subtle bg-background-surface">
         <div className="mb-6">
-          <span className="font-mono text-[10px] tracking-widest text-accent uppercase block mb-1">
+          <span className="font-mono text-[11px] tracking-widest text-accent uppercase block mb-1">
             Restricted Access
           </span>
           <h1 className="font-editorial text-2xl font-bold uppercase tracking-tight text-foreground">

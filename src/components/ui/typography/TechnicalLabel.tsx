@@ -26,7 +26,7 @@ export const TechnicalLabel: React.FC<TechnicalLabelProps> = ({
     <span
       className={cn(
         'inline-flex items-center gap-2 font-mono uppercase tracking-widest text-foreground-secondary',
-        size === 'xs' ? 'text-[10px]' : 'text-xs',
+        size === 'xs' ? 'text-[11px]' : 'text-xs',
         className
       )}
       {...props}

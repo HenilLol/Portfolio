@@ -22,7 +22,32 @@ export const SmoothScrollProvider: React.FC<{ children: React.ReactNode }> = ({ 
     controllerRef.current = instance;
     setController(instance);
 
+    // Deep links: on load (or hash change), scroll to the #section target through
+    // the Lenis controller. Browsers won't jump because Lenis owns scrolling;
+    // without this, /#projects lands at the top and silently drops the hash.
+    const scrollToHash = (hash: string) => {
+      const id = hash.replace(/^#/, '');
+      if (!id) return;
+      // wait for layout (fonts/sections) to settle before measuring targets
+      const attempt = (remaining: number) => {
+        const el = document.getElementById(id);
+        if (el) {
+          instance.scrollTo(el, { offset: -80, duration: reducedMotion ? 0 : 1.4 });
+        } else if (remaining > 0) {
+          window.setTimeout(() => attempt(remaining - 1), 100);
+        }
+      };
+      attempt(20); // retry up to ~2s for lazily-mounted sections
+    };
+
+    if (window.location.hash) {
+      scrollToHash(window.location.hash);
+    }
+    const onHashChange = () => scrollToHash(window.location.hash);
+    window.addEventListener('hashchange', onHashChange);
+
     return () => {
+      window.removeEventListener('hashchange', onHashChange);
       instance.destroy();
       controllerRef.current = null;
     };

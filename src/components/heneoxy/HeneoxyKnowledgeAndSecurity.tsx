@@ -31,7 +31,7 @@ export const HeneoxyKnowledgeAndSecurity: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {knowledgeResearch.stages.map((stg) => (
             <Card key={stg.stage} className="p-5 border-border/70 bg-background-surface/40 space-y-3">
-              <span className="font-mono text-[10px] text-accent uppercase tracking-widest block">
+              <span className="font-mono text-[11px] text-accent uppercase tracking-widest block">
                 {stg.stage}
               </span>
               <h4 className="font-editorial text-sm font-bold uppercase text-foreground">
@@ -59,7 +59,7 @@ export const HeneoxyKnowledgeAndSecurity: React.FC = () => {
               {securityPrinciples.disclaimer}
             </p>
           </div>
-          <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+          <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
             ACTIVE CONTRACTS
           </span>
         </div>
@@ -68,7 +68,7 @@ export const HeneoxyKnowledgeAndSecurity: React.FC = () => {
           {securityPrinciples.principles.map((pr) => (
             <Card key={pr.id} className="p-6 border-border/70 bg-background-surface/40 space-y-3">
               <div className="flex items-center justify-between pb-2 border-b border-border/20">
-                <span className="font-mono text-[10px] text-accent tracking-widest uppercase">
+                <span className="font-mono text-[11px] text-accent tracking-widest uppercase">
                   {pr.id.toUpperCase()}
                 </span>
                 <span className="font-mono text-[9px] text-emerald-400/90 border border-emerald-500/30 px-1.5 py-0.2 uppercase">

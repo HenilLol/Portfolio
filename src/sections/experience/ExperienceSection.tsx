@@ -21,7 +21,7 @@ export const ExperienceSection: React.FC = () => {
             <TechnicalLabel indicator indicatorColor="accent">
               DEVELOPMENT TIMELINE // SCENE-08
             </TechnicalLabel>
-            <DisplayText as="h2" size="lg" className="text-foreground uppercase font-bold tracking-tight">
+            <DisplayText as="h2" size="2xl" className="text-foreground uppercase font-bold tracking-tight">
               Journey & Evolution
             </DisplayText>
             <p className="text-foreground-secondary text-sm sm:text-base leading-relaxed">
@@ -29,7 +29,7 @@ export const ExperienceSection: React.FC = () => {
             </p>
           </div>
 
-          <div className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest space-y-1 text-left lg:text-right">
+          <div className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest space-y-1 text-left lg:text-right">
             <div>STATUS // ACTIVE PRACTICE</div>
             <div className="text-accent">B.TECH COMPUTER ENGINEERING</div>
           </div>

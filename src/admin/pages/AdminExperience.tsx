@@ -326,7 +326,7 @@ export const AdminExperience: React.FC = () => {
               >
                 <div className="space-y-1 max-w-xl">
                   <div className="flex items-center gap-2.5 flex-wrap">
-                    <span className="font-mono text-[10px] px-1.5 py-0.2 border border-border-subtle text-foreground-muted">
+                    <span className="font-mono text-[11px] px-1.5 py-0.2 border border-border-subtle text-foreground-muted">
                       #{exp.order}
                     </span>
                     <h4 className="font-editorial text-base font-semibold text-foreground uppercase tracking-tight">
@@ -334,11 +334,11 @@ export const AdminExperience: React.FC = () => {
                     </h4>
                     <span className="font-mono text-xs text-accent">@ {exp.company}</span>
                     {exp.current && (
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 uppercase font-bold">
+                      <span className="text-[11px] font-mono px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 uppercase font-bold">
                         Present
                       </span>
                     )}
-                    <Badge variant={exp.published !== false ? 'accent' : 'outline'} className="text-[10px]">
+                    <Badge variant={exp.published !== false ? 'accent' : 'outline'} className="text-[11px]">
                       {exp.published !== false ? 'Published' : 'Draft'}
                     </Badge>
                   </div>
@@ -559,7 +559,7 @@ export const AdminExperience: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-mono text-[10px] uppercase text-foreground-muted mb-0.5">
+                  <label className="block font-mono text-[11px] uppercase text-foreground-muted mb-0.5">
                     Sort Order
                   </label>
                   <input

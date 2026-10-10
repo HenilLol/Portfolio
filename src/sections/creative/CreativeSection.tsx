@@ -17,7 +17,7 @@ export const CreativeSection: React.FC = () => {
             <TechnicalLabel indicator indicatorColor="accent">
               VISUAL SYSTEM // 07 • EXPERIMENTAL ARCHIVE
             </TechnicalLabel>
-            <DisplayText as="h2" size="xl">
+            <DisplayText as="h2" size="2xl">
               A Field Log of Frames, Motion, Light & Experiments.
             </DisplayText>
             <p className="text-foreground-secondary text-base leading-relaxed font-normal">

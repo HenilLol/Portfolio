@@ -19,7 +19,7 @@ export const Divider: React.FC<DividerProps> = ({
         {...props}
       >
         <div className={cn('flex-grow border-t border-border', dashed && 'border-dashed')} />
-        <span className="shrink-0 px-4 font-mono text-[10px] uppercase tracking-widest text-foreground-muted">
+        <span className="shrink-0 px-4 font-mono text-[11px] uppercase tracking-widest text-foreground-muted">
           {label}
         </span>
         <div className={cn('flex-grow border-t border-border', dashed && 'border-dashed')} />

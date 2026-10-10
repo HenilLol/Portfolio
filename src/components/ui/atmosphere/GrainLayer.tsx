@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * Procedural grain layer: zero runtime JavaScript, pointer-events none,
- * lightweight SVG filter with ultra-low visual intensity (0.025 opacity).
+ * lightweight SVG filter with subtle but present film grain (0.09 turbulence opacity).
  */
 export const GrainLayer: React.FC = () => {
   return (
