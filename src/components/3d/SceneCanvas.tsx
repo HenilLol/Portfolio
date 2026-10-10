@@ -38,7 +38,7 @@ const VisibilityFrameloop: React.FC<{
     return () => observer.disconnect();
   }, []);
 
-  return <div ref={ref}>{children(inView ? 'always' : 'never')}</div>;
+  return <div ref={ref} className="relative w-full h-full">{children(inView ? 'always' : 'never')}</div>;
 };
 
 export const SceneCanvas: React.FC<SceneCanvasProps> = ({
@@ -52,7 +52,7 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({
   const { isMobile } = useViewport();
 
   const content = (frameloop: 'always' | 'never' | 'demand') => (
-    <div className={`relative w-full h-full min-h-[300px] overflow-hidden ${className}`}>
+    <div className={`relative w-full h-full overflow-hidden ${className}`}>
       <Suspense fallback={<CanvasFallback />}>
         <Canvas
           camera={{ position: cameraPosition, fov }}
