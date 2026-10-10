@@ -235,6 +235,7 @@ export const SkillsSection: React.FC = () => {
                 <SkillGraphNode
                   key={node.id}
                   node={node}
+                  domId={`skill-node-mobile-${node.id}`}
                   isActive={isActive}
                   isConnected={isConnected}
                   isDimmed={isDimmed}

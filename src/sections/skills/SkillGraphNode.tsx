@@ -13,6 +13,10 @@ export interface SkillGraphNodeProps {
   onClick: (node: TechNode) => void;
   className?: string;
   style?: React.CSSProperties;
+  /** Unique DOM id for this node instance. Required when the same node
+   *  renders in more than one view (desktop graph + mobile list) to
+   *  avoid duplicate-id violations. */
+  domId?: string;
 }
 
 const statusBadgeStyles: Record<TechNode['status'], { text: string; bg: string; border: string }> = {
@@ -31,6 +35,7 @@ export const SkillGraphNode: React.FC<SkillGraphNodeProps> = ({
   onClick,
   className,
   style,
+  domId,
 }) => {
   const { setCursor, resetCursor } = useCursor();
   const reducedMotion = useReducedMotion();
@@ -50,7 +55,7 @@ export const SkillGraphNode: React.FC<SkillGraphNodeProps> = ({
   return (
     <button
       type="button"
-      id={`skill-node-${node.id}`}
+      id={domId ?? `skill-node-${node.id}`}
       onClick={() => onClick(node)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

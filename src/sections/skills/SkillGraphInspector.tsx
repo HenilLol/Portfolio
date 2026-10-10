@@ -47,9 +47,9 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
               </Badge>
             </div>
 
-            <h4 className="font-editorial text-2xl font-bold uppercase tracking-tight text-foreground">
+            <h3 className="font-editorial text-2xl font-bold uppercase tracking-tight text-foreground">
               {activeNode.name}
-            </h4>
+            </h3>
             <span className="font-mono text-xs text-foreground-muted block">
               CLUSTER: {SKILL_CLUSTERS[activeNode.cluster].name}
             </span>
@@ -111,9 +111,9 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
             <span className="font-mono text-[11px] text-accent tracking-widest uppercase">
               STATUS // TELEMETRY MAP READY
             </span>
-            <h4 className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
+            <h3 className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
               Interactive Systems Graph
-            </h4>
+            </h3>
             <p className="font-sans text-xs text-foreground-secondary leading-relaxed">
               Hover or select any node in the map to inspect its implementation role, learning state, and relational connections.
             </p>
