@@ -9,6 +9,7 @@ import { EnvironmentSystem } from '@/components/experience/EnvironmentSystem';
 import { EnvironmentProvider } from '@/components/experience/EnvironmentContext';
 import { AmbientStarfield } from '@/components/3d/AmbientStarfield';
 import { MarqueeStrip } from '@/components/motion/MarqueeStrip';
+import { VelocitySkew } from '@/components/motion/VelocitySkew';
 import { HeroSection } from '@/sections/hero/HeroSection';
 import { AboutSection } from '@/sections/about/AboutSection';
 import { SkillsSection } from '@/sections/skills/SkillsSection';
@@ -91,6 +92,7 @@ export const PortfolioHome: React.FC = () => {
               className="mt-16 sm:mt-20"
             />
 
+            <VelocitySkew className="flex flex-col">
             {/* Scene 02: Who is Henil? // Spatial Identity Matrix */}
             <AboutSection />
 
@@ -108,6 +110,7 @@ export const PortfolioHome: React.FC = () => {
 
             {/* Scene 09: Minimal Transmission // Contact Protocol */}
             <ContactSection />
+            </VelocitySkew>
           </main>
 
           {/* Scene 10 & 11: System Disconnect Sequence & Reinitialize */}

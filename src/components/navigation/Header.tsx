@@ -27,6 +27,27 @@ export const Header: React.FC = () => {
   // Active section tracking via IntersectionObserver
   const activeSection = useScrollspy(NAV_SECTION_IDS);
 
+  // Resume the ambient drone for persisted-enabled users on their first interaction
+  // (browsers only allow AudioContext after a user gesture)
+  const droneResumeRef = useRef(false);
+  React.useEffect(() => {
+    const resume = () => {
+      if (droneResumeRef.current) return;
+      droneResumeRef.current = true;
+      if (soundEngine.isEnabled()) {
+        soundEngine.startAmbientDrone();
+      }
+      window.removeEventListener('pointerdown', resume);
+      window.removeEventListener('keydown', resume);
+    };
+    window.addEventListener('pointerdown', resume, { once: false });
+    window.addEventListener('keydown', resume, { once: false });
+    return () => {
+      window.removeEventListener('pointerdown', resume);
+      window.removeEventListener('keydown', resume);
+    };
+  }, []);
+
   // Hide header during the opening sequence and unpinning handover on the homepage (reveals only after handover completes)
   React.useEffect(() => {
     if (location.pathname !== '/') {
@@ -91,7 +112,7 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={() => setSoundActive(soundEngine.toggle())}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded border border-border/80 hover:border-accent font-mono text-[9px] uppercase tracking-widest text-foreground-muted hover:text-accent transition-colors cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded border border-border/80 hover:border-accent font-mono text-[10px] uppercase tracking-widest text-foreground-muted hover:text-accent transition-colors cursor-pointer"
               title="Toggle Experience Sound"
               aria-label={soundActive ? 'Mute Sound' : 'Enable Sound'}
             >

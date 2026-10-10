@@ -28,7 +28,7 @@ export const AmbientStarfield: React.FC<{ className?: string }> = ({ className }
     let running = true;
 
     const buildStars = () => {
-      const density = Math.min(240, Math.floor((w * h) / 14000));
+      const density = Math.min(320, Math.floor((w * h) / 9000));
       stars = Array.from({ length: density }).map((_, i) => ({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -64,7 +64,7 @@ export const AmbientStarfield: React.FC<{ className?: string }> = ({ className }
         // Wrap vertically around the viewport as scroll moves
         const yy = (((s.y - scrollY * speed[s.band]) % h) + h) % h;
         const twinkle = reducedMotion ? 1 : 0.55 + 0.45 * Math.sin(t * 0.0012 + s.tw);
-        const alpha = (s.band === 0 ? 0.28 : s.band === 1 ? 0.45 : 0.7) * twinkle;
+        const alpha = (s.band === 0 ? 0.42 : s.band === 1 ? 0.65 : 0.95) * twinkle;
 
         if (s.tint) {
           ctx.fillStyle = `rgba(0, 240, 255, ${alpha * 0.9})`;
