@@ -32,6 +32,27 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
   const holdTriggeredRef = useRef<boolean>(false);
 
   const { isMobile, width: viewportWidth } = useViewport();
+  // Window-measured sticky height: viewport units (vh/dvh) resolve inconsistently across
+  // display-scaling factors and browser zoom on Windows — the full-screen cinematic
+  // stage can collapse into a short band at the top of the window. A JS-measured pixel
+  // height (updated on resize) is immune to every vh/dvh quirk.
+  const [stageHeight, setStageHeight] = useState<number>(() =>
+    typeof window !== "undefined" ? window.innerHeight : 800
+  );
+
+  useEffect(() => {
+    const measure = () => setStageHeight(window.innerHeight);
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("orientationchange", measure);
+    // visualViewport covers pinch-zoom / dynamic browser chrome on mobile
+    window.visualViewport?.addEventListener("resize", measure);
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("orientationchange", measure);
+      window.visualViewport?.removeEventListener("resize", measure);
+    };
+  }, []);
   const { scrollTo } = useLenisScroll();
   const reducedMotion = useReducedMotion();
 
@@ -134,8 +155,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
       id="hero"
       className={`relative w-full text-foreground select-none ${isMobile ? 'h-[720vh]' : 'h-[980vh]'}`}
     >
-      {/* Sticky Full-Viewport Film Environment */}
-      <div className="sticky top-0 w-full h-screen h-[100dvh] overflow-x-clip overflow-y-visible flex flex-col justify-between">
+      {/* Sticky Full-Viewport Film Environment — height pinned to the measured
+          window so display-scaling / zoom quirks can never shrink the stage */}
+      <div
+        className="sticky top-0 w-full overflow-x-clip overflow-y-visible flex flex-col justify-between"
+        style={{ height: `${stageHeight}px` }}
+      >
         {/* Background Film Backdrop Layer (fades out synchronously at 0.94-0.99 with WebGL canvas to seamlessly reveal celestial atmosphere) */}
         <div
           className="absolute inset-0 w-full h-full bg-background pointer-events-none z-0"
