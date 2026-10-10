@@ -106,7 +106,7 @@ export const ProjectView: React.FC = () => {
                     {project.status || 'ACTIVE'}
                   </Badge>
                   {project.role && (
-                    <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest border border-border/50 px-2 py-0.5">
+                    <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest border border-border/50 px-2 py-0.5">
                       {project.role}
                     </span>
                   )}
@@ -155,7 +155,7 @@ export const ProjectView: React.FC = () => {
                   )}
                   {project.caseStudy?.problem && (
                     <div className="p-5 border border-border/60 bg-background-surface/40 space-y-2">
-                      <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-wider block">
+                      <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-wider block">
                         CHALLENGE MATRIX
                       </span>
                       <p className="text-xs text-foreground-secondary leading-relaxed">
@@ -184,7 +184,7 @@ export const ProjectView: React.FC = () => {
                   {/* Architecture Box */}
                   {project.caseStudy?.architecture && (
                     <Card className="p-6 border-border/80 bg-background-surface/60 space-y-3">
-                      <span className="font-mono text-[10px] text-accent tracking-widest uppercase block">
+                      <span className="font-mono text-[11px] text-accent tracking-widest uppercase block">
                         {project.caseStudy.architecture.title}
                       </span>
                       <p className="text-xs text-foreground-secondary leading-relaxed">
@@ -195,7 +195,7 @@ export const ProjectView: React.FC = () => {
 
                   {/* Technologies Matrix */}
                   <div className="space-y-3 pt-4 border-t border-border/30">
-                    <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block">
+                    <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block">
                       TECHNOLOGY IMPLEMENTATION
                     </span>
                     <div className="flex flex-wrap gap-2">
@@ -216,7 +216,7 @@ export const ProjectView: React.FC = () => {
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-[10px] font-mono text-foreground-muted uppercase tracking-wider"
+                          className="text-[11px] font-mono text-foreground-muted uppercase tracking-wider"
                         >
                           #{tag}
                         </span>
@@ -236,7 +236,7 @@ export const ProjectView: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {project.caseStudy.challenges.map((challenge, i) => (
                       <Card key={i} className="p-6 border-border/60 bg-background-surface/30 space-y-2">
-                        <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block">
+                        <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block">
                           CONSTRAINT // 0{i + 1}
                         </span>
                         <p className="text-xs text-foreground-secondary leading-relaxed">
@@ -257,7 +257,7 @@ export const ProjectView: React.FC = () => {
                       to={`/project/${adjacent.prev.slug}`}
                       className="group p-4 sm:p-6 border border-border/70 bg-background-surface/30 hover:border-accent/50 transition-colors space-y-2 select-none"
                     >
-                      <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block group-hover:text-accent transition-colors">
+                      <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block group-hover:text-accent transition-colors">
                         ← PREVIOUS BLUEPRINT
                       </span>
                       <h4 className="font-editorial text-base sm:text-lg font-bold uppercase text-foreground">
@@ -273,7 +273,7 @@ export const ProjectView: React.FC = () => {
                       to={`/project/${adjacent.next.slug}`}
                       className="group p-4 sm:p-6 border border-border/70 bg-background-surface/30 hover:border-accent/50 transition-colors space-y-2 text-left sm:text-right select-none"
                     >
-                      <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block group-hover:text-accent transition-colors">
+                      <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block group-hover:text-accent transition-colors">
                         NEXT BLUEPRINT →
                       </span>
                       <h4 className="font-editorial text-base sm:text-lg font-bold uppercase text-foreground">

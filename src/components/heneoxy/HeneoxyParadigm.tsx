@@ -17,7 +17,7 @@ export const HeneoxyParadigm: React.FC = () => {
             From Application Silos to Cohesive Environment
           </h3>
         </div>
-        <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+        <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
           CONCEPTUAL ARCHITECTURAL DIRECTION
         </span>
       </div>
@@ -59,7 +59,7 @@ export const HeneoxyParadigm: React.FC = () => {
         </div>
 
         {/* Center Transition Vector */}
-        <div className="lg:col-span-2 flex flex-col items-center justify-center py-2 lg:py-0 text-center font-mono text-[10px] text-accent space-y-2">
+        <div className="lg:col-span-2 flex flex-col items-center justify-center py-2 lg:py-0 text-center font-mono text-[11px] text-accent space-y-2">
           <span className="hidden lg:inline text-xs">TRANSITION</span>
           <div className="w-12 h-[1px] bg-accent/60 hidden lg:block" />
           <span className="text-lg rotate-90 lg:rotate-0 inline-block">→</span>
@@ -83,12 +83,12 @@ export const HeneoxyParadigm: React.FC = () => {
               <div className="p-2 border border-accent/40 bg-accent/5 text-accent font-bold">
                 OPERATOR INTENT
               </div>
-              <div className="text-[10px] text-accent/60">↓</div>
+              <div className="text-[11px] text-accent/60">↓</div>
               <div className="p-2 border border-border bg-background text-foreground">
                 AMBIENT ORCHESTRATOR
               </div>
-              <div className="text-[10px] text-accent/60">↓</div>
-              <div className="grid grid-cols-3 gap-1.5 text-[10px] text-foreground-secondary">
+              <div className="text-[11px] text-accent/60">↓</div>
+              <div className="grid grid-cols-3 gap-1.5 text-[11px] text-foreground-secondary">
                 <div className="p-1.5 border border-border bg-background">TOOLS</div>
                 <div className="p-1.5 border border-border bg-background">KNOWLEDGE</div>
                 <div className="p-1.5 border border-border bg-background">CONTEXT</div>

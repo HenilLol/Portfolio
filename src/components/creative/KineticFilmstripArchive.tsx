@@ -38,7 +38,7 @@ export const KineticFilmstripArchive: React.FC = () => {
                 key={cat.id}
                 type="button"
                 onClick={() => setActiveCategory(cat.id)}
-                className={`px-3 py-1.5 rounded border transition-all cursor-pointer text-[10px] tracking-widest ${
+                className={`px-3 py-1.5 rounded border transition-all cursor-pointer text-[11px] tracking-widest ${
                   isActive
                     ? 'border-accent text-accent bg-accent/10 font-semibold'
                     : 'border-border/60 text-foreground-muted hover:border-border hover:text-foreground'
@@ -138,7 +138,7 @@ export const KineticFilmstripArchive: React.FC = () => {
                     </div>
 
                     {/* Action Bar */}
-                    <div className="pt-3 border-t border-border/20 flex items-center justify-between font-mono text-[10px] text-accent tracking-wider uppercase">
+                    <div className="pt-3 border-t border-border/20 flex items-center justify-between font-mono text-[11px] text-accent tracking-wider uppercase">
                       <span>INSPECT STUDY</span>
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -151,7 +151,7 @@ export const KineticFilmstripArchive: React.FC = () => {
       </div>
 
       {/* Track Footnote & Direct Lab Link */}
-      <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+      <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           <span>REAL MEDIA ARCHIVE READY</span>

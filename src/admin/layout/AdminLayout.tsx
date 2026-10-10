@@ -111,12 +111,12 @@ export const AdminLayout: React.FC = () => {
                 isConfigured ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'
               )}
             />
-            <div className="text-[10px] font-mono text-foreground-muted truncate">
+            <div className="text-[11px] font-mono text-foreground-muted truncate">
               {isConfigured ? 'Supabase Synchronized' : 'Offline / Fixtures'}
             </div>
           </div>
 
-          <div className="text-[10px] font-mono text-foreground-secondary truncate flex items-center gap-1.5">
+          <div className="text-[11px] font-mono text-foreground-secondary truncate flex items-center gap-1.5">
             <ShieldCheck size={12} className="text-accent shrink-0" />
             <span className="truncate">{user?.email || 'Administrator'}</span>
           </div>
@@ -124,7 +124,7 @@ export const AdminLayout: React.FC = () => {
           <div className="pt-2 flex items-center justify-between border-t border-border-subtle/60 text-xs font-mono">
             <Link
               to="/"
-              className="text-foreground-muted hover:text-foreground flex items-center gap-1.5 uppercase text-[10px] tracking-wider min-h-[36px]"
+              className="text-foreground-muted hover:text-foreground flex items-center gap-1.5 uppercase text-[11px] tracking-wider min-h-[36px]"
             >
               <ExternalLink size={12} />
               Public Site
@@ -132,7 +132,7 @@ export const AdminLayout: React.FC = () => {
             <button
               type="button"
               onClick={() => signOut()}
-              className="text-foreground-muted hover:text-red-400 flex items-center gap-1 uppercase text-[10px] tracking-wider cursor-pointer min-h-[36px]"
+              className="text-foreground-muted hover:text-red-400 flex items-center gap-1 uppercase text-[11px] tracking-wider cursor-pointer min-h-[36px]"
             >
               <LogOut size={12} />
               Sign Out

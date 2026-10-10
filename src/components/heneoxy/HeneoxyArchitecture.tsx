@@ -37,7 +37,7 @@ export const HeneoxyArchitecture: React.FC = () => {
             Proposed Architecture Layers
           </h3>
         </div>
-        <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+        <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
           INTERACTIVE ARCHITECTURAL INSPECTOR
         </span>
       </div>
@@ -74,7 +74,7 @@ export const HeneoxyArchitecture: React.FC = () => {
                     : 'border-border/70 bg-background-surface/40 hover:border-accent/40'
                 }`}
               >
-                <div className="flex items-center justify-between pb-2 border-b border-border/20 font-mono text-[10px] uppercase tracking-widest text-foreground-muted">
+                <div className="flex items-center justify-between pb-2 border-b border-border/20 font-mono text-[11px] uppercase tracking-widest text-foreground-muted">
                   <span>LAYER // {layer.index}</span>
                   <span
                     className={`px-1.5 py-0.5 border text-[9px] ${badge.border} ${badge.text} ${badge.bg}`}
@@ -103,7 +103,7 @@ export const HeneoxyArchitecture: React.FC = () => {
         {/* Right: Architecture Inspector HUD */}
         <div className="lg:col-span-5 sticky top-24">
           <Card className="p-4 sm:p-8 border-border/80 bg-background-surface/80 backdrop-blur-md space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-border/40 font-mono text-[10px] uppercase tracking-widest">
+            <div className="flex items-center justify-between pb-4 border-b border-border/40 font-mono text-[11px] uppercase tracking-widest">
               <span className="text-accent">INSPECTING // LAYER-{activeLayer.index}</span>
               <Badge
                 variant={
@@ -120,7 +120,7 @@ export const HeneoxyArchitecture: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block">
+              <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block">
                 {activeLayer.category}
               </span>
               <h4 className="font-editorial text-xl sm:text-2xl font-bold uppercase text-foreground">
@@ -129,7 +129,7 @@ export const HeneoxyArchitecture: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block">
+              <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block">
                 ARCHITECTURAL ROLE
               </span>
               <p className="font-sans text-xs sm:text-sm text-foreground-secondary leading-relaxed">
@@ -139,7 +139,7 @@ export const HeneoxyArchitecture: React.FC = () => {
 
             {/* Core Capabilities */}
             <div className="space-y-2 pt-4 border-t border-border/30">
-              <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block">
+              <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block">
                 CAPABILITIES & BOUNDARIES
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -155,7 +155,7 @@ export const HeneoxyArchitecture: React.FC = () => {
             </div>
 
             {/* Active Connections */}
-            <div className="space-y-2 pt-4 border-t border-border/30 font-mono text-[10px] text-foreground-muted uppercase tracking-wider">
+            <div className="space-y-2 pt-4 border-t border-border/30 font-mono text-[11px] text-foreground-muted uppercase tracking-wider">
               <span>CONNECTED LAYERS:</span>
               <div className="flex flex-wrap gap-2 pt-1">
                 {activeLayer.connections.map((connId) => {

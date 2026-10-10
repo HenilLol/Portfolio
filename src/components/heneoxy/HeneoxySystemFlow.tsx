@@ -20,7 +20,7 @@ export const HeneoxySystemFlow: React.FC = () => {
             {subtitle}
           </p>
         </div>
-        <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+        <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
           HUMAN-IN-THE-LOOP SAFETY PIPELINE
         </span>
       </div>
@@ -33,12 +33,12 @@ export const HeneoxySystemFlow: React.FC = () => {
               className="p-4 sm:p-5 border-border/70 bg-background-surface/40 flex flex-col justify-between space-y-4 relative group hover:border-accent/40 transition-colors"
             >
               <div className="space-y-3">
-                <div className="flex items-center justify-between pb-2 border-b border-border/30 font-mono text-[10px] uppercase tracking-widest text-foreground-muted">
+                <div className="flex items-center justify-between pb-2 border-b border-border/30 font-mono text-[11px] uppercase tracking-widest text-foreground-muted">
                   <span>STEP // {item.step}</span>
                   <span className="text-accent">{item.status}</span>
                 </div>
 
-                <span className="font-mono text-[10px] text-accent uppercase tracking-widest block">
+                <span className="font-mono text-[11px] text-accent uppercase tracking-widest block">
                   {item.actor}
                 </span>
 

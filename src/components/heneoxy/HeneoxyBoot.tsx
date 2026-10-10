@@ -78,7 +78,7 @@ export const HeneoxyBoot: React.FC<HeneoxyBootProps> = ({ onComplete }) => {
         }}
       >
         {/* Top Header */}
-        <div className="flex items-center justify-between font-mono text-[10px] tracking-widest text-foreground-muted uppercase">
+        <div className="flex items-center justify-between font-mono text-[11px] tracking-widest text-foreground-muted uppercase">
           <div className="flex items-center gap-2 text-accent">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             <span>HENEOXY // SYSTEM BOOT</span>
@@ -113,7 +113,7 @@ export const HeneoxyBoot: React.FC<HeneoxyBootProps> = ({ onComplete }) => {
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-foreground-muted text-[10px]">0{idx + 1}</span>
+                    <span className="text-foreground-muted text-[11px]">0{idx + 1}</span>
                     <span className="text-foreground font-semibold tracking-wider">
                       {seq.subsystem}
                     </span>
@@ -124,7 +124,7 @@ export const HeneoxyBoot: React.FC<HeneoxyBootProps> = ({ onComplete }) => {
                   </div>
 
                   <span
-                    className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 border ${
+                    className={`text-[11px] uppercase tracking-wider px-1.5 py-0.5 border ${
                       seq.status === 'READY'
                         ? 'border-accent/60 text-accent bg-accent/10'
                         : seq.status === 'PRINCIPLE'

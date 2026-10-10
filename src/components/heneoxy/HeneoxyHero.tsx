@@ -24,7 +24,7 @@ export const HeneoxyHero: React.FC = () => {
           <span>← RETURN TO PROJECT UNIVERSE</span>
         </Link>
 
-        <div className="flex items-center gap-4 text-foreground-muted text-[10px]">
+        <div className="flex items-center gap-4 text-foreground-muted text-[11px]">
           <span>SPEC // FLAGSHIP-01</span>
           <span className="text-border">/</span>
           <span className="text-accent">{HENEOXY_CONTENT.identity.buildMode}</span>
@@ -42,7 +42,7 @@ export const HeneoxyHero: React.FC = () => {
             <Badge variant="accent" className="text-[9px] uppercase tracking-wider">
               {HENEOXY_CONTENT.identity.status}
             </Badge>
-            <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest border border-border/60 px-2 py-0.5">
+            <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest border border-border/60 px-2 py-0.5">
               {HENEOXY_CONTENT.identity.telemetryMode}
             </span>
           </div>
@@ -87,7 +87,7 @@ export const HeneoxyHero: React.FC = () => {
       </div>
 
       {/* Hero Telemetry HUD Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 sm:p-6 border border-border/70 bg-background-surface/50 font-mono text-[10px] uppercase tracking-wider">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 sm:p-6 border border-border/70 bg-background-surface/50 font-mono text-[11px] uppercase tracking-wider">
         <div>
           <span className="text-foreground-muted block mb-1">SYSTEM STATE</span>
           <span className="text-accent font-semibold">IN DEVELOPMENT</span>

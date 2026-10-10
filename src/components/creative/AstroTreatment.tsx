@@ -37,7 +37,7 @@ export const AstroTreatment: React.FC = () => {
           </div>
 
           <div className="lg:col-span-4 p-4 sm:p-6 bg-background-surface border border-border/80 space-y-3 font-mono text-xs">
-            <div className="text-[10px] text-accent tracking-widest uppercase pb-2 border-b border-border/40">
+            <div className="text-[11px] text-accent tracking-widest uppercase pb-2 border-b border-border/40">
               Calibration Protocol
             </div>
             <div className="flex justify-between py-1 border-b border-border/20 text-[11px]">
@@ -66,7 +66,7 @@ export const AstroTreatment: React.FC = () => {
               key={stage.step}
               className="p-4 sm:p-6 bg-background-surface border-border/80 space-y-3 relative overflow-hidden group hover:border-accent/50 transition-colors"
             >
-              <div className="font-mono text-[10px] text-accent tracking-widest uppercase">
+              <div className="font-mono text-[11px] text-accent tracking-widest uppercase">
                 {stage.step}
               </div>
               <h3 className="font-editorial text-sm font-semibold uppercase tracking-wide text-foreground">

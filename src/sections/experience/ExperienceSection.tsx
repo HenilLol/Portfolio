@@ -29,7 +29,7 @@ export const ExperienceSection: React.FC = () => {
             </p>
           </div>
 
-          <div className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest space-y-1 text-left lg:text-right">
+          <div className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest space-y-1 text-left lg:text-right">
             <div>STATUS // ACTIVE PRACTICE</div>
             <div className="text-accent">B.TECH COMPUTER ENGINEERING</div>
           </div>

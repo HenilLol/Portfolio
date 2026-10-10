@@ -57,7 +57,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
         )}
       >
         {/* Top Header Telemetry */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/40 font-mono text-[10px] uppercase tracking-widest text-foreground-muted">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/40 font-mono text-[11px] uppercase tracking-widest text-foreground-muted">
           <div className="flex items-center gap-3">
             <TechnicalLabel indicator indicatorColor="accent">
               FLAGSHIP SYSTEM // {project.specIndex || '01'}
@@ -97,7 +97,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
 
             {/* Technology Signals */}
             <div className="space-y-2 pt-2">
-              <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block">
+              <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block">
                 CORE STACK & SIGNALS
               </span>
               <div className="flex flex-wrap gap-2">
@@ -152,7 +152,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
         {/* Left: Metadata & Brief */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-border/30 font-mono text-[10px] uppercase tracking-widest text-foreground-muted">
+          <div className="flex items-center justify-between pb-2 border-b border-border/30 font-mono text-[11px] uppercase tracking-widest text-foreground-muted">
             <span>SPEC // {project.specIndex || '00'}</span>
             <Badge variant="outline" className="text-[8px] uppercase">
               {project.status || 'PROTOTYPE'}
@@ -160,7 +160,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
           </div>
 
           <div>
-            <span className="font-mono text-[10px] text-accent uppercase tracking-widest block mb-1">
+            <span className="font-mono text-[11px] text-accent uppercase tracking-widest block mb-1">
               {project.categoryLabel || project.category.toUpperCase()}
             </span>
             <DisplayText as="h3" size="md" className="text-foreground uppercase font-bold tracking-tight">
@@ -176,7 +176,7 @@ export const ProjectWorld: React.FC<ProjectWorldProps> = ({
             {project.technologies.slice(0, 4).map((tech) => (
               <span
                 key={tech}
-                className="px-2 py-0.5 text-[10px] font-mono border border-border/60 bg-background text-foreground-muted uppercase"
+                className="px-2 py-0.5 text-[11px] font-mono border border-border/60 bg-background text-foreground-muted uppercase"
               >
                 {tech}
               </span>

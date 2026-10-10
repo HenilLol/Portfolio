@@ -7,6 +7,8 @@ import { GrainLayer } from '@/components/ui/atmosphere/GrainLayer';
 import { GridOverlay } from '@/components/ui/layout/GridOverlay';
 import { EnvironmentSystem } from '@/components/experience/EnvironmentSystem';
 import { EnvironmentProvider } from '@/components/experience/EnvironmentContext';
+import { AmbientStarfield } from '@/components/3d/AmbientStarfield';
+import { MarqueeStrip } from '@/components/motion/MarqueeStrip';
 import { HeroSection } from '@/sections/hero/HeroSection';
 import { AboutSection } from '@/sections/about/AboutSection';
 import { SkillsSection } from '@/sections/skills/SkillsSection';
@@ -63,6 +65,7 @@ export const PortfolioHome: React.FC = () => {
         {/* Atmospheric & Structural Persistent Experience Layers */}
         <GrainLayer />
         <GridOverlay />
+        <AmbientStarfield />
         <EnvironmentSystem currentSection={activeSection} />
         <CustomCursor />
         <Header />
@@ -73,6 +76,21 @@ export const PortfolioHome: React.FC = () => {
 
           {/* Continuous Architectural Flow — Edge-to-Edge Spatial Worlds */}
           <main className="relative z-10 w-full flex flex-col">
+            {/* Kinetic transmission strip — the handover seam between cinematic and portfolio */}
+            <MarqueeStrip
+              items={[
+                'COMPUTER ENGINEERING',
+                'AI & COGNITION',
+                'DISTRIBUTED SYSTEMS',
+                'SPATIAL WEBGL',
+                'CREATIVE ENGINEERING',
+                'SECURITY',
+                'HENIL PATEL',
+                'EST. IST // INDIA',
+              ]}
+              className="mt-16 sm:mt-20"
+            />
+
             {/* Scene 02: Who is Henil? // Spatial Identity Matrix */}
             <AboutSection />
 

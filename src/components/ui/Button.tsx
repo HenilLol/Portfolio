@@ -42,7 +42,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const sizes = {
-    sm: 'h-8 px-3 text-[10px]',
+    sm: 'h-8 px-3 text-[11px]',
     md: 'h-10 px-5 text-xs',
     lg: 'h-12 px-7 text-sm',
   };

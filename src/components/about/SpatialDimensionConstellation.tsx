@@ -113,7 +113,7 @@ export const SpatialDimensionConstellation: React.FC = () => {
       />
 
       {/* Top Telemetry Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/40 font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/40 font-mono text-[11px] tracking-widest uppercase text-foreground-muted">
         <div className="flex items-center gap-3">
           <TechnicalLabel indicator indicatorColor="accent">
             SPATIAL IDENTITY MATRIX // SPEC-02
@@ -168,7 +168,7 @@ export const SpatialDimensionConstellation: React.FC = () => {
                     type="button"
                     onClick={() => handleSelectDimension(dim)}
                     onMouseEnter={() => handleSelectDimension(dim)}
-                    className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border font-mono text-[9px] sm:text-[10px] uppercase tracking-widest transition-all duration-300 whitespace-nowrap cursor-pointer backdrop-blur-md shadow-md ${
+                    className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border font-mono text-[9px] sm:text-[11px] uppercase tracking-widest transition-all duration-300 whitespace-nowrap cursor-pointer backdrop-blur-md shadow-md ${
                       isSelected
                         ? 'border-accent bg-accent/20 text-accent shadow-[0_0_20px_rgba(0,240,255,0.35)] scale-110 font-bold'
                         : 'border-border/80 bg-background/90 text-foreground-secondary hover:border-accent/60 hover:text-foreground'
@@ -199,7 +199,7 @@ export const SpatialDimensionConstellation: React.FC = () => {
               <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-accent" />
               <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-accent" />
 
-              <div className="flex items-center justify-between pb-3 border-b border-border/40 font-mono text-[10px] tracking-widest text-foreground-muted uppercase">
+              <div className="flex items-center justify-between pb-3 border-b border-border/40 font-mono text-[11px] tracking-widest text-foreground-muted uppercase">
                 <span className="text-accent font-semibold">
                   DIMENSION // {currentDim.code} · {currentDim.category}
                 </span>

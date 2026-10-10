@@ -160,7 +160,7 @@ export const CreativeArchive: React.FC = () => {
                         {/* Metadata & Title */}
                         <div className="flex-1 flex flex-col justify-between space-y-4">
                           <div className="space-y-2">
-                            <div className="flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
+                            <div className="flex items-center justify-between font-mono text-[11px] tracking-widest uppercase">
                               <span className="text-accent">{work.category}</span>
                               <span className="text-foreground-muted">{work.year}</span>
                             </div>
@@ -175,7 +175,7 @@ export const CreativeArchive: React.FC = () => {
                           </div>
 
                           {/* Action Footer & Tools */}
-                          <div className="pt-4 border-t border-border/40 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
+                          <div className="pt-4 border-t border-border/40 flex items-center justify-between font-mono text-[11px] tracking-widest uppercase">
                             <div className="flex items-center gap-2 text-foreground-muted">
                               <span>TOOLS:</span>
                               <span className="text-foreground-secondary truncate max-w-[160px] sm:max-w-[220px]">

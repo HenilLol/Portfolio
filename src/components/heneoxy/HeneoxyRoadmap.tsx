@@ -24,7 +24,7 @@ export const HeneoxyRoadmap: React.FC = () => {
               Long-horizon research trajectory without arbitrary commercial deadlines.
             </p>
           </div>
-          <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+          <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
             PHASED TRAJECTORY
           </span>
         </div>
@@ -33,7 +33,7 @@ export const HeneoxyRoadmap: React.FC = () => {
           {roadmap.map((ph) => (
             <Card key={ph.phase} className="p-4 sm:p-6 border-border/70 bg-background-surface/40 space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-border/20">
-                <span className="font-mono text-[10px] text-accent uppercase tracking-widest">
+                <span className="font-mono text-[11px] text-accent uppercase tracking-widest">
                   {ph.phase}
                 </span>
                 <Badge
@@ -57,7 +57,7 @@ export const HeneoxyRoadmap: React.FC = () => {
               <ul className="space-y-1.5 text-xs text-foreground-secondary">
                 {ph.focus.map((f, i) => (
                   <li key={i} className="flex items-start gap-1.5">
-                    <span className="text-accent font-mono text-[10px]">›</span>
+                    <span className="text-accent font-mono text-[11px]">›</span>
                     <span>{f}</span>
                   </li>
                 ))}
@@ -71,7 +71,7 @@ export const HeneoxyRoadmap: React.FC = () => {
       <section id="benchmark" className="p-5 sm:p-10 border border-border/80 bg-background-surface/50 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-4 border-b border-border/30">
           <div className="space-y-1.5">
-            <span className="font-mono text-[10px] text-accent uppercase tracking-widest font-semibold block">
+            <span className="font-mono text-[11px] text-accent uppercase tracking-widest font-semibold block">
               ● {hermesBenchmark.title}
             </span>
             <h4 className="font-editorial text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
@@ -88,7 +88,7 @@ export const HeneoxyRoadmap: React.FC = () => {
         </p>
 
         <div className="space-y-2 pt-2">
-          <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest block">
+          <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest block">
             CORE ARCHITECTURAL STUDY DOMAINS
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -18,13 +18,13 @@ export const AboutSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] tracking-widest text-accent font-semibold">{ABOUT_CONTENT.sectionIndex}</span>
-              <span className="text-foreground-muted font-mono text-[10px]">/</span>
+              <span className="font-mono text-[11px] tracking-widest text-accent font-semibold">{ABOUT_CONTENT.sectionIndex}</span>
+              <span className="text-foreground-muted font-mono text-[11px]">/</span>
               <TechnicalLabel indicator indicatorColor="accent">
                 IDENTITY BLUEPRINT // SCENE-02
               </TechnicalLabel>
             </div>
-            <div className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase space-y-1">
+            <div className="font-mono text-[11px] text-foreground-muted tracking-widest uppercase space-y-1">
               <div>DISCIPLINE: {ABOUT_CONTENT.telemetry.discipline}</div>
               <div>OPERATING: {ABOUT_CONTENT.telemetry.mindset}</div>
               <div className="text-accent">{ABOUT_CONTENT.telemetry.status}</div>
@@ -59,7 +59,7 @@ export const AboutSection: React.FC = () => {
                 Engineering, AI, Systems & Creative Practice
               </h3>
             </div>
-            <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-foreground-muted uppercase tracking-widest">
               SELECT DIMENSION TO INTERROGATE ARCHITECTURE
             </span>
           </div>
@@ -95,7 +95,7 @@ export const AboutSection: React.FC = () => {
         {/* Current Exploration Horizon Bar */}
         <div className="p-4 sm:p-8 border border-border/70 bg-background-surface/40 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-accent font-semibold block">
+            <span className="font-mono text-[11px] uppercase tracking-widest text-accent font-semibold block">
               ● {ABOUT_CONTENT.currentExploration.label}
             </span>
             <p className="font-sans text-xs text-foreground-secondary leading-relaxed">

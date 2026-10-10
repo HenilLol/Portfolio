@@ -451,18 +451,18 @@ export const AdminProjects: React.FC = () => {
               >
                 <div className="space-y-1 max-w-xl">
                   <div className="flex items-center gap-2.5 flex-wrap">
-                    <span className="font-mono text-[10px] px-1.5 py-0.2 border border-border-subtle text-foreground-muted">
+                    <span className="font-mono text-[11px] px-1.5 py-0.2 border border-border-subtle text-foreground-muted">
                       #{project.order}
                     </span>
                     <h4 className="font-editorial text-base font-semibold text-foreground uppercase tracking-tight">
                       {project.title}
                     </h4>
                     {project.featured && (
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 bg-accent/10 text-accent uppercase font-bold">
+                      <span className="text-[11px] font-mono px-1.5 py-0.5 bg-accent/10 text-accent uppercase font-bold">
                         Featured
                       </span>
                     )}
-                    <Badge variant={project.published ? 'accent' : 'outline'} className="text-[10px]">
+                    <Badge variant={project.published ? 'accent' : 'outline'} className="text-[11px]">
                       {project.published ? 'Published' : 'Draft'}
                     </Badge>
                   </div>
@@ -751,7 +751,7 @@ export const AdminProjects: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-mono text-[10px] uppercase text-foreground-muted mb-0.5">
+                  <label className="block font-mono text-[11px] uppercase text-foreground-muted mb-0.5">
                     Sort Order
                   </label>
                   <input

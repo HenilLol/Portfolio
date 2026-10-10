@@ -91,7 +91,7 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
         {/* Top Session Telemetry Bar — Non-operational presentational metaphor */}
-        <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] sm:text-xs tracking-widest text-foreground-muted uppercase pb-6 border-b border-border/40">
+        <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] sm:text-xs tracking-widest text-foreground-muted uppercase pb-6 border-b border-border/40">
           <div className="flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-accent" />
             <span className="text-foreground font-medium">{ENDING_CONTENT.signalHeader}</span>
@@ -99,7 +99,7 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
             <span className="text-accent">{ENDING_CONTENT.completionBadge}</span>
           </div>
 
-          <div className="flex items-center gap-4 text-[10px]">
+          <div className="flex items-center gap-4 text-[11px]">
             <span className="text-foreground-secondary">{ENDING_CONTENT.sessionState}</span>
             <span className="text-border hidden sm:inline-block">/</span>
             <span className="hidden sm:inline-block">{ENDING_CONTENT.timezone}</span>
@@ -113,7 +113,7 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-xl mx-auto p-4 sm:p-6 border border-border/60 bg-background-surface/60 font-mono text-[11px] uppercase tracking-wider space-y-3"
         >
-          <div className="flex items-center justify-between pb-2 border-b border-border/30 text-foreground-muted text-[10px]">
+          <div className="flex items-center justify-between pb-2 border-b border-border/30 text-foreground-muted text-[11px]">
             <span>SYSTEM DISCONNECT PROTOCOL</span>
             <span className="text-accent animate-pulse">DISCONNECTING...</span>
           </div>
@@ -137,7 +137,7 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
             </div>
           </div>
 
-          <div className="pt-2 border-t border-border/30 flex items-center justify-between text-foreground text-[10px] font-semibold">
+          <div className="pt-2 border-t border-border/30 flex items-center justify-between text-foreground text-[11px] font-semibold">
             <span>SESSION STATUS</span>
             <span className="text-accent">SESSION COMPLETE</span>
           </div>
@@ -215,7 +215,7 @@ export const FinalEndingScene: React.FC<FinalEndingSceneProps> = ({ onRestartExp
         </motion.div>
 
         {/* Minimal Technical Footer Row — Dynamic Current Year, No Exact Coordinates */}
-        <div className="pt-12 sm:pt-16 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-[10px] sm:text-[11px] tracking-widest uppercase text-foreground-muted text-center sm:text-left">
+        <div className="pt-12 sm:pt-16 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-[11px] sm:text-[11px] tracking-widest uppercase text-foreground-muted text-center sm:text-left">
           <div>
             <span>{ENDING_CONTENT.copyright}</span>
             <span className="mx-2 text-border">•</span>

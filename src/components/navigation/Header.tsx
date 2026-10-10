@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
           >
             <span>HENIL</span>
             <span className="text-foreground-muted font-mono text-xs font-normal">/</span>
-            <span className="font-mono text-[10px] text-foreground-secondary tracking-widest uppercase group-hover:text-accent transition-colors">
+            <span className="font-mono text-[11px] text-foreground-secondary tracking-widest uppercase group-hover:text-accent transition-colors">
               STUDIO
             </span>
           </Link>
@@ -73,7 +73,7 @@ export const Header: React.FC = () => {
           {/* Center (Desktop only): Minimal Technical Telemetry */}
           <div
             aria-hidden="true"
-            className="hidden md:flex items-center gap-4 font-mono text-[10px] tracking-widest text-foreground-muted uppercase select-none"
+            className="hidden md:flex items-center gap-4 font-mono text-[11px] tracking-widest text-foreground-muted uppercase select-none"
           >
             <span className="text-accent">SYS // ACTIVE</span>
             <span className="text-border">/</span>

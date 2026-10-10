@@ -30,7 +30,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
           {/* Header */}
           <div className="space-y-2 pb-4 border-b border-border/40">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] text-accent tracking-widest uppercase">
+              <span className="font-mono text-[11px] text-accent tracking-widest uppercase">
                 INSPECTING // NODE-{activeNode.id.toUpperCase()}
               </span>
               <Badge
@@ -57,7 +57,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
 
           {/* Description */}
           <div className="space-y-2">
-            <span className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase block">
+            <span className="font-mono text-[11px] text-foreground-muted tracking-widest uppercase block">
               ROLE & APPLICATION
             </span>
             <p className="font-sans text-xs sm:text-sm text-foreground-secondary leading-relaxed">
@@ -67,7 +67,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
 
           {/* Connected Technologies */}
           <div className="space-y-3 pt-4 border-t border-border/40">
-            <span className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase block">
+            <span className="font-mono text-[11px] text-foreground-muted tracking-widest uppercase block">
               RELATIONAL CONNECTIONS ({connectedNodes.length})
             </span>
             <div className="flex flex-wrap gap-2">
@@ -87,7 +87,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
           {/* Connected Project Worlds */}
           {activeNode.projects && activeNode.projects.length > 0 && (
             <div className="space-y-3 pt-4 border-t border-border/40">
-              <span className="font-mono text-[10px] text-accent tracking-widest uppercase block">
+              <span className="font-mono text-[11px] text-accent tracking-widest uppercase block">
                 CONNECTED PROJECT WORLDS ({activeNode.projects.length})
               </span>
               <div className="flex flex-wrap gap-2">
@@ -95,7 +95,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
                   <a
                     key={slug}
                     href={`#project-world-${slug}`}
-                    className="px-2.5 py-1 text-[10px] font-mono border border-accent/60 bg-accent/10 text-accent hover:bg-accent hover:text-background transition-colors uppercase tracking-wider flex items-center gap-1.5"
+                    className="px-2.5 py-1 text-[11px] font-mono border border-accent/60 bg-accent/10 text-accent hover:bg-accent hover:text-background transition-colors uppercase tracking-wider flex items-center gap-1.5"
                   >
                     <span>WORLD // {slug.toUpperCase()}</span>
                     <span>↓</span>
@@ -108,7 +108,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
       ) : (
         <div className="space-y-6">
           <div className="space-y-2 pb-4 border-b border-border/40">
-            <span className="font-mono text-[10px] text-accent tracking-widest uppercase">
+            <span className="font-mono text-[11px] text-accent tracking-widest uppercase">
               STATUS // TELEMETRY MAP READY
             </span>
             <h4 className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
@@ -121,7 +121,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
 
           {/* Clusters Guide */}
           <div className="space-y-3">
-            <span className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase block">
+            <span className="font-mono text-[11px] text-foreground-muted tracking-widest uppercase block">
               SYSTEM CLUSTERS
             </span>
             <div className="space-y-2">
@@ -134,7 +134,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
                     />
                     <span className="text-foreground font-medium">{cluster.name}</span>
                   </div>
-                  <span className="text-foreground-muted text-[10px] hidden sm:inline-block">
+                  <span className="text-foreground-muted text-[11px] hidden sm:inline-block">
                     {cluster.tagline}
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export const SkillGraphInspector: React.FC<SkillGraphInspectorProps> = ({
           </div>
 
           {/* Honest Metric Legend */}
-          <div className="pt-4 border-t border-border/40 font-mono text-[10px] text-foreground-muted space-y-1">
+          <div className="pt-4 border-t border-border/40 font-mono text-[11px] text-foreground-muted space-y-1">
             <div className="flex justify-between">
               <span>● USING: Actively in production</span>
               <span className="text-accent">6 TOOLS</span>

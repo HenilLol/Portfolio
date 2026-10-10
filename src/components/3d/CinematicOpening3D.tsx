@@ -1347,7 +1347,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
               >
                 {node.id === 'center' && (
                   <div className="text-center space-y-1 w-64 select-none pointer-events-none">
-                    <span className="font-mono text-[9px] sm:text-[10px] tracking-widest uppercase text-accent font-semibold block whitespace-nowrap">
+                    <span className="font-mono text-[9px] sm:text-[11px] tracking-widest uppercase text-accent font-semibold block whitespace-nowrap">
                       SPATIAL TAXONOMY // CORE AXIS
                     </span>
                     <span className="font-editorial text-lg sm:text-xl font-bold uppercase tracking-tight text-foreground block whitespace-nowrap">
@@ -1360,7 +1360,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
                     <span className="font-mono text-xs sm:text-sm font-bold text-[#00F0FF] tracking-wider uppercase block whitespace-nowrap">
                       ENGINEERING
                     </span>
-                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                    <p className="font-sans text-[11px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
                       "I build things."
                     </p>
                   </div>
@@ -1370,7 +1370,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
                     <span className="font-mono text-xs sm:text-sm font-bold text-[#38BDF8] tracking-wider uppercase block whitespace-nowrap">
                       AI &amp; COGNITION
                     </span>
-                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                    <p className="font-sans text-[11px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
                       "I explore what they can become."
                     </p>
                   </div>
@@ -1380,7 +1380,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
                     <span className="font-mono text-xs sm:text-sm font-bold text-[#EC4899] tracking-wider uppercase block whitespace-nowrap">
                       CREATIVE
                     </span>
-                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                    <p className="font-sans text-[11px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
                       "I care how they feel."
                     </p>
                   </div>
@@ -1390,7 +1390,7 @@ export const CinematicOpening3D: React.FC<CinematicOpening3DProps> = ({
                     <span className="font-mono text-xs sm:text-sm font-bold text-[#818CF8] tracking-wider uppercase block whitespace-nowrap">
                       SYSTEMS
                     </span>
-                    <p className="font-sans text-[10px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
+                    <p className="font-sans text-[11px] sm:text-xs text-foreground-secondary italic whitespace-nowrap">
                       "I connect the pieces."
                     </p>
                   </div>

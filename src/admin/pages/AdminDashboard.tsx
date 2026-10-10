@@ -94,7 +94,7 @@ export const AdminDashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
           <div className="space-y-1">
-            <span className="text-foreground-muted uppercase text-[10px] block">Database Engine</span>
+            <span className="text-foreground-muted uppercase text-[11px] block">Database Engine</span>
             <div className="text-foreground flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               {isSupabaseConfigured ? 'Supabase Managed PostgreSQL' : 'Local Fixture Fallback Engine'}
@@ -102,7 +102,7 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-1">
-            <span className="text-foreground-muted uppercase text-[10px] block">Security Model</span>
+            <span className="text-foreground-muted uppercase text-[11px] block">Security Model</span>
             <div className="text-foreground flex items-center gap-1.5">
               <Lock size={12} className="text-emerald-400" />
               Row Level Security (RLS) Active
@@ -110,7 +110,7 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-1">
-            <span className="text-foreground-muted uppercase text-[10px] block">Authorization Mode</span>
+            <span className="text-foreground-muted uppercase text-[11px] block">Authorization Mode</span>
             <div className="text-foreground flex items-center gap-1.5">
               <CheckCircle2 size={12} className="text-emerald-400" />
               public.is_admin() Verification

@@ -30,7 +30,7 @@ export const HeneoxyOsNavBar: React.FC = () => {
 
   return (
     <header
-      className="sticky top-0 z-40 w-full bg-[#05070B]/95 backdrop-blur-md border-b border-accent/30 px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] tracking-wider select-none shadow-[0_4px_30px_rgba(0,0,0,0.8)]"
+      className="sticky top-0 z-40 w-full bg-[#05070B]/95 backdrop-blur-md border-b border-accent/30 px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 font-mono text-[11px] tracking-wider select-none shadow-[0_4px_30px_rgba(0,0,0,0.8)]"
       role="banner"
       aria-label="HENEOXY OS Navigation"
     >
@@ -56,7 +56,7 @@ export const HeneoxyOsNavBar: React.FC = () => {
               key={sub.id}
               type="button"
               onClick={() => handleNavigate(sub)}
-              className={`px-2.5 py-1 rounded transition-all cursor-pointer uppercase text-[9px] sm:text-[10px] whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded transition-all cursor-pointer uppercase text-[9px] sm:text-[11px] whitespace-nowrap flex items-center gap-1.5 ${
                 isActive
                   ? 'bg-accent text-background font-bold shadow-[0_0_12px_rgba(0,240,255,0.4)]'
                   : 'text-foreground-secondary hover:text-foreground hover:bg-white/5'
@@ -77,7 +77,7 @@ export const HeneoxyOsNavBar: React.FC = () => {
         </div>
         <Link
           to="/#projects"
-          className="px-2.5 py-1 border border-border/80 hover:border-accent text-foreground-secondary hover:text-accent transition-colors uppercase text-[9px] sm:text-[10px] flex items-center gap-1 cursor-pointer"
+          className="px-2.5 py-1 border border-border/80 hover:border-accent text-foreground-secondary hover:text-accent transition-colors uppercase text-[9px] sm:text-[11px] flex items-center gap-1 cursor-pointer"
         >
           <span>✕</span>
           <span>EXIT OS</span>

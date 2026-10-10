@@ -45,7 +45,7 @@ export const BlueprintWorldVisualizer: React.FC<{ className?: string }> = ({ cla
             <span>TOKEN: EASING.EDITORIAL</span>
           </div>
 
-          <div className="text-center font-mono text-[10px] uppercase tracking-widest text-purple-200">
+          <div className="text-center font-mono text-[11px] uppercase tracking-widest text-purple-200">
             [ UNIFIED RAF LOOP SYNCHRONIZATION ]
           </div>
 

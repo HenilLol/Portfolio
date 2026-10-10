@@ -178,7 +178,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
         >
           <div className="flex items-center gap-3">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
+            <span className="font-mono text-[11px] tracking-widest uppercase text-foreground-muted">
               {progress < 0.06
                 ? "DORMANT"
                 : progress < 0.20
@@ -202,7 +202,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
           <button
             type="button"
             onClick={handleSkipExperience}
-            className="pointer-events-auto font-mono text-[10px] text-foreground-muted hover:text-accent tracking-widest uppercase transition-colors px-2 py-1 rounded border border-transparent hover:border-border/60"
+            className="pointer-events-auto font-mono text-[11px] text-foreground-muted hover:text-accent tracking-widest uppercase transition-colors px-2 py-1 rounded border border-transparent hover:border-border/60"
             aria-label="Skip cinematic opening sequence"
           >
             SKIP EXPERIENCE
@@ -217,12 +217,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
               <motion.div
                 key="scene-dormant"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.6 }}
+                animate={{ opacity: 0.95 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
                 className="text-center space-y-2 pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted animate-pulse">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-foreground-muted animate-pulse">
                   INITIALIZING
                 </span>
               </motion.div>
@@ -235,12 +235,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
               <motion.div
                 key="scene-field"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
+                animate={{ opacity: 0.9 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 className="text-center space-y-1 pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-foreground-muted">
                   MATTER CONVERGING
                 </span>
               </motion.div>
@@ -261,7 +261,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 <p className="font-mono text-xs sm:text-sm tracking-widest uppercase text-accent font-medium">
                   COMPUTER ENGINEERING · AI · SYSTEMS · CREATIVE
                 </p>
-                <span className="font-mono text-[10px] text-foreground-muted tracking-widest uppercase block animate-pulse">
+                <span className="font-mono text-[11px] text-foreground-muted tracking-widest uppercase block animate-pulse">
                   MOVE CURSOR TO INTERACT WITH MATTER · SCROLL TO FRACTURE
                 </span>
               </motion.div>
@@ -274,12 +274,12 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
               <motion.div
                 key="scene-break"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.7 }}
+                animate={{ opacity: 0.95 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 className="text-center pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-foreground-muted">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-foreground-muted">
                   STRUCTURAL INSTABILITY // PARTICLES DISPERSING
                 </span>
               </motion.div>
@@ -299,13 +299,13 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 transition={{ duration: 0.35 }}
                 className="text-center max-w-xl space-y-3 pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-accent font-semibold">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-accent font-semibold">
                   TOPOLOGICAL BRIDGE
                 </span>
                 <h2 className="font-sans text-2xl sm:text-4xl font-extrabold uppercase tracking-tight text-foreground">
                   Technology Network
                 </h2>
-                <div className="flex flex-wrap justify-center gap-2 pt-1 font-mono text-[10px] text-foreground-secondary uppercase tracking-wider">
+                <div className="flex flex-wrap justify-center gap-2 pt-1 font-mono text-[11px] text-foreground-secondary uppercase tracking-wider">
                   <span>● AI / LLM / AGENTS</span>
                   <span>● DISTRIBUTED SYSTEMS</span>
                   <span>● SPATIAL WEBGL</span>
@@ -332,7 +332,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 transition={{ duration: 0.35 }}
                 className="text-center max-w-2xl space-y-3 pointer-events-none"
               >
-                <span className="font-mono text-[10px] tracking-widest uppercase text-accent font-bold block">
+                <span className="font-mono text-[11px] tracking-widest uppercase text-accent font-bold block">
                   FLAGSHIP WORLD // EMERGENCE
                 </span>
                 <h2 className="font-sans text-5xl sm:text-7xl font-extrabold uppercase tracking-tightest leading-none text-foreground drop-shadow-[0_0_35px_rgba(0,240,255,0.35)]">
@@ -341,7 +341,7 @@ export const CinematicOpeningExperience: React.FC<CinematicOpeningExperienceProp
                 <p className="font-mono text-xs tracking-widest uppercase text-foreground-secondary">
                   AI-POWERED PERSONAL COMPUTING ENVIRONMENT
                 </p>
-                <div className="pt-2 font-mono text-[10px] text-accent tracking-widest uppercase animate-pulse">
+                <div className="pt-2 font-mono text-[11px] text-accent tracking-widest uppercase animate-pulse">
                   {progress < 0.96
                     ? "CONTINUE TO ENTER UNIVERSE"
                     : "ENTERING PORTFOLIO SPACE"}
